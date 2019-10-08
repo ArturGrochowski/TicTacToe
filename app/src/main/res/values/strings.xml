@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">TicTacToe</string>
+    <string name="image_button_3x3">imageButton3x3</string>
+    <string name="image_button_5x5">imageButton5x5</string>
+    <string name="image_button_8x8">imageButton8x8</string>
+    <string name="image_button_custom">imageButtonCustom</string>
+    <string name="image_button_players_4">imageButtonPlayers4</string>
+    <string name="image_button_players_3">imageButtonPlayers3</string>
+    <string name="image_button_players_2">imageButtonPlayers2</string>
+    <string name="image_button_players_5">imageButtonPlayers5</string>
+    <string name="image_button_players_6">imageButtonPlayers6</string>
+    <string name="image_button_start">imageButtonStart</string>
+    <string name="image_view_text_players">imageVievTextPlayers</string>
+
+</resources>
