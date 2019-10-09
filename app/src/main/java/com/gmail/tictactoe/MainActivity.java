@@ -1,6 +1,7 @@
 package com.gmail.tictactoe;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private int gridX = 3;
     private int gridY = 3;
     private int inARawToWin = 3;
+    private int numberOfPlayers = 2;
 
 
     @SuppressLint("WrongViewCast")
@@ -67,6 +69,54 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        buttonPlayers2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                numberOfPlayers = 2;
+            }
+        });
+
+        buttonPlayers3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                numberOfPlayers = 3;
+            }
+        });
+        buttonPlayers4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                numberOfPlayers = 4;
+            }
+        });
+        buttonPlayers5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                numberOfPlayers = 5;
+            }
+        });
+        buttonPlayers6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                numberOfPlayers = 6;
+            }
+        });
+
+        buttonStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTheGame();
+            }
+        });
+
+    }
+
+    private void startTheGame() {
+        Intent intent = new Intent(this, PlayGrid.class);
+        startActivity(intent);
     }
 }
