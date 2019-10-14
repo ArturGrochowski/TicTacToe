@@ -1,15 +1,9 @@
 package com.gmail.tictactoe;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
-import android.provider.ContactsContract;
-import android.support.annotation.DrawableRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -64,23 +58,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonPlayers5.setOnClickListener(this);
         buttonPlayers6.setOnClickListener(this);
 ;
-
-
-//        button3x3.setOnTouchListener(this);
-//        button5x5.setOnTouchListener(this);
-//        button8x8.setOnTouchListener(this);
-//        buttonCustom.setOnTouchListener(this);
-//        buttonPlayers2.setOnTouchListener(this);
-//        buttonPlayers3.setOnTouchListener(this);
-//        buttonPlayers4.setOnTouchListener(this);
-//        buttonPlayers5.setOnTouchListener(this);
-//        buttonPlayers6.setOnTouchListener(this);
-//        buttonStart.setOnTouchListener(this);
     }
 
     private void startTheGame() {
-        Intent intent = new Intent(this, PlayGrid.class);
-        startActivity(intent);
+        Intent intentGame = new Intent(this, PlayGrid.class);
+        startActivity(intentGame);
+    }
+
+    private void customSize(){
+        Intent intentPopup = new Intent(this, Popup.class);
+        startActivity(intentPopup);
     }
 
     public void onClick(View v) {
@@ -119,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 button3x3.setChecked(false);
                 button5x5.setChecked(false);
                 button8x8.setChecked(false);
+                customSize();
 
                 break;
 
