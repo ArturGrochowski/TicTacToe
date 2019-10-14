@@ -21,9 +21,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RadioButton buttonPlayers4;
     private RadioButton buttonPlayers5;
     private RadioButton buttonPlayers6;
-    private int gridX = 3;
-    private int gridY = 3;
-    private int inARawToWin = 3;
+    static int GRID_X = 3;
+    static int GRID_Y = 3;
+    static int IN_A_RAW_TO_WIN = 3;
     private int numberOfPlayers = 2;
     private RadioGroup radioGroupPlayers;
 
@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonPlayers5 = findViewById(R.id.imageButtonPlayers5);
         buttonPlayers6 = findViewById(R.id.imageButtonPlayers6);
         radioGroupPlayers = findViewById(R.id.radioGroupPlayers);
-  ;
 
         button3x3.setOnClickListener(this);
         button5x5.setOnClickListener(this);
@@ -70,32 +69,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intentPopup);
     }
 
+
     public void onClick(View v) {
 
 
         switch (v.getId()) {
             case R.id.imageButton3x3:
-                gridX = 3;
-                gridY = 3;
-                inARawToWin = 3;
+                GRID_X = 3;
+                GRID_Y = 3;
+                IN_A_RAW_TO_WIN = 3;
                 button5x5.setChecked(false);
                 button8x8.setChecked(false);
                 buttonCustom.setChecked(false);
                 break;
 
             case R.id.imageButton5x5:
-                gridX = 5;
-                gridY = 5;
-                inARawToWin = 4;
+                GRID_X = 5;
+                GRID_Y = 5;
+                IN_A_RAW_TO_WIN = 4;
                 button3x3.setChecked(false);
                 button8x8.setChecked(false);
                 buttonCustom.setChecked(false);
                 break;
 
             case R.id.imageButton8x8:
-                gridX = 8;
-                gridY = 8;
-                inARawToWin = 5;
+                GRID_X = 8;
+                GRID_Y = 8;
+                IN_A_RAW_TO_WIN = 5;
                 button3x3.setChecked(false);
                 button5x5.setChecked(false);
                 buttonCustom.setChecked(false);
