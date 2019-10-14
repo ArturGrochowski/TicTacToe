@@ -13,55 +13,110 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#00FFFFFF"
-        android:layout_weight="1">
+        android:layout_weight="0.5">
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:orientation="horizontal"
-        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:padding="5dp">
+                <RadioButton
+                    android:id="@+id/imageButton3x3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_3x3"
+                    android:button="@null"
+                    android:contentDescription="@string/image_button_3x3"/>
+                </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:padding="5dp">
+                <RadioButton
+                    android:id="@+id/imageButton5x5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_5x5"
+                    android:button="@null"
+                    android:contentDescription="@string/image_button_3x3"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="#00FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+        </LinearLayout>
 
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:padding="5dp">
-            <ImageButton
-                android:id="@+id/imageButton3x3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/image_button_3x3"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/button_3x3"/>
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:padding="5dp">
+
+                <RadioButton
+                    android:id="@+id/imageButton8x8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_8x8"
+                    android:button="@null"
+                    android:contentDescription="@string/image_button_3x3" />
             </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:padding="5dp">
-            <ImageButton
-                android:id="@+id/imageButton5x5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/image_button_3x3"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/button_5x5"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:padding="5dp">
+                <RadioButton
+                    android:id="@+id/imageButtonCustom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_custom"
+                    android:button="@null"
+                    android:contentDescription="@string/image_button_3x3"/>
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
 
     <LinearLayout
         android:background="#00FFFFFF"
@@ -71,67 +126,10 @@
         android:orientation="vertical">
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:padding="5dp">
-            <ImageButton
-                android:id="@+id/imageButton8x8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/image_button_3x3"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/button_8x8"/>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:padding="5dp">
-            <ImageButton
-                android:id="@+id/imageButtonCustom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/image_button_3x3"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/button_custom"/>
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:background="#00FFFFFF"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5"
+        android:layout_weight="2"
         android:orientation="vertical"
         android:padding="5dp">
         <ImageView
@@ -149,94 +147,88 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="horizontal"
-        android:weightSum="5">
-
+        android:layout_weight="2">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:padding="5dp">
-            <ImageButton
-                android:id="@+id/imageButtonPlayers2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/image_button_3x3"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/button_players2"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioGroup
+                android:id="@+id/radioGroupPlayers"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+
+                <RadioButton
+                    android:id="@+id/imageButtonPlayers2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/button_players2"
+                    android:button="@null"
+                    android:contentDescription="@string/image_button_players_2"
+                    android:layout_weight="1"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="5dp" />
+
+
+
+                <RadioButton
+                    android:id="@+id/imageButtonPlayers3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_players3"
+                    android:button="@null"
+                    android:contentDescription="@string/image_button_players_3"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
+
+
+                <RadioButton
+                    android:id="@+id/imageButtonPlayers4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_players4"
+                    android:button="@null"
+                    android:contentDescription="@string/image_button_players_4"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
+
+
+
+                <RadioButton
+                    android:id="@+id/imageButtonPlayers5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_players5"
+                    android:button="@null"
+                    android:contentDescription="@string/image_button_players_5"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
+
+
+
+                <RadioButton
+                    android:id="@+id/imageButtonPlayers6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_players6"
+                    android:button="@null"
+                    android:contentDescription="@string/image_button_players_6"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="15dp"/>
+
+
+            </RadioGroup>
+
         </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:padding="5dp">
-            <ImageButton
-                android:id="@+id/imageButtonPlayers3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/image_button_3x3"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/button_players3"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:padding="5dp">
-            <ImageButton
-                android:id="@+id/imageButtonPlayers4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/image_button_3x3"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/button_players4"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:padding="5dp">
-            <ImageButton
-                android:id="@+id/imageButtonPlayers5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/image_button_3x3"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/button_players5"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:padding="5dp">
-            <ImageButton
-                android:id="@+id/imageButtonPlayers6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/image_button_3x3"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/button_players6"/>
-        </LinearLayout>
-
 
     </LinearLayout>
 
@@ -244,7 +236,7 @@
         android:background="#00FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
         android:orientation="vertical">
     </LinearLayout>
 
@@ -252,7 +244,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="4.5"
         android:orientation="vertical"
         android:padding="5dp">
         <ImageButton
@@ -271,9 +263,10 @@
         android:background="#00FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="vertical">
+        android:layout_weight="0.5"
+        android:orientation="horizontal">
+
     </LinearLayout>
 
 
-    </LinearLayout>
+</LinearLayout>

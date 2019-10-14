@@ -1,30 +1,37 @@
 package com.gmail.tictactoe;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
+import android.provider.ContactsContract;
+import android.support.annotation.DrawableRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageButton button3x3;
-    private ImageButton button5x5;
-    private ImageButton button8x8;
-    private ImageButton buttonCustom;
+    private RadioButton button3x3;
+    private RadioButton button5x5;
+    private RadioButton button8x8;
+    private RadioButton buttonCustom;
     private ImageButton buttonStart;
-    private ImageButton buttonPlayers2;
-    private ImageButton buttonPlayers3;
-    private ImageButton buttonPlayers4;
-    private ImageButton buttonPlayers5;
-    private ImageButton buttonPlayers6;
+    private RadioButton buttonPlayers2;
+    private RadioButton buttonPlayers3;
+    private RadioButton buttonPlayers4;
+    private RadioButton buttonPlayers5;
+    private RadioButton buttonPlayers6;
     private int gridX = 3;
     private int gridY = 3;
     private int inARawToWin = 3;
     private int numberOfPlayers = 2;
-
+    private RadioGroup radioGroupPlayers;
 
 
     @Override
@@ -43,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonPlayers4 = findViewById(R.id.imageButtonPlayers4);
         buttonPlayers5 = findViewById(R.id.imageButtonPlayers5);
         buttonPlayers6 = findViewById(R.id.imageButtonPlayers6);
+        radioGroupPlayers = findViewById(R.id.radioGroupPlayers);
+  ;
 
         button3x3.setOnClickListener(this);
         button5x5.setOnClickListener(this);
@@ -54,36 +63,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonPlayers4.setOnClickListener(this);
         buttonPlayers5.setOnClickListener(this);
         buttonPlayers6.setOnClickListener(this);
+;
 
+
+//        button3x3.setOnTouchListener(this);
+//        button5x5.setOnTouchListener(this);
+//        button8x8.setOnTouchListener(this);
+//        buttonCustom.setOnTouchListener(this);
+//        buttonPlayers2.setOnTouchListener(this);
+//        buttonPlayers3.setOnTouchListener(this);
+//        buttonPlayers4.setOnTouchListener(this);
+//        buttonPlayers5.setOnTouchListener(this);
+//        buttonPlayers6.setOnTouchListener(this);
+//        buttonStart.setOnTouchListener(this);
     }
 
-    private void startTheGame(){
-            Intent intent = new Intent(this, PlayGrid.class);
-            startActivity(intent);
+    private void startTheGame() {
+        Intent intent = new Intent(this, PlayGrid.class);
+        startActivity(intent);
     }
 
-    @Override
     public void onClick(View v) {
-        switch (v.getId()){
+
+
+        switch (v.getId()) {
             case R.id.imageButton3x3:
                 gridX = 3;
                 gridY = 3;
                 inARawToWin = 3;
+                button5x5.setChecked(false);
+                button8x8.setChecked(false);
+                buttonCustom.setChecked(false);
                 break;
 
             case R.id.imageButton5x5:
                 gridX = 5;
                 gridY = 5;
                 inARawToWin = 4;
+                button3x3.setChecked(false);
+                button8x8.setChecked(false);
+                buttonCustom.setChecked(false);
                 break;
 
             case R.id.imageButton8x8:
                 gridX = 8;
                 gridY = 8;
                 inARawToWin = 5;
+                button3x3.setChecked(false);
+                button5x5.setChecked(false);
+                buttonCustom.setChecked(false);
                 break;
 
             case R.id.imageButtonCustom:
+
+                button3x3.setChecked(false);
+                button5x5.setChecked(false);
+                button8x8.setChecked(false);
 
                 break;
 
@@ -114,4 +149,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
 }
