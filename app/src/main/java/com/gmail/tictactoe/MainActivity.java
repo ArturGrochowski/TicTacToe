@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static int GRID_X = 3;
     static int GRID_Y = 3;
     static int IN_A_RAW_TO_WIN = 3;
-    private int numberOfPlayers = 2;
+    static int NUMBER_OF_PLAYERS = 2;
     private RadioGroup radioGroupPlayers;
 
 
@@ -115,23 +115,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.imageButtonPlayers2:
-                numberOfPlayers = 2;
+                NUMBER_OF_PLAYERS = 2;
                 break;
 
             case R.id.imageButtonPlayers3:
-                numberOfPlayers = 3;
+                NUMBER_OF_PLAYERS = 3;
                 break;
 
             case R.id.imageButtonPlayers4:
-                numberOfPlayers = 4;
+                NUMBER_OF_PLAYERS = 4;
                 break;
 
             case R.id.imageButtonPlayers5:
-                numberOfPlayers = 5;
+                NUMBER_OF_PLAYERS = 5;
                 break;
 
             case R.id.imageButtonPlayers6:
-                numberOfPlayers = 6;
+                NUMBER_OF_PLAYERS = 6;
                 break;
 
         }
