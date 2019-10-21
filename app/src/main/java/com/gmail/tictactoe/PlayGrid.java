@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,9 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private LinearLayout[] rowArray;
     private ImageButton currentShapeImg;
     private int currentPlayer;
+    private int currentNumber = 1;
+    private int previousNumber = 1;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -73,8 +77,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
                     imgButtonsArray[j].setOnClickListener(this);
                     imgButtonsArray[j].setLayoutParams(buttonsParams);
 //                    imgButtonsArray[j].setBackgroundColor(getResources().getColor(R.color.colorWhite));
-                    imgButtonsArray[j].setBackground(colorDrawable);
-                    imgButtonsArray[j].setPadding(3,3,3,3);
+//                    imgButtonsArray[j].setBackground(colorDrawable);
+//                    imgButtonsArray[j].setPadding(3,3,3,3);
 
                     rowArray[i].addView(imgButtonsArray[j]);
 
@@ -83,6 +87,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         }
         System.out.println("----------------------------------------------------------");
         System.out.println(imgButtonsArray[0].getBackground());
+        currentPlayer();
+        previousNumber(currentPlayer);
 
     }
 
@@ -92,11 +98,24 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         }else {
             currentPlayer = 1;
         }
+        System.out.println("curentPlayer() = " + currentPlayer);
+    }
+
+    public void previousNumber(int number){
+        if(currentNumber == 1 && previousNumber == 2 && currentPlayer != 2){
+            previousNumber = 1;
+        }else {
+            previousNumber = currentNumber;
+            currentNumber = number;
+        }
+        System.out.println("---------------===================================");
+        System.out.println("currentNumber = " + currentNumber);
+        System.out.println("previousNumber = " + previousNumber);
     }
 
     public void setCurrentShapeImg(ImageButton imageButton){
-        int nextShape = currentPlayer;
-        switch (nextShape){
+
+        switch (currentPlayer){
              case 1:
                  currentShapeImg.setImageResource(R.drawable.ring);
                  setButtonImage(imageButton);
@@ -129,7 +148,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
     public void setButtonImage(ImageButton imageButton){
-        switch (currentPlayer){
+
+        switch (previousNumber){
             case 1:
                 imageButton.setImageResource(R.drawable.ring);
                 break;
@@ -159,10 +179,16 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        currentPlayer();
+        v.setClickable(false);
         ImageButton tmpButtonID = findViewById(v.getId());
         setCurrentShapeImg(tmpButtonID);
-        System.out.println(tmpButtonID);
-        System.out.println(v.getId());
+//        System.out.println(tmpButtonID);
+//        System.out.println(v.getId());
+        currentPlayer();
+        previousNumber(currentPlayer);
+
+
+        System.out.println("________________________________________________");
+
     }
 }
