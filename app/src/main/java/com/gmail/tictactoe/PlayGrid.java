@@ -1,11 +1,6 @@
 package com.gmail.tictactoe;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,15 +13,22 @@ import android.widget.LinearLayout;
 public class PlayGrid extends AppCompatActivity implements View.OnClickListener {
 
     private LinearLayout playField;
-    private int rowX;
-    private int rowY;
-    private ImageButton[] imgButtonsArray;
-    private int numberOfButtons;
     private LinearLayout[] rowArray;
     private ImageButton currentShapeImg;
+    private ImageButton imgButtonUndo;
+    private ImageButton imgButtonExit;
+    private ImageButton tmpButtonID;
+    private ImageButton[] imgButtonsArray;
+    private ImageButton[] buttonsQeue = new ImageButton[2];
+    private int rowX;
+    private int rowY;
+    private int numberOfButtons;
     private int currentPlayer;
     private int currentNumber = 1;
     private int previousNumber = 1;
+    private int prePreviousNumber = 1;
+    private ImageButton currentButton;
+    private ImageButton previousButton;
 
 
 
@@ -36,7 +38,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_grid);
 
-        ColorDrawable colorDrawable = new ColorDrawable(Color.WHITE);
 
         currentPlayer = 1;
         if(MainActivity.GRID_X >= MainActivity.GRID_Y){
@@ -49,13 +50,26 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
         currentShapeImg = findViewById(R.id.imageButtonCurrentShape);
         playField = findViewById(R.id.playFieldLayout);
+        imgButtonUndo = findViewById(R.id.imageButtonUndo);
+        imgButtonExit = findViewById(R.id.imageButtonExit);
         playField.setWeightSum((float) rowY);
         rowArray = new LinearLayout[rowY];
-
         numberOfButtons = rowY*rowX;
         imgButtonsArray = new ImageButton[numberOfButtons];
 
+        imgButtonUndo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                undo();
+            }
+        });
 
+        imgButtonExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0 , 1.0f);
         LinearLayout.LayoutParams buttonsParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
 
@@ -77,7 +91,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
                     imgButtonsArray[j].setOnClickListener(this);
                     imgButtonsArray[j].setLayoutParams(buttonsParams);
 //                    imgButtonsArray[j].setBackgroundColor(getResources().getColor(R.color.colorWhite));
-//                    imgButtonsArray[j].setBackground(colorDrawable);
 //                    imgButtonsArray[j].setPadding(3,3,3,3);
 
                     rowArray[i].addView(imgButtonsArray[j]);
@@ -85,35 +98,64 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
                 }
                 playField.addView(rowArray[i]);
         }
-        System.out.println("----------------------------------------------------------");
-        System.out.println(imgButtonsArray[0].getBackground());
-        currentPlayer();
-        previousNumber(currentPlayer);
 
+        currentPlayer(currentNumber);
+        previousNumber(currentPlayer);
     }
 
-    public void currentPlayer(){
+
+    public void currentPlayer(int currentNumber){
         if(currentPlayer<MainActivity.NUMBER_OF_PLAYERS){
-            currentPlayer++;
+            currentPlayer = currentNumber +1;
         }else {
             currentPlayer = 1;
         }
-        System.out.println("curentPlayer() = " + currentPlayer);
     }
 
     public void previousNumber(int number){
         if(currentNumber == 1 && previousNumber == 2 && currentPlayer != 2){
             previousNumber = 1;
+            prePreviousNumber = MainActivity.NUMBER_OF_PLAYERS;
         }else {
+            System.out.println("A currentPLAYER = " + currentPlayer);
+            System.out.println("A PREPRIVnr = " + prePreviousNumber);
+            System.out.println("A prevNr = " + previousNumber);
+            System.out.println("A currentNr = " + currentNumber);
+
+            prePreviousNumber = previousNumber;
             previousNumber = currentNumber;
             currentNumber = number;
+            System.out.println("B PREPRIVnr = " + prePreviousNumber);
+            System.out.println("B prevNr = " + previousNumber);
+            System.out.println("B currentNr = " + currentNumber);
+            System.out.println("B currentPLAYER = " + currentPlayer);
+
         }
-        System.out.println("---------------===================================");
-        System.out.println("currentNumber = " + currentNumber);
-        System.out.println("previousNumber = " + previousNumber);
+    }
+
+    public void previousButton(ImageButton button){
+        previousButton = currentButton;
+        currentButton = button;
+    }
+
+    private void undo() {
+        imgButtonUndo.setClickable(false);
+        previousNumber = prePreviousNumber;
+        currentNumber = previousNumber;
+        previousNumber(previousNumber);
+        currentPlayer(prePreviousNumber);
+        setCurrentShapeImg(tmpButtonID);
+        tmpButtonID.setClickable(true);
+        tmpButtonID.setImageDrawable(null);
+    }
+
+    private void addToButtonsQeue(ImageButton button) {
+        buttonsQeue[0] = buttonsQeue[1];
+        buttonsQeue[1] = button;
     }
 
     public void setCurrentShapeImg(ImageButton imageButton){
+//        System.out.println("serCurrentShapeImg() currentPlayer = " + previousNumber);
 
         switch (currentPlayer){
              case 1:
@@ -148,6 +190,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
     public void setButtonImage(ImageButton imageButton){
+//        System.out.println("setButtonImage() currentPlayer = " + previousNumber);
 
         switch (previousNumber){
             case 1:
@@ -179,16 +222,22 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
+
+//        System.out.println("A currentNR = " + currentNumber);
+        System.out.println("A currentPLAYER = " + currentPlayer);
         v.setClickable(false);
-        ImageButton tmpButtonID = findViewById(v.getId());
+        tmpButtonID = findViewById(v.getId());
         setCurrentShapeImg(tmpButtonID);
 //        System.out.println(tmpButtonID);
 //        System.out.println(v.getId());
-        currentPlayer();
+        currentPlayer(currentNumber);
         previousNumber(currentPlayer);
+        previousButton(tmpButtonID);
+        imgButtonUndo.setClickable(true);
+        System.out.println("B currentPLAYER = " + currentPlayer);
+        addToButtonsQeue(tmpButtonID);
 
-
-        System.out.println("________________________________________________");
 
     }
+
 }
