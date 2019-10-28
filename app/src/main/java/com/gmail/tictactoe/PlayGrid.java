@@ -1,5 +1,7 @@
 package com.gmail.tictactoe;
 
+
+import android.graphics.drawable.shapes.Shape;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +21,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private ImageButton imgButtonExit;
     private ImageButton tmpButtonID;
     private ImageButton[] imgButtonsArray;
-    private ImageButton[] buttonsQeue = new ImageButton[2];
     private int rowX;
     private int rowY;
     private int numberOfButtons;
@@ -27,8 +28,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private int currentNumber = 1;
     private int previousNumber = 1;
     private int prePreviousNumber = 1;
-    private ImageButton currentButton;
-    private ImageButton previousButton;
+//    private Shape shape = new Shape();
 
 
 
@@ -112,87 +112,101 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
+    public void previousPlayer(){
+        if(currentPlayer>1){
+            currentPlayer--;
+        }else {
+            currentPlayer = MainActivity.NUMBER_OF_PLAYERS;
+        }
+    }
+
+    public void previousNumber(){
+        if(previousNumber>1){
+            previousNumber--;
+        }else {
+            previousNumber = MainActivity.NUMBER_OF_PLAYERS;
+        }    }
+
     public void previousNumber(int number){
         if(currentNumber == 1 && previousNumber == 2 && currentPlayer != 2){
             previousNumber = 1;
             prePreviousNumber = MainActivity.NUMBER_OF_PLAYERS;
         }else {
-            System.out.println("A currentPLAYER = " + currentPlayer);
-            System.out.println("A PREPRIVnr = " + prePreviousNumber);
-            System.out.println("A prevNr = " + previousNumber);
-            System.out.println("A currentNr = " + currentNumber);
+            System.out.println("A previousNumber() currentPlayer = " + currentPlayer);
+            System.out.println("A previousNumber() prePreviousNumber = " + prePreviousNumber);
+            System.out.println("A previousNumber() previousNumber = " + previousNumber);
+            System.out.println("A previousNumber() currentNumber = " + currentNumber);
+
+            if(currentNumber == previousNumber && currentNumber!=1){
+                currentNumber--;
+                previousNumber--;
+            }
 
             prePreviousNumber = previousNumber;
             previousNumber = currentNumber;
             currentNumber = number;
-            System.out.println("B PREPRIVnr = " + prePreviousNumber);
-            System.out.println("B prevNr = " + previousNumber);
-            System.out.println("B currentNr = " + currentNumber);
-            System.out.println("B currentPLAYER = " + currentPlayer);
+            System.out.println("B previousNumber() currentPlayer = " + currentPlayer);
+            System.out.println("B previousNumber() prePreviousNumber = " + prePreviousNumber);
+            System.out.println("B previousNumber() previousNumber = " + previousNumber);
+            System.out.println("B previousNumber() currentNumber = " + currentNumber);
 
         }
     }
 
-    public void previousButton(ImageButton button){
-        previousButton = currentButton;
-        currentButton = button;
-    }
 
     private void undo() {
+
+        previousPlayer();
+        previousNumber();
+        setCurrentShapeImg(tmpButtonID, currentPlayer, previousNumber);
+        System.out.println("========== BUTTON ID: undo");
+
         imgButtonUndo.setClickable(false);
-        previousNumber = prePreviousNumber;
-        currentNumber = previousNumber;
-        previousNumber(previousNumber);
-        currentPlayer(prePreviousNumber);
-        setCurrentShapeImg(tmpButtonID);
         tmpButtonID.setClickable(true);
         tmpButtonID.setImageDrawable(null);
+
+        System.out.println("========================================================================");
     }
 
-    private void addToButtonsQeue(ImageButton button) {
-        buttonsQeue[0] = buttonsQeue[1];
-        buttonsQeue[1] = button;
-    }
 
-    public void setCurrentShapeImg(ImageButton imageButton){
-//        System.out.println("serCurrentShapeImg() currentPlayer = " + previousNumber);
+    public void setCurrentShapeImg(ImageButton imageButton, int playerShape, int buttonShape){
+        System.out.println("setCurrentShapeImg() = " + currentPlayer);
 
-        switch (currentPlayer){
+        switch (playerShape){
              case 1:
                  currentShapeImg.setImageResource(R.drawable.ring);
-                 setButtonImage(imageButton);
+                 setButtonImage(imageButton, buttonShape);
                  break;
              case 2:
                  currentShapeImg.setImageResource(R.drawable.x);
-                 setButtonImage(imageButton);
+                 setButtonImage(imageButton, buttonShape);
                  break;
              case 3:
                  currentShapeImg.setImageResource(R.drawable.trojkat);
-                 setButtonImage(imageButton);
+                 setButtonImage(imageButton, buttonShape);
                  break;
 
              case 4:
                 currentShapeImg.setImageResource(R.drawable.kwadrat);
-                 setButtonImage(imageButton);
+                 setButtonImage(imageButton, buttonShape);
                 break;
 
              case 5:
                 currentShapeImg.setImageResource(R.drawable.star);
-                 setButtonImage(imageButton);
+                 setButtonImage(imageButton, buttonShape);
                 break;
 
              case 6:
                 currentShapeImg.setImageResource(R.drawable.trapez);
-                 setButtonImage(imageButton);
+                 setButtonImage(imageButton, buttonShape);
                 break;
 
         }
     }
 
-    public void setButtonImage(ImageButton imageButton){
-//        System.out.println("setButtonImage() currentPlayer = " + previousNumber);
-
-        switch (previousNumber){
+    public void setButtonImage(ImageButton imageButton, int buttonShape){
+        System.out.println("setButtonImage() = " + previousNumber);
+        switch (buttonShape){
             case 1:
                 imageButton.setImageResource(R.drawable.ring);
                 break;
@@ -222,22 +236,64 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
+        System.out.println("========== BUTTON ID: " +v.getId());
 
 //        System.out.println("A currentNR = " + currentNumber);
         System.out.println("A currentPLAYER = " + currentPlayer);
         v.setClickable(false);
         tmpButtonID = findViewById(v.getId());
-        setCurrentShapeImg(tmpButtonID);
-//        System.out.println(tmpButtonID);
-//        System.out.println(v.getId());
+        setCurrentShapeImg(tmpButtonID, currentPlayer, previousNumber);
         currentPlayer(currentNumber);
         previousNumber(currentPlayer);
-        previousButton(tmpButtonID);
+//        shape.setCurrentShape(currentPlayer);
+//        shape.setCurrentButtonShape(previousNumber);
         imgButtonUndo.setClickable(true);
         System.out.println("B currentPLAYER = " + currentPlayer);
-        addToButtonsQeue(tmpButtonID);
+        System.out.println("------------------------------------------------------------------------");
 
 
     }
 
 }
+
+//class Shape {
+//
+//    private int currentShape = 1;
+//    private int currentButtonShape = 1;
+//    private int previousShape = 1;
+//    private int previousButtonShape = 1;
+//
+//
+//    public int getCurrentShape() {
+//        return currentShape;
+//    }
+//
+//    public void setCurrentShape(int currentShape) {
+//        this.currentShape = currentShape;
+//    }
+//
+//    public int getCurrentButtonShape() {
+//        return currentButtonShape;
+//    }
+//
+//    public void setCurrentButtonShape(int currentButtonShape) {
+//        this.currentButtonShape = currentButtonShape;
+//    }
+//
+//    public int getPreviousShape() {
+//        return previousShape;
+//    }
+//
+//    public void setPreviousShape(int previousShape) {
+//        this.previousShape = previousShape;
+//    }
+//
+//    public int getPreviousButtonShape() {
+//        return previousButtonShape;
+//    }
+//
+//    public void setPreviousButtonShape(int previousButtonShape) {
+//        this.previousButtonShape = previousButtonShape;
+//    }
+//
+//}
