@@ -1,7 +1,6 @@
 package com.gmail.tictactoe;
 
 
-import android.graphics.drawable.shapes.Shape;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -27,8 +26,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private int currentPlayer;
     private int currentNumber = 1;
     private int previousNumber = 1;
-    private int prePreviousNumber = 1;
-//    private Shape shape = new Shape();
 
 
 
@@ -90,9 +87,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
                     imgButtonsArray[j].setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                     imgButtonsArray[j].setOnClickListener(this);
                     imgButtonsArray[j].setLayoutParams(buttonsParams);
-//                    imgButtonsArray[j].setBackgroundColor(getResources().getColor(R.color.colorWhite));
-//                    imgButtonsArray[j].setPadding(3,3,3,3);
-
                     rowArray[i].addView(imgButtonsArray[j]);
 
                 }
@@ -125,30 +119,31 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
             previousNumber--;
         }else {
             previousNumber = MainActivity.NUMBER_OF_PLAYERS;
-        }    }
+        }
+        if(currentNumber>1){
+            currentNumber--;
+        }else {
+            currentNumber = MainActivity.NUMBER_OF_PLAYERS;
+        }
+        System.out.println("previousNumber() previousNumber: " + previousNumber);
+        System.out.println("previousNumber() currentNumber: " + currentNumber);
+
+    }
 
     public void previousNumber(int number){
         if(currentNumber == 1 && previousNumber == 2 && currentPlayer != 2){
             previousNumber = 1;
-            prePreviousNumber = MainActivity.NUMBER_OF_PLAYERS;
         }else {
-            System.out.println("A previousNumber() currentPlayer = " + currentPlayer);
-            System.out.println("A previousNumber() prePreviousNumber = " + prePreviousNumber);
-            System.out.println("A previousNumber() previousNumber = " + previousNumber);
-            System.out.println("A previousNumber() currentNumber = " + currentNumber);
 
             if(currentNumber == previousNumber && currentNumber!=1){
                 currentNumber--;
                 previousNumber--;
             }
 
-            prePreviousNumber = previousNumber;
             previousNumber = currentNumber;
             currentNumber = number;
-            System.out.println("B previousNumber() currentPlayer = " + currentPlayer);
-            System.out.println("B previousNumber() prePreviousNumber = " + prePreviousNumber);
-            System.out.println("B previousNumber() previousNumber = " + previousNumber);
-            System.out.println("B previousNumber() currentNumber = " + currentNumber);
+            System.out.println("previousNumber(int number) previousNumber: " + previousNumber);
+            System.out.println("previousNumber(int number) currentNumber: " + currentNumber);
 
         }
     }
@@ -156,10 +151,11 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     private void undo() {
 
+        System.out.println("========== BUTTON ID: undo");
         previousPlayer();
         previousNumber();
-        setCurrentShapeImg(tmpButtonID, currentPlayer, previousNumber);
-        System.out.println("========== BUTTON ID: undo");
+        setCurrentShapeImg(tmpButtonID, previousNumber, previousNumber);
+
 
         imgButtonUndo.setClickable(false);
         tmpButtonID.setClickable(true);
@@ -170,7 +166,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
 
     public void setCurrentShapeImg(ImageButton imageButton, int playerShape, int buttonShape){
-        System.out.println("setCurrentShapeImg() = " + currentPlayer);
+        System.out.println("setCurrentShapeImg() = " + playerShape);
 
         switch (playerShape){
              case 1:
@@ -205,7 +201,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
     public void setButtonImage(ImageButton imageButton, int buttonShape){
-        System.out.println("setButtonImage() = " + previousNumber);
+        System.out.println("setButtonImage() = " + buttonShape);
         switch (buttonShape){
             case 1:
                 imageButton.setImageResource(R.drawable.ring);
