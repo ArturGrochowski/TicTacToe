@@ -47,7 +47,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <TableLayout
         android:id="@+id/playFieldLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -57,6 +57,6 @@
         android:orientation="vertical">
 
 
-    </LinearLayout>
+    </TableLayout>
 
 </LinearLayout>
