@@ -25,15 +25,16 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private ImageButton tmpButtonID;
 //    private ImageButton[] imgButtonsArray;
     private ImageButton[][] imgButtonArray2D;
-    private int rowX;
-    private int rowY;
+    private int rows;
+    private int columns;
     private int numberOfButtons;
     private int currentPlayer;
     private int currentNumber = 1;
     private int previousNumber = 1;
     private int imgWidth;
-    private int imgHight;
-    private Resources resources;
+    private int imgHeight;
+    private int rowNumber;
+    private int columnNumber;
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -42,26 +43,21 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_grid);
 
-
         currentPlayer = 1;
         if(MainActivity.GRID_X >= MainActivity.GRID_Y){
-            rowX = MainActivity.GRID_Y;
-            rowY = MainActivity.GRID_X;
+            rows = MainActivity.GRID_Y;
+            columns = MainActivity.GRID_X;
         }else {
-            rowX = MainActivity.GRID_X;
-            rowY = MainActivity.GRID_Y;
+            rows = MainActivity.GRID_X;
+            columns = MainActivity.GRID_Y;
         }
 
-        imgButtonArray2D = new ImageButton[rowX][rowY];
+        imgButtonArray2D = new ImageButton[rows][columns];
 
         currentShapeImg = findViewById(R.id.imageButtonCurrentShape);
-//        playField = findViewById(R.id.playFieldLayout);
         imgButtonUndo = findViewById(R.id.imageButtonUndo);
         imgButtonExit = findViewById(R.id.imageButtonExit);
-//        playField.setWeightSum((float) rowY);
-//        rowArray = new LinearLayout[rowY];
-        numberOfButtons = rowY*rowX;
-//        imgButtonsArray = new ImageButton[numberOfButtons];
+        numberOfButtons = columns * rows;
 
         imgButtonUndo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,29 +74,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         });
 //        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0 , 1.0f);
 //        LinearLayout.LayoutParams buttonsParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
-//
-//        for (int i= 0; i< rowY; i++){
-//            rowArray[i] = new LinearLayout(this);
-//            rowArray[i].setWeightSum((float) rowX);
-//            rowArray[i].setLayoutParams(layoutParams);
-//        }
-//
-//
-//        for (int i = 0; i < rowY; i++){
-//
-//                for(int j= 0; j<numberOfButtons; j++){
-//
-//                    int buttonID = Integer.parseInt("" + i + j);
-//                    imgButtonsArray[j] = new ImageButton(this);
-//                    imgButtonsArray[j].setId(buttonID);
-//                    imgButtonsArray[j].setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-//                    imgButtonsArray[j].setOnClickListener(this);
-//                    imgButtonsArray[j].setLayoutParams(buttonsParams);
-//                    rowArray[i].addView(imgButtonsArray[j]);
-//
-//                }
-//                playField.addView(rowArray[i]);
-//        }
+
         tableGridCreator();
         currentPlayer(currentNumber);
         previousNumber(currentPlayer);
@@ -108,7 +82,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     private void tableGridCreator(){
         TableLayout tablePlayField = findViewById(R.id.playFieldLayout);
-        for(int row = 0; row < rowX; row++){
+        for(int row = 0; row < rows; row++){
             TableRow tableRow = new TableRow(this);
             tablePlayField.addView(tableRow);
             tableRow.setLayoutParams(new TableLayout.LayoutParams(
@@ -124,19 +98,41 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 //                    1.0f ));
 //            rowDivider.setBackgroundColor(getResources().getColor(R.color.colorBlack));
 
-            for(int col = 0; col < rowY; col++){
+            for(int col = 0; col < columns; col++){
+
+                rowNumber = row;
+                columnNumber = col;
+
                 ImageButton imageButton = new ImageButton(this);
                 imageButton.setLayoutParams(new TableRow.LayoutParams(
                         TableRow.LayoutParams.MATCH_PARENT,
                         TableRow.LayoutParams.MATCH_PARENT,
                         1.0f ));
+                imageButton.setPadding(0,0,0,0 );
                 int buttonID = Integer.parseInt("" + row + col);
                 imageButton.setId(buttonID);
-                imageButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                imageButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
 //                imageButton.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                 imageButton.setOnClickListener(this);
                 tableRow.addView(imageButton);
                 imgButtonArray2D[row][col] = imageButton;
+            }
+        }
+
+    }
+
+    private void lockButtonSizes() {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                ImageButton button = imgButtonArray2D[row][col];
+
+                int width = button.getWidth();
+                button.setMinimumWidth(width);
+                button.setMaxWidth(width);
+
+                int height = button.getHeight();
+                button.setMinimumHeight(height);
+                button.setMaxHeight(height);
             }
         }
     }
@@ -169,8 +165,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         }else {
             currentNumber = MainActivity.NUMBER_OF_PLAYERS;
         }
-        System.out.println("previousNumber() previousNumber: " + previousNumber);
-        System.out.println("previousNumber() currentNumber: " + currentNumber);
 
     }
 
@@ -186,8 +180,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
             previousNumber = currentNumber;
             currentNumber = number;
-            System.out.println("previousNumber(int number) previousNumber: " + previousNumber);
-            System.out.println("previousNumber(int number) currentNumber: " + currentNumber);
 
         }
     }
@@ -198,7 +190,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         System.out.println("========== BUTTON ID: undo");
         previousPlayer();
         previousNumber();
-        setCurrentShapeImg(tmpButtonID, previousNumber, previousNumber);
+        setCurrentShapeImg(previousNumber);
+        setButtonImage(tmpButtonID, previousNumber);
 
 
         imgButtonUndo.setClickable(false);
@@ -209,82 +202,77 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-    public void setCurrentShapeImg(ImageButton imageButton, int playerShape, int buttonShape){
-        System.out.println("setCurrentShapeImg() = " + playerShape);
+    public void setCurrentShapeImg(int playerShape){
 
 
         switch (playerShape){
              case 1:
                  currentShapeImg.setImageResource(R.drawable.ring);
-                 setButtonImage(imageButton, buttonShape);
                  break;
              case 2:
                  currentShapeImg.setImageResource(R.drawable.x);
-                 setButtonImage(imageButton, buttonShape);
                  break;
              case 3:
                  currentShapeImg.setImageResource(R.drawable.trojkat);
-                 setButtonImage(imageButton, buttonShape);
                  break;
 
              case 4:
                 currentShapeImg.setImageResource(R.drawable.kwadrat);
-                 setButtonImage(imageButton, buttonShape);
                 break;
 
              case 5:
                 currentShapeImg.setImageResource(R.drawable.star);
-                 setButtonImage(imageButton, buttonShape);
                 break;
 
              case 6:
                 currentShapeImg.setImageResource(R.drawable.trapez);
-                 setButtonImage(imageButton, buttonShape);
                 break;
 
         }
     }
 
     public void setButtonImage(ImageButton imageButton, int buttonShape){
-        System.out.println("setButtonImage() = " + buttonShape);
+        System.out.println("imgWidth = " + imageButton.getWidth() + ", imgHeight = " + imageButton.getHeight());
+
 
         switch (buttonShape){
             case 1:
-//                imageButton.setImageResource(R.drawable.ring);
-                imageButton.setImageDrawable(imageSizeForButton(R.drawable.ring));
+                imageButton.setImageDrawable(imageSizeForButton(R.drawable.ring, imageButton));
                 break;
+
             case 2:
-//                imageButton.setImageResource(R.drawable.x);
-                imageButton.setImageDrawable(imageSizeForButton(R.drawable.x));
+                imageButton.setImageDrawable(imageSizeForButton(R.drawable.x, imageButton));
                 break;
+
             case 3:
-                imageButton.setImageDrawable(imageSizeForButton(R.drawable.trojkat));
+                imageButton.setImageDrawable(imageSizeForButton(R.drawable.trojkat, imageButton));
                 break;
 
             case 4:
-//                imageButton.setImageResource(R.drawable.kwadrat);
-                imageButton.setImageDrawable(imageSizeForButton(R.drawable.kwadrat));
+                imageButton.setImageDrawable(imageSizeForButton(R.drawable.kwadrat, imageButton));
                 break;
 
             case 5:
-//                imageButton.setImageResource(R.drawable.star);
-                imageButton.setImageDrawable(imageSizeForButton(R.drawable.star));
+                imageButton.setImageDrawable(imageSizeForButton(R.drawable.star, imageButton));
                 break;
 
             case 6:
-//                imageButton.setImageResource(R.drawable.trapez);
-                imageButton.setImageDrawable(imageSizeForButton(R.drawable.trapez));
+                imageButton.setImageDrawable(imageSizeForButton(R.drawable.trapez, imageButton));
                 break;
-
         }
 
     }
 
-    public BitmapDrawable imageSizeForButton(int drawableRes){
+    public BitmapDrawable imageSizeForButton(int drawableRes, ImageButton button){
+
+
+        int newWidth = button.getWidth();
+        int newHeight = button.getHeight();
 
         Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), drawableRes);
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, imgWidth, imgHight, true);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
 
+        Resources resources = getResources();
         return new BitmapDrawable(resources, scaledBitmap);
     }
 
@@ -292,63 +280,18 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         System.out.println("========== BUTTON ID: " +v.getId());
-        imgWidth = v.getWidth();
-        imgHight = v.getHeight();
-        resources = getResources();
 
-
-
-//        System.out.println("A currentNR = " + currentNumber);
-        System.out.println("A currentPLAYER = " + currentPlayer);
         v.setClickable(false);
         tmpButtonID = findViewById(v.getId());
-        setCurrentShapeImg(tmpButtonID, currentPlayer, previousNumber);
-
-        tmpButtonID.setMinimumWidth(imgWidth);
-        tmpButtonID.setMaxWidth(imgWidth);
-        tmpButtonID.setMinimumHeight(imgHight);
-        tmpButtonID.setMaxHeight(imgHight);
+        lockButtonSizes();
+        setCurrentShapeImg(currentPlayer);
+        setButtonImage(tmpButtonID, previousNumber);
         currentPlayer(currentNumber);
         previousNumber(currentPlayer);
         imgButtonUndo.setClickable(true);
-        System.out.println("B currentPLAYER = " + currentPlayer);
         System.out.println("------------------------------------------------------------------------");
 
 
-    }
-
-    private int drawableRes(int buttonShape) {
-        int shape = R.drawable.ring;
-        switch (buttonShape){
-            case 1:
-//                imageButton.setImageResource(R.drawable.ring);
-                shape = R.drawable.ring;
-                break;
-            case 2:
-//                imageButton.setImageResource(R.drawable.x);
-                shape = R.drawable.x;
-                break;
-            case 3:
-                shape = R.drawable.trojkat;
-                break;
-
-            case 4:
-//                imageButton.setImageResource(R.drawable.kwadrat);
-                shape = R.drawable.kwadrat;
-                break;
-
-            case 5:
-//                imageButton.setImageResource(R.drawable.star);
-                shape = R.drawable.star;
-                break;
-
-            case 6:
-//                imageButton.setImageResource(R.drawable.trapez);
-                shape = R.drawable.trapez;
-                break;
-
-        }
-        return shape;
     }
 
 }
