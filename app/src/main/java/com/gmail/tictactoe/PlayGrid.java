@@ -5,8 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,27 +15,18 @@ import android.widget.TableRow;
 
 public class PlayGrid extends AppCompatActivity implements View.OnClickListener {
 
-//    private TableLayout playField;
-//    private LinearLayout[] rowArray;
     private ImageButton currentShapeImg;
     private ImageButton imgButtonUndo;
     private ImageButton imgButtonExit;
     private ImageButton tmpButtonID;
-//    private ImageButton[] imgButtonsArray;
     private ImageButton[][] imgButtonArray2D;
     private int rows;
     private int columns;
-    private int numberOfButtons;
     private int currentPlayer;
     private int currentNumber = 1;
     private int previousNumber = 1;
-    private int imgWidth;
-    private int imgHeight;
-    private int rowNumber;
-    private int columnNumber;
 
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +46,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         currentShapeImg = findViewById(R.id.imageButtonCurrentShape);
         imgButtonUndo = findViewById(R.id.imageButtonUndo);
         imgButtonExit = findViewById(R.id.imageButtonExit);
-        numberOfButtons = columns * rows;
 
         imgButtonUndo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,9 +87,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 //            rowDivider.setBackgroundColor(getResources().getColor(R.color.colorBlack));
 
             for(int col = 0; col < columns; col++){
-
-                rowNumber = row;
-                columnNumber = col;
 
                 ImageButton imageButton = new ImageButton(this);
                 imageButton.setLayoutParams(new TableRow.LayoutParams(
