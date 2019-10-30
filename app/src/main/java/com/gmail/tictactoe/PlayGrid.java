@@ -77,7 +77,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
                 TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.MATCH_PARENT,
                 1.0f );
-        tableRowParams.setMargins(15, 15, 15, 15);
+        tableRowParams.setMargins(10, 10, 10, 10);
 
         TableLayout tablePlayField = findViewById(R.id.playFieldLayout);
         for(int row = 0; row < rows; row++){
