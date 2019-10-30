@@ -5,9 +5,12 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -18,8 +21,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private ImageButton currentShapeImg;
     private ImageButton imgButtonUndo;
     private ImageButton imgButtonExit;
-    private ImageButton tmpButtonID;
-    private ImageButton[][] imgButtonArray2D;
+    private Button tmpButtonID;
+    private Button[][] imgButtonArray2D;
     private int rows;
     private int columns;
     private int currentPlayer;
@@ -41,7 +44,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
             columns = MainActivity.GRID_Y;
         }
 
-        imgButtonArray2D = new ImageButton[rows][columns];
+        imgButtonArray2D = new Button[rows][columns];
 
         currentShapeImg = findViewById(R.id.imageButtonCurrentShape);
         imgButtonUndo = findViewById(R.id.imageButtonUndo);
@@ -69,6 +72,13 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void tableGridCreator(){
+
+        TableRow.LayoutParams tableRowParams = new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT,
+                TableRow.LayoutParams.MATCH_PARENT,
+                1.0f );
+        tableRowParams.setMargins(15, 15, 15, 15);
+
         TableLayout tablePlayField = findViewById(R.id.playFieldLayout);
         for(int row = 0; row < rows; row++){
             TableRow tableRow = new TableRow(this);
@@ -78,29 +88,18 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
                     TableLayout.LayoutParams.MATCH_PARENT,
                     1.0f ));
 
-//
-//            TableRow rowDivider = new TableRow(this);
-//            tablePlayField.addView(rowDivider);
-//            rowDivider.setLayoutParams(new TableLayout.LayoutParams(
-//                    TableLayout.LayoutParams.MATCH_PARENT, 2,
-//                    1.0f ));
-//            rowDivider.setBackgroundColor(getResources().getColor(R.color.colorBlack));
 
             for(int col = 0; col < columns; col++){
 
-                ImageButton imageButton = new ImageButton(this);
-                imageButton.setLayoutParams(new TableRow.LayoutParams(
-                        TableRow.LayoutParams.MATCH_PARENT,
-                        TableRow.LayoutParams.MATCH_PARENT,
-                        1.0f ));
-                imageButton.setPadding(0,0,0,0 );
+                Button button = new Button(this);
+                button.setLayoutParams(tableRowParams);
+                button.setPadding(0,0,0,0 );
                 int buttonID = Integer.parseInt("" + row + col);
-                imageButton.setId(buttonID);
-                imageButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
-//                imageButton.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                imageButton.setOnClickListener(this);
-                tableRow.addView(imageButton);
-                imgButtonArray2D[row][col] = imageButton;
+                button.setId(buttonID);
+                button.setBackgroundResource(R.color.colorWhite);
+                button.setOnClickListener(this);
+                tableRow.addView(button);
+                imgButtonArray2D[row][col] = button;
             }
         }
 
@@ -109,7 +108,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private void lockButtonSizes() {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
-                ImageButton button = imgButtonArray2D[row][col];
+                Button button = imgButtonArray2D[row][col];
 
                 int width = button.getWidth();
                 button.setMinimumWidth(width);
@@ -181,7 +180,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
         imgButtonUndo.setClickable(false);
         tmpButtonID.setClickable(true);
-        tmpButtonID.setImageDrawable(null);
+        tmpButtonID.setBackgroundResource(R.color.colorWhite);
 
         System.out.println("========================================================================");
     }
@@ -216,39 +215,39 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    public void setButtonImage(ImageButton imageButton, int buttonShape){
-        System.out.println("imgWidth = " + imageButton.getWidth() + ", imgHeight = " + imageButton.getHeight());
+    public void setButtonImage(Button button, int buttonShape){
+        System.out.println("imgWidth = " + button.getWidth() + ", imgHeight = " + button.getHeight());
 
 
         switch (buttonShape){
             case 1:
-                imageButton.setImageDrawable(imageSizeForButton(R.drawable.ring, imageButton));
+                button.setBackground(imageSizeForButton(R.drawable.ring, button));
                 break;
 
             case 2:
-                imageButton.setImageDrawable(imageSizeForButton(R.drawable.x, imageButton));
+                button.setBackground(imageSizeForButton(R.drawable.x, button));
                 break;
 
             case 3:
-                imageButton.setImageDrawable(imageSizeForButton(R.drawable.trojkat, imageButton));
+                button.setBackground(imageSizeForButton(R.drawable.trojkat, button));
                 break;
 
             case 4:
-                imageButton.setImageDrawable(imageSizeForButton(R.drawable.kwadrat, imageButton));
+                button.setBackground(imageSizeForButton(R.drawable.kwadrat, button));
                 break;
 
             case 5:
-                imageButton.setImageDrawable(imageSizeForButton(R.drawable.star, imageButton));
+                button.setBackground(imageSizeForButton(R.drawable.star, button));
                 break;
 
             case 6:
-                imageButton.setImageDrawable(imageSizeForButton(R.drawable.trapez, imageButton));
+                button.setBackground(imageSizeForButton(R.drawable.trapez, button));
                 break;
         }
 
     }
 
-    public BitmapDrawable imageSizeForButton(int drawableRes, ImageButton button){
+    public BitmapDrawable imageSizeForButton(int drawableRes, Button button){
 
 
         int newWidth = button.getWidth();
