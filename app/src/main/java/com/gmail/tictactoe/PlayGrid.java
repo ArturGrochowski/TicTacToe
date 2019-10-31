@@ -5,14 +5,11 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -25,7 +22,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private Button[][] imgButtonArray2D;
     private int rows;
     private int columns;
-    private int currentPlayer;
+    private int currentPlayer = 1;
     private int currentNumber = 1;
     private int previousNumber = 1;
 
@@ -35,7 +32,38 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_grid);
 
-        currentPlayer = 1;
+        setRowsAndColumnsOrientation();
+        imgButtonArray2D = new Button[rows][columns];
+        setupUndoButton();
+        setupExitButton();
+        currentShapeImg = findViewById(R.id.imageButtonCurrentShape);
+        tableGridCreator();
+        currentPlayer(currentNumber);
+        previousNumber(currentPlayer);
+    }
+
+    private void setupExitButton() {
+        imgButtonExit = findViewById(R.id.imageButtonExit);
+        imgButtonExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+    }
+
+    private void setupUndoButton() {
+        imgButtonUndo = findViewById(R.id.imageButtonUndo);
+        imgButtonUndo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                undo();
+            }
+        });
+    }
+
+    private void setRowsAndColumnsOrientation() {
         if(MainActivity.GRID_X >= MainActivity.GRID_Y){
             rows = MainActivity.GRID_Y;
             columns = MainActivity.GRID_X;
@@ -43,32 +71,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
             rows = MainActivity.GRID_X;
             columns = MainActivity.GRID_Y;
         }
-
-        imgButtonArray2D = new Button[rows][columns];
-
-        currentShapeImg = findViewById(R.id.imageButtonCurrentShape);
-        imgButtonUndo = findViewById(R.id.imageButtonUndo);
-        imgButtonExit = findViewById(R.id.imageButtonExit);
-
-        imgButtonUndo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                undo();
-            }
-        });
-
-        imgButtonExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0 , 1.0f);
-//        LinearLayout.LayoutParams buttonsParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
-
-        tableGridCreator();
-        currentPlayer(currentNumber);
-        previousNumber(currentPlayer);
     }
 
     private void tableGridCreator(){
