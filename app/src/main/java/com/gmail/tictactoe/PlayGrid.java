@@ -22,9 +22,11 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private Button[][] buttonsArray2D;
     private int rows;
     private int columns;
+    private int marginSize;
     private int currentPlayer = 1;
     private int currentShape = 1;
     private int previousShape = 1;
+    private TableLayout tablePlayField;
     private TableRow.LayoutParams tableRowParams;
 
 
@@ -45,11 +47,11 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     private void setRowsAndColumnsOrientation() {
         if(MainActivity.GRID_X >= MainActivity.GRID_Y){
-            rows = MainActivity.GRID_Y;
-            columns = MainActivity.GRID_X;
-        }else {
             rows = MainActivity.GRID_X;
             columns = MainActivity.GRID_Y;
+        }else {
+            rows = MainActivity.GRID_Y;
+            columns = MainActivity.GRID_X;
         }
     }
 
@@ -92,11 +94,21 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
                 TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.MATCH_PARENT,
                 1.0f );
-        tableRowParams.setMargins(10, 10, 10, 10);
+        setMarginsSize();
+        tableRowParams.setMargins(marginSize, marginSize, marginSize, marginSize);
+    }
+
+    private void setMarginsSize() {
+        if(rows*columns>120)
+            marginSize = 3;
+        else if(rows*columns>60)
+            marginSize = 5;
+        else
+            marginSize = 10;
     }
 
     private void createRowsColumnsAndButtons() {
-        TableLayout tablePlayField = findViewById(R.id.playFieldLayout);
+        tablePlayField = findViewById(R.id.playFieldLayout);
         for(int row = 0; row < rows; row++){
             TableRow tableRow = createAndSetupTableRow(tablePlayField);
             for(int col = 0; col < columns; col++){
@@ -121,7 +133,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         Button button = new Button(this);
         button.setLayoutParams(tableRowParams);
         button.setPadding(0,0,0,0 );
-        int buttonID = Integer.parseInt("" + row + col);
+        int buttonID = Integer.parseInt("9" + row +"99" + col);
         button.setId(buttonID);
         button.setBackgroundResource(R.color.colorWhite);
         button.setOnClickListener(this);
@@ -267,10 +279,13 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         return new BitmapDrawable(resources, scaledBitmap);
     }
 
+
     @Override
     public void onClick(View v) {
+//        System.out.println("height: " + tablePlayField.getHeight() + " width: " + tablePlayField.getWidth());
         v.setClickable(false);
         tmpButtonID = findViewById(v.getId());
+        System.out.println("button id: " + tmpButtonID.getId());
         lockButtonSizes();
         setCurrentShapeButton(currentPlayer);
         setButtonImage(tmpButtonID, previousShape);
