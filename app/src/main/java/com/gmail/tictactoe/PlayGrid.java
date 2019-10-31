@@ -15,16 +15,17 @@ import android.widget.TableRow;
 
 public class PlayGrid extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageButton currentShapeImg;
+    private ImageButton currentShapeButton;
     private ImageButton imgButtonUndo;
     private ImageButton imgButtonExit;
     private Button tmpButtonID;
-    private Button[][] imgButtonArray2D;
+    private Button[][] buttonsArray2D;
     private int rows;
     private int columns;
     private int currentPlayer = 1;
-    private int currentNumber = 1;
-    private int previousNumber = 1;
+    private int currentShape = 1;
+    private int previousShape = 1;
+    private TableRow.LayoutParams tableRowParams;
 
 
     @Override
@@ -33,34 +34,13 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.activity_play_grid);
 
         setRowsAndColumnsOrientation();
-        imgButtonArray2D = new Button[rows][columns];
+        createButtonsInArray2D();
         setupUndoButton();
         setupExitButton();
-        currentShapeImg = findViewById(R.id.imageButtonCurrentShape);
+        setupCurrentShapeButton();
         tableGridCreator();
-        currentPlayer(currentNumber);
-        previousNumber(currentPlayer);
-    }
-
-    private void setupExitButton() {
-        imgButtonExit = findViewById(R.id.imageButtonExit);
-        imgButtonExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-    }
-
-    private void setupUndoButton() {
-        imgButtonUndo = findViewById(R.id.imageButtonUndo);
-        imgButtonUndo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                undo();
-            }
-        });
+        currentPlayer(currentShape);
+        previousShape(currentPlayer);
     }
 
     private void setRowsAndColumnsOrientation() {
@@ -73,44 +53,89 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    private void tableGridCreator(){
+    private void createButtonsInArray2D() {
+        buttonsArray2D = new Button[rows][columns];
+    }
 
-        TableRow.LayoutParams tableRowParams = new TableRow.LayoutParams(
+    private void setupUndoButton() {
+        imgButtonUndo = findViewById(R.id.imageButtonUndo);
+        imgButtonUndo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                undo();
+            }
+        });
+    }
+
+    private void setupExitButton() {
+        imgButtonExit = findViewById(R.id.imageButtonExit);
+        imgButtonExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void setupCurrentShapeButton() {
+        currentShapeButton = findViewById(R.id.imageButtonCurrentShape);
+    }
+
+
+    private void tableGridCreator(){
+        setupTableRowParams();
+        createRowsColumnsAndButtons();
+    }
+
+    private void setupTableRowParams() {
+        tableRowParams = new TableRow.LayoutParams(
                 TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.MATCH_PARENT,
                 1.0f );
         tableRowParams.setMargins(10, 10, 10, 10);
+    }
 
+    private void createRowsColumnsAndButtons() {
         TableLayout tablePlayField = findViewById(R.id.playFieldLayout);
         for(int row = 0; row < rows; row++){
-            TableRow tableRow = new TableRow(this);
-            tablePlayField.addView(tableRow);
-            tableRow.setLayoutParams(new TableLayout.LayoutParams(
-                    TableLayout.LayoutParams.MATCH_PARENT,
-                    TableLayout.LayoutParams.MATCH_PARENT,
-                    1.0f ));
-
-
+            TableRow tableRow = createAndSetupTableRow(tablePlayField);
             for(int col = 0; col < columns; col++){
-
-                Button button = new Button(this);
-                button.setLayoutParams(tableRowParams);
-                button.setPadding(0,0,0,0 );
-                int buttonID = Integer.parseInt("" + row + col);
-                button.setId(buttonID);
-                button.setBackgroundResource(R.color.colorWhite);
-                button.setOnClickListener(this);
+                Button button = createAndSetupButton(tableRowParams, row, col);
                 tableRow.addView(button);
-                imgButtonArray2D[row][col] = button;
+                addButtonToArray2D(row, col, button);
             }
         }
+    }
 
+    private TableRow createAndSetupTableRow(TableLayout tablePlayField) {
+        TableRow tableRow = new TableRow(this);
+        tablePlayField.addView(tableRow);
+        tableRow.setLayoutParams(new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT,
+                1.0f ));
+        return tableRow;
+    }
+
+    private Button createAndSetupButton(TableRow.LayoutParams tableRowParams, int row, int col) {
+        Button button = new Button(this);
+        button.setLayoutParams(tableRowParams);
+        button.setPadding(0,0,0,0 );
+        int buttonID = Integer.parseInt("" + row + col);
+        button.setId(buttonID);
+        button.setBackgroundResource(R.color.colorWhite);
+        button.setOnClickListener(this);
+        return button;
+    }
+
+    private void addButtonToArray2D(int row, int col, Button button) {
+        buttonsArray2D[row][col] = button;
     }
 
     private void lockButtonSizes() {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
-                Button button = imgButtonArray2D[row][col];
+                Button button = buttonsArray2D[row][col];
 
                 int width = button.getWidth();
                 button.setMinimumWidth(width);
@@ -140,87 +165,71 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    public void previousNumber(){
-        if(previousNumber>1){
-            previousNumber--;
+    public void previousShape(){
+        if(previousShape >1){
+            previousShape--;
         }else {
-            previousNumber = MainActivity.NUMBER_OF_PLAYERS;
+            previousShape = MainActivity.NUMBER_OF_PLAYERS;
         }
-        if(currentNumber>1){
-            currentNumber--;
+        if(currentShape >1){
+            currentShape--;
         }else {
-            currentNumber = MainActivity.NUMBER_OF_PLAYERS;
+            currentShape = MainActivity.NUMBER_OF_PLAYERS;
         }
-
     }
 
-    public void previousNumber(int number){
-        if(currentNumber == 1 && previousNumber == 2 && currentPlayer != 2){
-            previousNumber = 1;
+    public void previousShape(int player){
+        if(currentShape == 1 && previousShape == 2 && currentPlayer != 2){
+            previousShape = 1;
         }else {
 
-            if(currentNumber == previousNumber && currentNumber!=1){
-                currentNumber--;
-                previousNumber--;
+            if(currentShape == previousShape && currentShape !=1){
+                currentShape--;
+                previousShape--;
             }
-
-            previousNumber = currentNumber;
-            currentNumber = number;
-
+            previousShape = currentShape;
+            currentShape = player;
         }
     }
-
 
     private void undo() {
-
-        System.out.println("========== BUTTON ID: undo");
         previousPlayer();
-        previousNumber();
-        setCurrentShapeImg(previousNumber);
-        setButtonImage(tmpButtonID, previousNumber);
-
-
+        previousShape();
+        setCurrentShapeButton(previousShape);
+        setButtonImage(tmpButtonID, previousShape);
         imgButtonUndo.setClickable(false);
         tmpButtonID.setClickable(true);
         tmpButtonID.setBackgroundResource(R.color.colorWhite);
-
-        System.out.println("========================================================================");
     }
 
-
-    public void setCurrentShapeImg(int playerShape){
-
-
-        switch (playerShape){
+    public void setCurrentShapeButton(int player){
+        switch (player){
              case 1:
-                 currentShapeImg.setImageResource(R.drawable.ring);
+                 currentShapeButton.setImageResource(R.drawable.ring);
                  break;
              case 2:
-                 currentShapeImg.setImageResource(R.drawable.x);
+                 currentShapeButton.setImageResource(R.drawable.x);
                  break;
              case 3:
-                 currentShapeImg.setImageResource(R.drawable.trojkat);
+                 currentShapeButton.setImageResource(R.drawable.trojkat);
                  break;
 
              case 4:
-                currentShapeImg.setImageResource(R.drawable.kwadrat);
+                currentShapeButton.setImageResource(R.drawable.kwadrat);
                 break;
 
              case 5:
-                currentShapeImg.setImageResource(R.drawable.star);
+                currentShapeButton.setImageResource(R.drawable.star);
                 break;
 
              case 6:
-                currentShapeImg.setImageResource(R.drawable.trapez);
+                currentShapeButton.setImageResource(R.drawable.trapez);
                 break;
-
         }
+
     }
 
     public void setButtonImage(Button button, int buttonShape){
-        System.out.println("imgWidth = " + button.getWidth() + ", imgHeight = " + button.getHeight());
-
-
         switch (buttonShape){
             case 1:
                 button.setBackground(imageSizeForButton(R.drawable.ring, button));
@@ -250,34 +259,24 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
     public BitmapDrawable imageSizeForButton(int drawableRes, Button button){
-
-
         int newWidth = button.getWidth();
         int newHeight = button.getHeight();
-
         Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), drawableRes);
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
-
         Resources resources = getResources();
         return new BitmapDrawable(resources, scaledBitmap);
     }
 
-
     @Override
     public void onClick(View v) {
-        System.out.println("========== BUTTON ID: " +v.getId());
-
         v.setClickable(false);
         tmpButtonID = findViewById(v.getId());
         lockButtonSizes();
-        setCurrentShapeImg(currentPlayer);
-        setButtonImage(tmpButtonID, previousNumber);
-        currentPlayer(currentNumber);
-        previousNumber(currentPlayer);
+        setCurrentShapeButton(currentPlayer);
+        setButtonImage(tmpButtonID, previousShape);
+        currentPlayer(currentShape);
+        previousShape(currentPlayer);
         imgButtonUndo.setClickable(true);
-        System.out.println("------------------------------------------------------------------------");
-
-
     }
 
 }
