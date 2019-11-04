@@ -24,21 +24,19 @@ public class Popup extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.popupwindow);
+        setWindowSize();
+        setEditTextViev();
+        setupOkButton();
+    }
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-        int screenWidth = displayMetrics.widthPixels;
-        int screenHight = displayMetrics.heightPixels;
-
-        getWindow().setLayout((int)(screenWidth*0.8),(int)(screenHight*0.5));
-
+    private void setEditTextViev() {
         editTextInRow = findViewById(R.id.textInARaw);
         editTextRowX = findViewById(R.id.textRawX);
         editTextRowY = findViewById(R.id.textRawY);
+    }
+
+    private void setupOkButton() {
         imageButtonOK = findViewById(R.id.imageButtonOK);
-
-
         imageButtonOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,8 +54,16 @@ public class Popup extends Activity {
                 }
             }
         });
-
     }
 
+    private void setWindowSize() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int screenWidth = displayMetrics.widthPixels;
+        int screenHeight = displayMetrics.heightPixels;
+
+        getWindow().setLayout((int)(screenWidth*0.8),(int)(screenHeight*0.5));
+    }
 
 }

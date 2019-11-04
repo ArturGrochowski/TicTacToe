@@ -33,7 +33,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setupButtons();
 
+    }
+
+    private void setupButtons() {
         button3x3 = findViewById(R.id.imageButton3x3);
         button5x5 = findViewById(R.id.imageButton5x5);
         button8x8 = findViewById(R.id.imageButton8x8);
@@ -56,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonPlayers4.setOnClickListener(this);
         buttonPlayers5.setOnClickListener(this);
         buttonPlayers6.setOnClickListener(this);
-;
     }
 
     private void startTheGame() {
@@ -71,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     public void onClick(View v) {
-
 
         switch (v.getId()) {
             case R.id.imageButton3x3:
