@@ -5,12 +5,11 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -29,6 +28,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private int previousShape = 1;
     private TableLayout tablePlayField;
     private TableRow.LayoutParams tableRowParams;
+    private int buttonBackgroundColor;
 
 
     @Override
@@ -40,11 +40,13 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         createButtonsInArray2D();
         setupUndoButton();
         setupExitButton();
+        setBackgroundMode();
         setupCurrentShapeButton();
         tableGridCreator();
         currentPlayer(currentShape);
         previousShape(currentPlayer);
     }
+
 
     private void setRowsAndColumnsOrientation() {
         if(MainActivity.GRID_X >= MainActivity.GRID_Y){
@@ -89,6 +91,21 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         setupTableRowParams();
         createRowsColumnsAndButtons();
     }
+
+    private void setBackgroundMode() {
+        LinearLayout backgroundColor = findViewById(R.id.playGridBackground);
+        TableLayout playFiledBackground = findViewById(R.id.playFieldLayout);
+        if(MainActivity.darkMode){
+            backgroundColor.setBackgroundResource(R.color.colorBlack);
+            playFiledBackground.setBackgroundResource(R.drawable.background_white);
+            buttonBackgroundColor = android.R.color.black;
+        } else {
+            backgroundColor.setBackgroundResource(R.color.colorWhite);
+            playFiledBackground.setBackgroundResource(R.drawable.background);
+            buttonBackgroundColor = android.R.color.white;
+        }
+    }
+
 
     private void setupTableRowParams() {
         tableRowParams = new TableRow.LayoutParams(
@@ -136,7 +153,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         button.setPadding(0,0,0,0 );
         int buttonID = Integer.parseInt("9" + row +"99" + col);
         button.setId(buttonID);
-        button.setBackgroundResource(R.color.colorWhite);
+        button.setBackgroundResource(buttonBackgroundColor);
         button.setOnClickListener(this);
         return button;
     }
@@ -206,13 +223,16 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void undo() {
-        previousPlayer();
-        previousShape();
-        setCurrentShapeButton(previousShape);
-        setButtonImage(tmpButtonID, previousShape);
         imgButtonUndo.setClickable(false);
-        tmpButtonID.setClickable(true);
-        tmpButtonID.setBackgroundResource(R.color.colorWhite);
+        if(tmpButtonID!=null) {
+            previousPlayer();
+            previousShape();
+            setCurrentShapeButton(previousShape);
+            setButtonImage(tmpButtonID, previousShape);
+            tmpButtonID.setClickable(true);
+            tmpButtonID.setImageDrawable(null);
+        }
+
     }
 
     public void setCurrentShapeButton(int player){
@@ -245,27 +265,27 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     public void setButtonImage(ImageButton button, int buttonShape){
         switch (buttonShape){
             case 1:
-                button.setBackground(imageSizeForButton(R.drawable.ring, button));
+                button.setImageDrawable(imageSizeForButton(R.drawable.ring, button));
                 break;
 
             case 2:
-                button.setBackground(imageSizeForButton(R.drawable.x, button));
+                button.setImageDrawable(imageSizeForButton(R.drawable.x, button));
                 break;
 
             case 3:
-                button.setBackground(imageSizeForButton(R.drawable.trojkat, button));
+                button.setImageDrawable(imageSizeForButton(R.drawable.trojkat, button));
                 break;
 
             case 4:
-                button.setBackground(imageSizeForButton(R.drawable.kwadrat, button));
+                button.setImageDrawable(imageSizeForButton(R.drawable.kwadrat, button));
                 break;
 
             case 5:
-                button.setBackground(imageSizeForButton(R.drawable.star, button));
+                button.setImageDrawable(imageSizeForButton(R.drawable.star, button));
                 break;
 
             case 6:
-                button.setBackground(imageSizeForButton(R.drawable.trapez, button));
+                button.setImageDrawable(imageSizeForButton(R.drawable.trapez, button));
                 break;
         }
 
@@ -283,7 +303,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-//        System.out.println("height: " + tablePlayField.getHeight() + " width: " + tablePlayField.getWidth());
         v.setClickable(false);
         tmpButtonID = findViewById(v.getId());
         System.out.println("button id: " + tmpButtonID.getId());

@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="19"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/main_activity_layout">
 
 
     <LinearLayout

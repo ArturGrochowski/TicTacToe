@@ -6,14 +6,17 @@
     tools:context=".PlayGrid"
     android:weightSum="10"
     android:orientation="vertical"
-    android:background="@color/colorWhite">
+    android:background="@color/colorWhite"
+    android:id="@+id/playGridBackground">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="3"
+        android:layout_marginTop="5dp">
 
         <ImageButton
             android:id="@+id/imageButtonUndo"
@@ -52,8 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"
-        android:layout_margin="20dp"
-        android:background="@drawable/background">
+        android:layout_margin="20dp">
 
 
     </TableLayout>

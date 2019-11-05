@@ -3,10 +3,17 @@ package com.gmail.tictactoe;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
+import android.text.Layout;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TableLayout;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -25,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static int GRID_Y = 3;
     static int IN_A_RAW_TO_WIN = 3;
     static int NUMBER_OF_PLAYERS = 2;
+    static boolean darkMode;
     private RadioGroup radioGroupPlayers;
 
 
@@ -36,6 +44,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setupButtons();
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_menu, menu);
+        MenuItem itemSwitch = menu.findItem(R.id.mySwitch);
+        itemSwitch.setActionView(R.layout.use_switch);
+        SwitchCompat sw = menu.findItem(R.id.mySwitch).getActionView().findViewById(R.id.action_switch);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                darkMode = isChecked;
+                setBackgroundMode();
+        }
+        });
+
+        return true;
+    }
+
+    private void setBackgroundMode() {
+        LinearLayout layout = findViewById(R.id.main_activity_layout);
+        if(darkMode){
+            layout.setBackgroundResource(R.color.colorBlack);
+        } else {
+            layout.setBackgroundResource(R.color.colorWhite);
+        }
+    }
+
 
     private void setupButtons() {
         button3x3 = findViewById(R.id.imageButton3x3);
@@ -49,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonPlayers5 = findViewById(R.id.imageButtonPlayers5);
         buttonPlayers6 = findViewById(R.id.imageButtonPlayers6);
         radioGroupPlayers = findViewById(R.id.radioGroupPlayers);
+
 
         button3x3.setOnClickListener(this);
         button5x5.setOnClickListener(this);
