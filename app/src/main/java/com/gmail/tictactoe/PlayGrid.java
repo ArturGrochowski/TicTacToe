@@ -1,7 +1,6 @@
 package com.gmail.tictactoe;
 
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,8 +19,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private ImageButton currentShapeButton;
     private ImageButton imgButtonUndo;
     private ImageButton imgButtonExit;
-    private ImageButton tmpButtonID;
-    private ImageButton[][] buttonsArray2D;
+    private CustomButton tmpButtonID;
+    private CustomButton[][] buttonsArray2D;
     private int rows;
     private int columns;
     private int marginSize;
@@ -61,7 +60,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void createButtonsInArray2D() {
-        buttonsArray2D = new ImageButton[rows][columns];
+        buttonsArray2D = new CustomButton[rows][columns];
     }
 
     private void setupUndoButton() {
@@ -132,7 +131,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         for(int row = 0; row < rows; row++){
             TableRow tableRow = createAndSetupTableRow(tablePlayField);
             for(int col = 0; col < columns; col++){
-                ImageButton button = createAndSetupButton(tableRowParams, row, col);
+                CustomButton button = createAndSetupButton(tableRowParams, row, col);
                 tableRow.addView(button);
                 addButtonToArray2D(row, col, button);
             }
@@ -149,34 +148,36 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         return tableRow;
     }
 
-    private ImageButton createAndSetupButton(TableRow.LayoutParams tableRowParams, int row, int col) {
-        ImageButton button = new ImageButton(this);
+    private CustomButton createAndSetupButton(TableRow.LayoutParams tableRowParams, int row, int col) {
+        CustomButton button = new CustomButton(this);
         button.setLayoutParams(tableRowParams);
         button.setPadding(0,0,0,0 );
-        int buttonID = Integer.parseInt("9" + row +"99" + col);
+        String nameID = convertRowColumnToName(row, col);
+        int buttonID = Integer.parseInt("9" + nameID);
         button.setId(buttonID);
         button.setBackgroundResource(buttonBackgroundColor);
         button.setOnClickListener(this);
+        button.setName(nameID);
         return button;
     }
 
     private String convertRowColumnToName(int row, int column) {
         String tmpRow = "00" + row;
-        tmpRow = tmpRow.substring(tmpRow.length()-3, tmpRow.length()-1);
+        tmpRow = tmpRow.substring(tmpRow.length()-3);
         String tmpColumn = "00" + column;
-        tmpColumn = tmpColumn.substring(tmpColumn.length()-3, tmpColumn.length()-1);
+        tmpColumn = tmpColumn.substring(tmpColumn.length()-3);
 
         return tmpRow + tmpColumn;
     }
 
-    private void addButtonToArray2D(int row, int col, ImageButton button) {
+    private void addButtonToArray2D(int row, int col, CustomButton button) {
         buttonsArray2D[row][col] = button;
     }
 
     private void lockButtonSizes() {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
-                ImageButton button = buttonsArray2D[row][col];
+                CustomButton button = buttonsArray2D[row][col];
 
                 int width = button.getWidth();
                 button.setMinimumWidth(width);
@@ -273,7 +274,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     }
 
-    public void setButtonImage(ImageButton button, int buttonShape){
+    public void setButtonImage(CustomButton button, int buttonShape){
         switch (buttonShape){
             case 1:
                 button.setImageDrawable(imageSizeForButton(R.drawable.ring, button));
@@ -302,7 +303,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     }
 
-    public BitmapDrawable imageSizeForButton(int drawableRes, ImageButton button){
+    public BitmapDrawable imageSizeForButton(int drawableRes, CustomButton button){
         int newWidth = button.getWidth();
         int newHeight = button.getHeight();
         Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), drawableRes);
@@ -316,7 +317,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         v.setClickable(false);
         tmpButtonID = findViewById(v.getId());
-        System.out.println("button id: " + tmpButtonID.getId());
         lockButtonSizes();
         setCurrentShapeButton(currentPlayer);
         setButtonImage(tmpButtonID, previousShape);
@@ -324,6 +324,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         previousShape(currentPlayer);
         imgButtonUndo.setClickable(true);
         checkForWin();
+        System.out.println(tmpButtonID.getName());
+        System.out.println(tmpButtonID.getId());
     }
 
     private void checkForWin() {
