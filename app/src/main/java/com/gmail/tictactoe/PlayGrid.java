@@ -1,6 +1,7 @@
 package com.gmail.tictactoe;
 
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
 
 public class PlayGrid extends AppCompatActivity implements View.OnClickListener {
 
@@ -156,6 +158,15 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         button.setBackgroundResource(buttonBackgroundColor);
         button.setOnClickListener(this);
         return button;
+    }
+
+    private String convertRowColumnToName(int row, int column) {
+        String tmpRow = "00" + row;
+        tmpRow = tmpRow.substring(tmpRow.length()-3, tmpRow.length()-1);
+        String tmpColumn = "00" + column;
+        tmpColumn = tmpColumn.substring(tmpColumn.length()-3, tmpColumn.length()-1);
+
+        return tmpRow + tmpColumn;
     }
 
     private void addButtonToArray2D(int row, int col, ImageButton button) {
@@ -312,6 +323,11 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         currentPlayer(currentShape);
         previousShape(currentPlayer);
         imgButtonUndo.setClickable(true);
+        checkForWin();
+    }
+
+    private void checkForWin() {
     }
 
 }
+
