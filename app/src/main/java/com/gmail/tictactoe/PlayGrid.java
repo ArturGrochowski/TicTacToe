@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 public class PlayGrid extends AppCompatActivity implements View.OnClickListener {
@@ -33,10 +34,10 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private TableLayout tablePlayField;
     private TableRow.LayoutParams tableRowParams;
     private ArrayList<CustomButton> usedButtons;
-    private ArrayList<CustomButton> winInRow;
-    private ArrayList<CustomButton> winInColumn;
-    private ArrayList<CustomButton> winInDecreasing;
-    private ArrayList<CustomButton> winInIncreasing;
+    private HashSet<CustomButton> winInRow;
+    private HashSet<CustomButton> winInColumn;
+    private HashSet<CustomButton> winInDecreasing;
+    private HashSet<CustomButton> winInIncreasing;
 
 
 
@@ -104,10 +105,10 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     private void assignLists() {
         usedButtons =new ArrayList<>();
-        winInRow = new ArrayList<>(3);
-        winInColumn = new ArrayList<>(3);
-        winInDecreasing = new ArrayList<>(3);
-        winInIncreasing = new ArrayList<>(3);
+        winInRow = new HashSet<>(3);
+        winInColumn = new HashSet<>(3);
+        winInDecreasing = new HashSet<>(3);
+        winInIncreasing = new HashSet<>(3);
     }
 
     private void setBackgroundMode() {
@@ -351,57 +352,65 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
                 if (buttonsArray2D[row][col].getMyShape() == previousShape){
-                    usedButtons.add(tmpButtonID);
+                    usedButtons.add(buttonsArray2D[row][col]);
                 }
             }
         }
         searchForWinningButtons();
-        System.out.println("usedButton size: " + usedButtons.size());
+        for(CustomButton customButton : usedButtons){
+            System.out.println(customButton.getId());
+        }
     }
 
     private void searchForWinningButtons() {
         for(int i = 0; i < usedButtons.size()-1; i++){
             CustomButton tmpButton1 = usedButtons.get(i);
             CustomButton tmpButton2 = usedButtons.get(i+1);
-            System.out.println("btn1: " + tmpButton1.getId());
-            System.out.println("btn2: " + tmpButton2.getId());
+            System.out.println("btn1 row: " + tmpButton1.getImInRow());
+            System.out.println("btn1 col: " + tmpButton1.getImInColumn());
+            System.out.println("btn2 row: " + tmpButton2.getImInRow());
+            System.out.println("btn2 col: " + tmpButton2.getImInColumn());
             if(tmpButton1.getImInRow() == tmpButton2.getImInRow()+1 &&
                     tmpButton1.getImInColumn() == tmpButton2.getImInColumn()){
                 winInColumn.add(tmpButton1);
                 winInColumn.add(tmpButton2);
+                System.out.println("win in columns: " + winInColumn.size());
             }
             if(tmpButton1.getImInRow() == tmpButton2.getImInRow() &&
                     tmpButton1.getImInColumn() == tmpButton2.getImInColumn()+1){
                 winInRow.add(tmpButton1);
                 winInRow.add(tmpButton2);
+                System.out.println("win in row: " + winInRow.size());
             }
             if(tmpButton1.getImInRow() == tmpButton2.getImInRow()+1 &&
                     tmpButton1.getImInColumn() == tmpButton2.getImInColumn()+1){
                 winInDecreasing.add(tmpButton1);
                 winInDecreasing.add(tmpButton2);
+                System.out.println("win in Decreasing: " + winInDecreasing.size());
             }
             if(tmpButton1.getImInRow() == tmpButton2.getImInRow()+1 &&
                     tmpButton1.getImInColumn() == tmpButton2.getImInColumn()-1){
                 winInIncreasing.add(tmpButton1);
                 winInIncreasing.add(tmpButton2);
+                System.out.println("win in Increasing: " + winInIncreasing.size());
             }
         }
         if(winInRow.size() >= inLineToWin){
-            setWinner(winInRow);
+            setWinner(winInRow, "row");
         }
         if(winInColumn.size() >= inLineToWin){
-            setWinner(winInColumn);
+            setWinner(winInColumn, "col");
         }
         if(winInDecreasing.size() >= inLineToWin){
-            setWinner(winInDecreasing);
+            setWinner(winInDecreasing, "dec");
         }
         if(winInIncreasing.size() >= inLineToWin){
-            setWinner(winInIncreasing);
+            setWinner(winInIncreasing, "inc");
         }
     }
 
-    private void setWinner(ArrayList winnerList) {
-        System.out.println("lista zwycięsców: " + winnerList);
+    private void setWinner(HashSet winnerList, String direction) {
+        System.out.println("lista zwycięsców HashSet=====: " + direction);
     }
 
 }
