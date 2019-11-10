@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
-import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TableLayout;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -28,9 +26,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RadioButton buttonPlayers4;
     private RadioButton buttonPlayers5;
     private RadioButton buttonPlayers6;
-    static int GRID_X = 3;
-    static int GRID_Y = 3;
-    static int IN_A_RAW_TO_WIN = 3;
+    static int GRID_ROWS = 3;
+    static int GRID_COLUMNS = 3;
+    static int IN_A_LINE_TO_WIN = 3;
     static int NUMBER_OF_PLAYERS = 2;
     static boolean darkMode;
     private RadioGroup radioGroupPlayers;
@@ -113,27 +111,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (v.getId()) {
             case R.id.imageButton3x3:
-                GRID_X = 3;
-                GRID_Y = 3;
-                IN_A_RAW_TO_WIN = 3;
+                GRID_ROWS = 3;
+                GRID_COLUMNS = 3;
+                IN_A_LINE_TO_WIN = 3;
                 button5x5.setChecked(false);
                 button8x8.setChecked(false);
                 buttonCustom.setChecked(false);
                 break;
 
             case R.id.imageButton5x5:
-                GRID_X = 5;
-                GRID_Y = 5;
-                IN_A_RAW_TO_WIN = 4;
+                GRID_ROWS = 5;
+                GRID_COLUMNS = 5;
+                IN_A_LINE_TO_WIN = 4;
                 button3x3.setChecked(false);
                 button8x8.setChecked(false);
                 buttonCustom.setChecked(false);
                 break;
 
             case R.id.imageButton8x8:
-                GRID_X = 8;
-                GRID_Y = 8;
-                IN_A_RAW_TO_WIN = 5;
+                GRID_ROWS = 8;
+                GRID_COLUMNS = 8;
+                IN_A_LINE_TO_WIN = 5;
                 button3x3.setChecked(false);
                 button5x5.setChecked(false);
                 buttonCustom.setChecked(false);

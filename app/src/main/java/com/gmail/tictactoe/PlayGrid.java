@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import java.util.ArrayList;
 
 
 public class PlayGrid extends AppCompatActivity implements View.OnClickListener {
@@ -27,9 +28,16 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private int currentPlayer = 1;
     private int currentShape = 1;
     private int previousShape = 1;
+    private int buttonBackgroundColor;
+    private int inLineToWin = MainActivity.IN_A_LINE_TO_WIN;
     private TableLayout tablePlayField;
     private TableRow.LayoutParams tableRowParams;
-    private int buttonBackgroundColor;
+    private ArrayList<CustomButton> usedButtons;
+    private ArrayList<CustomButton> winInRow;
+    private ArrayList<CustomButton> winInColumn;
+    private ArrayList<CustomButton> winInDecreasing;
+    private ArrayList<CustomButton> winInIncreasing;
+
 
 
     @Override
@@ -44,18 +52,19 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         setBackgroundMode();
         setupCurrentShapeButton();
         tableGridCreator();
+        assignLists();
         currentPlayer(currentShape);
         previousShape(currentPlayer);
     }
 
 
     private void setRowsAndColumnsOrientation() {
-        if(MainActivity.GRID_X >= MainActivity.GRID_Y){
-            rows = MainActivity.GRID_X;
-            columns = MainActivity.GRID_Y;
+        if(MainActivity.GRID_ROWS >= MainActivity.GRID_COLUMNS){
+            rows = MainActivity.GRID_ROWS;
+            columns = MainActivity.GRID_COLUMNS;
         }else {
-            rows = MainActivity.GRID_Y;
-            columns = MainActivity.GRID_X;
+            rows = MainActivity.GRID_COLUMNS;
+            columns = MainActivity.GRID_ROWS;
         }
     }
 
@@ -91,6 +100,14 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private void tableGridCreator(){
         setupTableRowParams();
         createRowsColumnsAndButtons();
+    }
+
+    private void assignLists() {
+        usedButtons =new ArrayList<>();
+        winInRow = new ArrayList<>(3);
+        winInColumn = new ArrayList<>(3);
+        winInDecreasing = new ArrayList<>(3);
+        winInIncreasing = new ArrayList<>(3);
     }
 
     private void setBackgroundMode() {
@@ -158,6 +175,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         button.setBackgroundResource(buttonBackgroundColor);
         button.setOnClickListener(this);
         button.setName(nameID);
+        button.setImInRow(row);
+        button.setImInColumn(col);
         return button;
     }
 
@@ -320,15 +339,69 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         lockButtonSizes();
         setCurrentShapeButton(currentPlayer);
         setButtonImage(tmpButtonID, previousShape);
+        tmpButtonID.setMyShape(previousShape);
+        checkForWin(previousShape);
         currentPlayer(currentShape);
         previousShape(currentPlayer);
         imgButtonUndo.setClickable(true);
-        checkForWin();
-        System.out.println(tmpButtonID.getName());
-        System.out.println(tmpButtonID.getId());
     }
 
-    private void checkForWin() {
+    private void checkForWin(int previousShape) {
+        usedButtons.clear();
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                if (buttonsArray2D[row][col].getMyShape() == previousShape){
+                    usedButtons.add(tmpButtonID);
+                }
+            }
+        }
+        searchForWinningButtons();
+        System.out.println("usedButton size: " + usedButtons.size());
+    }
+
+    private void searchForWinningButtons() {
+        for(int i = 0; i < usedButtons.size()-1; i++){
+            CustomButton tmpButton1 = usedButtons.get(i);
+            CustomButton tmpButton2 = usedButtons.get(i+1);
+            System.out.println("btn1: " + tmpButton1.getId());
+            System.out.println("btn2: " + tmpButton2.getId());
+            if(tmpButton1.getImInRow() == tmpButton2.getImInRow()+1 &&
+                    tmpButton1.getImInColumn() == tmpButton2.getImInColumn()){
+                winInColumn.add(tmpButton1);
+                winInColumn.add(tmpButton2);
+            }
+            if(tmpButton1.getImInRow() == tmpButton2.getImInRow() &&
+                    tmpButton1.getImInColumn() == tmpButton2.getImInColumn()+1){
+                winInRow.add(tmpButton1);
+                winInRow.add(tmpButton2);
+            }
+            if(tmpButton1.getImInRow() == tmpButton2.getImInRow()+1 &&
+                    tmpButton1.getImInColumn() == tmpButton2.getImInColumn()+1){
+                winInDecreasing.add(tmpButton1);
+                winInDecreasing.add(tmpButton2);
+            }
+            if(tmpButton1.getImInRow() == tmpButton2.getImInRow()+1 &&
+                    tmpButton1.getImInColumn() == tmpButton2.getImInColumn()-1){
+                winInIncreasing.add(tmpButton1);
+                winInIncreasing.add(tmpButton2);
+            }
+        }
+        if(winInRow.size() >= inLineToWin){
+            setWinner(winInRow);
+        }
+        if(winInColumn.size() >= inLineToWin){
+            setWinner(winInColumn);
+        }
+        if(winInDecreasing.size() >= inLineToWin){
+            setWinner(winInDecreasing);
+        }
+        if(winInIncreasing.size() >= inLineToWin){
+            setWinner(winInIncreasing);
+        }
+    }
+
+    private void setWinner(ArrayList winnerList) {
+        System.out.println("lista zwycięsców: " + winnerList);
     }
 
 }

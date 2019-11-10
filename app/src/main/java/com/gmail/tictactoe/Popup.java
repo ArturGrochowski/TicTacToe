@@ -47,9 +47,9 @@ public class Popup extends Activity {
                     Toast.makeText(getApplicationContext(), "All numbers required!",
                             Toast.LENGTH_LONG).show();
                 }else {
-                    MainActivity.IN_A_RAW_TO_WIN = Integer.parseInt(inRow);
-                    MainActivity.GRID_X = Integer.parseInt(rowX);
-                    MainActivity.GRID_Y = Integer.parseInt(rowY);
+                    MainActivity.IN_A_LINE_TO_WIN = Integer.parseInt(inRow);
+                    MainActivity.GRID_ROWS = Integer.parseInt(rowX);
+                    MainActivity.GRID_COLUMNS = Integer.parseInt(rowY);
                     finish();
                 }
             }
