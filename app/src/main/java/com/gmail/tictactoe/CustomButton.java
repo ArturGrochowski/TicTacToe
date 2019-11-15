@@ -9,6 +9,7 @@ public class CustomButton extends android.support.v7.widget.AppCompatImageButton
     private int ImInColumn;
     private int MyShape;
 
+
     public CustomButton(Context context) {
         super(context);
     }
@@ -44,6 +45,24 @@ public class CustomButton extends android.support.v7.widget.AppCompatImageButton
 
     public void setMyShape(int myShape) {
         MyShape = myShape;
+    }
+
+    public int hashCode() {
+        return this.getId();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        CustomButton cb = null;
+        if(obj instanceof CustomButton){
+            cb = (CustomButton) obj;
+        }
+        System.out.println("In equals");
+        if(this.getId() == cb.getId()){
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
