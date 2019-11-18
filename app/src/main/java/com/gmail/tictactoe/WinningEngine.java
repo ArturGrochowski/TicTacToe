@@ -1,5 +1,6 @@
 package com.gmail.tictactoe;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,8 +17,8 @@ public class WinningEngine {
     private HashSet<CustomButton> winInColumn;
     private HashSet<CustomButton> winInDecreasing;
     private HashSet<CustomButton> winInIncreasing;
-//    private HashMap<Integer, HashSet<CustomButton>> hashMap;
     private HashMap<Integer, HashMap<Integer, HashSet<CustomButton>>> hashMapOfPlayersMoves;
+
 
     public WinningEngine(CustomButton[][] buttonsArray2D, int numberOfPlayers, int previousShape, int inLineToWin, int rows, int columns) {
         this.rows = rows;
@@ -26,13 +27,22 @@ public class WinningEngine {
         this.previousShape = previousShape;
         this.numberOfPlayers = numberOfPlayers;
         this.buttonsArray2D = buttonsArray2D;
-//        hashMap = new HashMap<>();
     }
 
     public void start(int previousShape){
         this.previousShape = previousShape;
         assignHashMapAndLists();
+        test();
         checkForWin(previousShape);
+    }
+
+    private void test() {
+//
+//        hashMapOfPlayersMoves.get(0).get(0).add(buttonsArray2D[0][0]);
+//        hashMapOfPlayersMoves.get(0).get(0).add(buttonsArray2D[0][1]);
+//        System.out.println("Test:");
+//        System.out.println(hashMapOfPlayersMoves.get(0).get(0).size());
+//        System.out.println(hashMapOfPlayersMoves.get(1).get(2).size());
     }
 
 
@@ -79,27 +89,22 @@ public class WinningEngine {
         }
         searchForWinningButtons();
 
-//        for(CustomButton customButton : usedButtons){
-//            System.out.println(customButton.getId());
-//        }
     }
     private void searchForWinningButtons() {
         for(int i = 0; i < usedButtons.size()-1; i++){
             CustomButton tmpButton1 = usedButtons.get(i);
             CustomButton tmpButton2 = usedButtons.get(i+1);
-//            winInRow.add(tmpButton1);
-            System.out.println(tmpButton1.getName() + " " + tmpButton2.getName());
             addButtonToTheRightHashSet(tmpButton1, tmpButton2);
         }
 
-//        System.out.println("size in winInRow: " + winInRow.size());
-//        System.out.println("size in winInColumn: " + winInColumn.size());
-//        System.out.println("size in winInDecreasing: " + winInDecreasing.size());
-//        System.out.println("size in winInIncreasing: " + winInIncreasing.size());
+        System.out.println("searchForWinningButtons() usedButttons.size() usedButtons.get(0).getId() :");
+        System.out.println(usedButtons.size());
+        System.out.println(usedButtons.get(0).getId());
+
     }
 
     private void addButtonToTheRightHashSet(CustomButton tmpButton1, CustomButton tmpButton2) {
-        assignTmpList();
+//        assignTmpList();
 
         int tmpRowBtn = tmpButton1.getImInRow();
         int tmpRowBtn2 = tmpButton2.getImInRow();
@@ -108,77 +113,25 @@ public class WinningEngine {
         int tmpColBtn2 = tmpButton2.getImInColumn();
         int tmpColBtnIncreased = tmpButton2.getImInColumn()-1;
         int tmpColBtnDecreased = tmpButton2.getImInColumn()+1;
-//        System.out.println("Button 1 row: " + tmpButton1.getImInRow() + ", col: " + tmpButton1.getImInColumn());
-//        System.out.println("Button 2 row: " + tmpButton2.getImInRow() + ", col: " + tmpButton2.getImInColumn());
-//        System.out.println("button shape: " + tmpButton1.getMyShape());
-//        System.out.println("tmpRowBtn == tmpRowBtn2:");
-//        System.out.println(tmpRowBtn == tmpRowBtn2);
-//        System.out.println("tmpColBtn  == tmpColBtnIncreased: ");
-//        System.out.println(tmpColBtn  == tmpColBtnIncreased);
-//        System.out.println("tmpRowBtn == tmpRowBtnIncreased");
-//        System.out.println(tmpRowBtn == tmpRowBtnIncreased);
-//        System.out.println("tmpColBtn == tmpColBtn2");
-//        System.out.println(tmpColBtn == tmpColBtn2);
-//        System.out.println("tmpColBtn == tmpColBtnDecreased");
-//        System.out.println(tmpColBtn == tmpColBtnDecreased);
-//        System.out.println("-------------------------------------");
-//        HashSet<CustomButton> hashRow = new HashSet<>();
-//        HashSet<CustomButton> hashCol = new HashSet<>();
-//        HashSet<CustomButton> hashDec = new HashSet<>();
-//        HashSet<CustomButton> hashInc = new HashSet<>();
-//        HashMap<Integer, HashSet<CustomButton>> hashMap = new HashMap<>();
+        System.out.println("addButtonToTheRightHashSet: tmpButton1.getName():");
+        System.out.println(tmpButton1.getName());
         if(tmpRowBtn == tmpRowBtn2 && tmpColBtn  == tmpColBtnIncreased){
-//            hashRow.add(tmpButton1);
-//            hashRow.add(tmpButton2);
-
-//            winInRow.add(tmpButton1);
-//            winInRow.add(tmpButton2);
-//            hashMap.put(0, winInRow);
-//            hashMapOfPlayersMoves.put(previousShape, hashMap);
-//            System.out.println(hashMapOfPlayersMoves.get(previousShape).size());
-//            System.out.println(hashMapOfPlayersMoves.get(previousShape).get(0).size());
-            hashMapOfPlayersMoves.get(previousShape).get(0).add(tmpButton1);
-            hashMapOfPlayersMoves.get(previousShape).get(0).add(tmpButton2);
-            hashMapOfPlayersMoves.put(previousShape, hashMapOfPlayersMoves.get(0));
-            System.out.println("win in Row: " + hashMapOfPlayersMoves.put(previousShape, hashMapOfPlayersMoves.get(0)).size());
+            System.out.println("previousShape: " + previousShape);
+            hashMapOfPlayersMoves.get(previousShape-1).get(0).add(tmpButton1);
+            hashMapOfPlayersMoves.get(previousShape-1).get(0).add(tmpButton2);
         }
         if(tmpRowBtn == tmpRowBtnIncreased && tmpColBtn == tmpColBtn2){
-//            hashCol.add(tmpButton1);
-//            hashCol.add(tmpButton2);
-
-//            winInColumn.add(tmpButton1);
-//            winInColumn.add(tmpButton2);
-//            hashMap.put(1, winInColumn);
-            hashMapOfPlayersMoves.get(previousShape).get(1).add(tmpButton1);
-            hashMapOfPlayersMoves.get(previousShape).get(1).add(tmpButton2);
-            hashMapOfPlayersMoves.put(previousShape, hashMapOfPlayersMoves.get(1));
-            System.out.println("win in Column: " + hashMapOfPlayersMoves.put(previousShape, hashMapOfPlayersMoves.get(1)).size());
+            hashMapOfPlayersMoves.get(previousShape-1).get(1).add(tmpButton1);
+            hashMapOfPlayersMoves.get(previousShape-1).get(1).add(tmpButton2);
         }
         if(tmpRowBtn == tmpRowBtnIncreased && tmpColBtn == tmpColBtnIncreased){
-//            hashDec.add(tmpButton1);
-//            hashDec.add(tmpButton2);
-
-//            winInDecreasing.add(tmpButton1);
-//            winInDecreasing.add(tmpButton2);
-//            hashMap.put(2, winInDecreasing);
-            hashMapOfPlayersMoves.get(previousShape).get(2).add(tmpButton1);
-            hashMapOfPlayersMoves.get(previousShape).get(2).add(tmpButton2);
-            hashMapOfPlayersMoves.put(previousShape, hashMapOfPlayersMoves.get(2));
-            System.out.println("win in Decreasing: " + hashMapOfPlayersMoves.put(previousShape, hashMapOfPlayersMoves.get(2)).size());
+            hashMapOfPlayersMoves.get(previousShape-1).get(2).add(tmpButton1);
+            hashMapOfPlayersMoves.get(previousShape-1).get(2).add(tmpButton2);
         }
         if(tmpRowBtn == tmpRowBtnIncreased && tmpColBtn == tmpColBtnDecreased){
-//            hashInc.add(tmpButton1);
-//            hashInc.add(tmpButton2);
-
-//            winInIncreasing.add(tmpButton1);
-//            winInIncreasing.add(tmpButton2);
-//            hashMap.put(3, winInIncreasing);
-            hashMapOfPlayersMoves.get(previousShape).get(3).add(tmpButton1);
-            hashMapOfPlayersMoves.get(previousShape).get(3).add(tmpButton2);
-            hashMapOfPlayersMoves.put(previousShape, hashMapOfPlayersMoves.get(3));
-            System.out.println("win in Increasing: " + hashMapOfPlayersMoves.put(previousShape, hashMapOfPlayersMoves.get(3)).size());
+            hashMapOfPlayersMoves.get(previousShape-1).get(3).add(tmpButton1);
+            hashMapOfPlayersMoves.get(previousShape-1).get(3).add(tmpButton2);
         }
-//        checkNumberOfButtonsInTheLine(hashRow, hashCol, hashDec, hashInc);
         checkNumberOfButtonsInTheLine();
     }
 
@@ -193,46 +146,17 @@ public class WinningEngine {
 //        winInIncreasing = hashMapOfPlayersMoves.get(previousShape).get(3);
     }
 
-    private void checkNumberOfButtonsInTheLine(/*HashSet<CustomButton> hashRow, HashSet<CustomButton> hashCol, HashSet<CustomButton> hashDec, HashSet<CustomButton> hashInc*/) {
-        System.out.println("___________________________________________");
-//        System.out.println("Lista Row:");
-//        for(Object list : winInRow){
-//            System.out.println(list.hashCode());
-//        }
-//        System.out.println("Lista Columns:");
-//        for(Object list : winInColumn){
-//            System.out.println(list.hashCode());
-//        }
-//        System.out.println("Lista Decreasnig:");
-//        for(Object list : winInDecreasing){
-//            System.out.println(list.hashCode());
-//        }
-//        System.out.println("Lista Increasing:");
-//        for(Object list : winInIncreasing){
-//            System.out.println(list.hashCode());
-//        }
-//        if(hashRow.size() >= inLineToWin){
-//            setWinner(winInRow, "row");
-//        }
-//        if(hashCol.size() >= inLineToWin){
-//            setWinner(winInColumn, "col");
-//        }
-//        if(hashDec.size() >= inLineToWin){
-//            setWinner(winInDecreasing, "dec");
-//        }
-//        if(hashInc.size() >= inLineToWin){
-//            setWinner(winInIncreasing, "inc");
-//        }
-        if(hashMapOfPlayersMoves.get(previousShape).get(0).size() >= inLineToWin){
+    private void checkNumberOfButtonsInTheLine() {
+        if(hashMapOfPlayersMoves.get(previousShape-1).get(0).size() >= inLineToWin){
             setWinner(winInRow, "row");
         }
-        if(hashMapOfPlayersMoves.get(previousShape).get(1).size() >= inLineToWin){
+        if(hashMapOfPlayersMoves.get(previousShape-1).get(1).size() >= inLineToWin){
             setWinner(winInColumn, "col");
         }
-        if(hashMapOfPlayersMoves.get(previousShape).get(2).size() >= inLineToWin){
+        if(hashMapOfPlayersMoves.get(previousShape-1).get(2).size() >= inLineToWin){
             setWinner(winInDecreasing, "dec");
         }
-        if(hashMapOfPlayersMoves.get(previousShape).get(3).size() >= inLineToWin){
+        if(hashMapOfPlayersMoves.get(previousShape-1).get(3).size() >= inLineToWin){
             setWinner(winInIncreasing, "inc");
         }
     }
