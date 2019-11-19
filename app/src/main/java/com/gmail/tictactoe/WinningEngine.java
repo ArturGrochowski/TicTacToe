@@ -4,6 +4,7 @@ package com.gmail.tictactoe;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class WinningEngine {
     private int rows;
@@ -13,6 +14,7 @@ public class WinningEngine {
     private int numberOfPlayers;
     private CustomButton[][] buttonsArray2D;
     private ArrayList<CustomButton> usedButtons;
+    ArrayList<CustomButton> inOneLineArrayList = new ArrayList<>();
     private HashSet<CustomButton> winInRow;
     private HashSet<CustomButton> winInColumn;
     private HashSet<CustomButton> winInDecreasing;
@@ -45,13 +47,13 @@ public class WinningEngine {
 //        System.out.println(hashMapOfPlayersMoves.get(1).get(2).size());
     }
 
-
-    private void assignLists() {
-        winInRow = new HashSet<>();
-        winInColumn = new HashSet<>();
-        winInDecreasing = new HashSet<>();
-        winInIncreasing = new HashSet<>();
-    }
+//
+//    private void assignLists() {
+//        winInRow = new HashSet<>();
+//        winInColumn = new HashSet<>();
+//        winInDecreasing = new HashSet<>();
+//        winInIncreasing = new HashSet<>();
+//    }
 
     private void assignHashMapAndLists() {
         usedButtons = new ArrayList<>();
@@ -88,19 +90,14 @@ public class WinningEngine {
             }
         }
         searchForWinningButtons();
-
     }
+
     private void searchForWinningButtons() {
         for(int i = 0; i < usedButtons.size()-1; i++){
             CustomButton tmpButton1 = usedButtons.get(i);
             CustomButton tmpButton2 = usedButtons.get(i+1);
             addButtonToTheRightHashSet(tmpButton1, tmpButton2);
         }
-
-        System.out.println("searchForWinningButtons() usedButttons.size() usedButtons.get(0).getId() :");
-        System.out.println(usedButtons.size());
-        System.out.println(usedButtons.get(0).getId());
-
     }
 
     private void addButtonToTheRightHashSet(CustomButton tmpButton1, CustomButton tmpButton2) {
@@ -113,8 +110,6 @@ public class WinningEngine {
         int tmpColBtn2 = tmpButton2.getImInColumn();
         int tmpColBtnIncreased = tmpButton2.getImInColumn()-1;
         int tmpColBtnDecreased = tmpButton2.getImInColumn()+1;
-        System.out.println("addButtonToTheRightHashSet: tmpButton1.getName():");
-        System.out.println(tmpButton1.getName());
         if(tmpRowBtn == tmpRowBtn2 && tmpColBtn  == tmpColBtnIncreased){
             System.out.println("previousShape: " + previousShape);
             hashMapOfPlayersMoves.get(previousShape-1).get(0).add(tmpButton1);
@@ -136,8 +131,6 @@ public class WinningEngine {
     }
 
     private void assignTmpList() {
-        System.out.println("previous shape: " + previousShape);
-//        System.out.println(winInRow.size());
         System.out.println(hashMapOfPlayersMoves.get(0).get(0).isEmpty());
         System.out.println(hashMapOfPlayersMoves.get(0).get(0).size());
 //        winInRow = hashMapOfPlayersMoves.get(previousShape).get(0);
@@ -147,22 +140,79 @@ public class WinningEngine {
     }
 
     private void checkNumberOfButtonsInTheLine() {
-        if(hashMapOfPlayersMoves.get(previousShape-1).get(0).size() >= inLineToWin){
-            setWinner(winInRow, "row");
+
+        for (int i = 0; i < rows; i++){
+            checkInLine(i);
         }
-        if(hashMapOfPlayersMoves.get(previousShape-1).get(1).size() >= inLineToWin){
-            setWinner(winInColumn, "col");
+
+//
+//
+//        if(hashMapOfPlayersMoves.get(previousShape-1).get(0).size() >= inLineToWin){
+//            setWinner();
+//        }
+//        if(hashMapOfPlayersMoves.get(previousShape-1).get(1).size() >= inLineToWin){
+//            setWinner();
+//        }
+//        if(hashMapOfPlayersMoves.get(previousShape-1).get(2).size() >= inLineToWin){
+//            setWinner();
+//        }
+//        if(hashMapOfPlayersMoves.get(previousShape-1).get(3).size() >= inLineToWin){
+//            setWinner();
+//        }
+    }
+
+    private void checkInLine(int index) {
+
+        ArrayList<CustomButton> rowButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(0));
+        ArrayList<CustomButton> colButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(1));
+        ArrayList<CustomButton> decButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(2));
+        ArrayList<CustomButton> incButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(3));
+
+        for(int i = 0; i<rowButtons.size(); i++){
+            if(rowButtons.get(i).getImInRow() == index){
+                inOneLineArrayList.add(rowButtons.get(i));
+            }
         }
-        if(hashMapOfPlayersMoves.get(previousShape-1).get(2).size() >= inLineToWin){
-            setWinner(winInDecreasing, "dec");
+        inALineToWin();
+
+        for(int i = 0; i<colButtons.size(); i++){
+            if(colButtons.get(i).getImInColumn() == index){
+                inOneLineArrayList.add(colButtons.get(i));
+            }
         }
-        if(hashMapOfPlayersMoves.get(previousShape-1).get(3).size() >= inLineToWin){
-            setWinner(winInIncreasing, "inc");
+        inALineToWin();
+
+        for(int i = 1; i<decButtons.size(); i++){
+            if(decButtons.get(i-1).getImInRow() == decButtons.get(i).getImInRow()+1 || decButtons.get(i-1).getImInColumn() == decButtons.get(i).getImInColumn()+1){
+                inOneLineArrayList.add(decButtons.get(i));
+            }
+        }
+        inALineToWin();
+
+        for(int i = 1; i<incButtons.size(); i++){
+            if(incButtons.get(i-1).getImInRow() == incButtons.get(i).getImInRow()+1 || incButtons.get(i-1).getImInColumn() == incButtons.get(i).getImInColumn()-1){
+                inOneLineArrayList.add(incButtons.get(i));
+            }
+        }
+        inALineToWin();
+
+    }
+
+    private void inALineToWin() {
+        if(inOneLineArrayList.size()>= inLineToWin){
+            System.out.println("We have the winner!!!");
+            setWinner();
+        }
+        inOneLineArrayList.clear();
+    }
+
+    private void setWinner() {
+        Iterator<CustomButton> winButtons = inOneLineArrayList.iterator();
+
+        while(winButtons.hasNext()){
+            winButtons.next().setBackgroundResource(R.color.colorGray);
+
         }
     }
 
-    private void setWinner(HashSet winnerList, String direction) {
-        System.out.println("lista zwycięsców HashSet=====!!!!!!!!!!!!!!!!!: " + direction);
-
-    }
 }
