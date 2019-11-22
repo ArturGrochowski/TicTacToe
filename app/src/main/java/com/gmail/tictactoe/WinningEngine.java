@@ -120,17 +120,25 @@ public class WinningEngine {
     private void checkNumberOfButtonsInTheLine() {
 
         for (int i = 0; i < rows; i++){
-            checkInLine(i);
+            checkRowInLine(i);
+        }
+
+        for (int i = 0; i < columns; i++){
+            checkColumnInLine(i);
+        }
+
+            checkDecreasInLine();
+
+
+        for (int i = 0; i < rows; i++){
+            checkIncreasInLine(i);
         }
 
     }
 
-    private void checkInLine(int index) {
+    private void checkRowInLine(int index) {
 
         ArrayList<CustomButton> rowButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(0));
-        ArrayList<CustomButton> colButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(1));
-        ArrayList<CustomButton> decButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(2));
-        ArrayList<CustomButton> incButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(3));
 
         for(int i = 0; i<rowButtons.size(); i++){
             if(rowButtons.get(i).getImInRow() == index){
@@ -138,46 +146,68 @@ public class WinningEngine {
             }
         }
         inALineToWin();
+        test(rowButtons);
+    }
+
+    private void checkColumnInLine(int columnIndex){
+        ArrayList<CustomButton> colButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(1));
 
         for(int i = 0; i<colButtons.size(); i++){
-            if(colButtons.get(i).getImInColumn() == index){
+            if(colButtons.get(i).getImInColumn() == columnIndex){
                 inOneLineArrayList.add(colButtons.get(i));
             }
         }
         inALineToWin();
+        test(colButtons);
+    }
 
-        for(int i = 1; i<decButtons.size(); i++){
-            if(decButtons.get(i-1).getImInRow() == decButtons.get(i).getImInRow()+1 || decButtons.get(i-1).getImInColumn() == decButtons.get(i).getImInColumn()+1){
+    private void checkDecreasInLine(){
+        ArrayList<CustomButton> decButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(2));
+
+        for(int i = 0; i<decButtons.size(); i++){
+            if(isSecondBtnPositionInRowBigger(decButtons, i)){
+                System.out.println("adding decButtons");
                 inOneLineArrayList.add(decButtons.get(i));
+                System.out.println("size: "+inOneLineArrayList.size());
             }
         }
         inALineToWin();
+        test(decButtons);
+    }
+
+
+    private boolean isSecondBtnPositionInRowBigger(ArrayList<CustomButton> decButtons, int i) {
+        boolean isBigger = false;
+        for (int j = 0; j<decButtons.size(); j++) {
+            if(decButtons.get(i).getImInRow() == decButtons.get(j).getImInRow() + 1) {
+                if(decButtons.get(i).getImInColumn() == decButtons.get(j).getImInColumn() + 1){
+
+                    isBigger = true;
+                }
+            }
+        }
+        return isBigger;
+    }
+
+
+    private void checkIncreasInLine(int increasIndex){
+        ArrayList<CustomButton> incButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(3));
 
         for(int i = 1; i<incButtons.size(); i++){
-            if(incButtons.get(i-1).getImInRow() == incButtons.get(i).getImInRow()+1 || incButtons.get(i-1).getImInColumn() == incButtons.get(i).getImInColumn()-1){
+            if(incButtons.get(i-1).getImInRow() == incButtons.get(increasIndex).getImInRow()+1 || incButtons.get(i-1).getImInColumn() == incButtons.get(increasIndex).getImInColumn()-1){
                 inOneLineArrayList.add(incButtons.get(i));
             }
         }
         inALineToWin();
-        test(rowButtons, colButtons, decButtons, incButtons);
-
-
+        test(incButtons);
     }
 
-    private void test(ArrayList<CustomButton> rowButtons, ArrayList<CustomButton> colButtons, ArrayList<CustomButton> decButtons, ArrayList<CustomButton> incButtons) {
+    private void test(ArrayList<CustomButton> rowButtons) {
         Iterator<CustomButton> rowIter = rowButtons.iterator();
-        Iterator<CustomButton> colIter = colButtons.iterator();
-        Iterator<CustomButton> decIter = decButtons.iterator();
-        Iterator<CustomButton> incIter = incButtons.iterator();
         System.out.println("PLAYER NUMBER: " + previousShape);
-        System.out.println("rowBurrons ArrayList:");
+        System.out.println("rowButtons ArrayList:");
         arrayListLoop(rowIter);
-        System.out.println("colBurrons ArrayList:");
-        arrayListLoop(colIter);
-        System.out.println("decBurrons ArrayList:");
-        arrayListLoop(decIter);
-        System.out.println("incBurrons ArrayList:");
-        arrayListLoop(incIter);
+        System.out.println("colButtons ArrayList:");
         System.out.println("===============================");
     }
 
