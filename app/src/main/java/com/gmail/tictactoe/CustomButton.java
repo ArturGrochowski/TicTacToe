@@ -2,7 +2,7 @@ package com.gmail.tictactoe;
 
 import android.content.Context;
 
-public class CustomButton extends android.support.v7.widget.AppCompatImageButton {
+public class CustomButton extends android.support.v7.widget.AppCompatImageButton implements Comparable<CustomButton> {
 
     private String name;
     private int ImInRow;
@@ -65,5 +65,10 @@ public class CustomButton extends android.support.v7.widget.AppCompatImageButton
         }
     }
 
+
+    @Override
+    public int compareTo(CustomButton o) {
+        return this.getName().compareTo(o.getName());
+    }
 
 }

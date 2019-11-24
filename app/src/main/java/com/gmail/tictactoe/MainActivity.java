@@ -120,18 +120,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.imageButton5x5:
-                GRID_ROWS = 5;
-                GRID_COLUMNS = 5;
-                IN_A_LINE_TO_WIN = 4;
+                GRID_ROWS = 6;
+                GRID_COLUMNS = 6;
+                IN_A_LINE_TO_WIN = 3;
                 button3x3.setChecked(false);
                 button8x8.setChecked(false);
                 buttonCustom.setChecked(false);
                 break;
 
             case R.id.imageButton8x8:
-                GRID_ROWS = 8;
-                GRID_COLUMNS = 8;
-                IN_A_LINE_TO_WIN = 5;
+                GRID_ROWS = 9;
+                GRID_COLUMNS = 9;
+                IN_A_LINE_TO_WIN = 3;
                 button3x3.setChecked(false);
                 button5x5.setChecked(false);
                 buttonCustom.setChecked(false);
