@@ -165,94 +165,56 @@ public class WinningEngine {
 
     private void checkDecreasInLine(){
         List<CustomButton> decButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(2));
-//        Collections.sort(decButtons);
+        Collections.sort(decButtons);
         System.out.println("decButton size: "+decButtons.size());
 
         for(int i = 1; i<decButtons.size(); i++){
-            if(isSecondBtnPositionDecreasing(decButtons, i)){
-                System.out.println("adding decButtons");
-                System.out.println("loop: " + i);
-                inOneLineHashSet.add(decButtons.get(i-1));
-                inOneLineHashSet.add(decButtons.get(i));
-            }
+//            if(isSecondBtnPositionDecreasing(decButtons, i)){
+//                System.out.println("adding decButtons");
+//                System.out.println("loop: " + i);
+//                inOneLineHashSet.add(decButtons.get(i-1));
+//                inOneLineHashSet.add(decButtons.get(i));
+//            }
+            searchRowAndColTest(decButtons, i);
         }
-        System.out.println("-------------PLAYER NUMBER: " + previousShape);
-
-        System.out.println("inOne... size: " + inOneLineHashSet.size());
-        Iterator<CustomButton> rowIter = inOneLineHashSet.iterator();
-//        System.out.println("HashSet: hasNext: " + rowIter.hasNext());
-        while (rowIter.hasNext()) {
-            System.out.println("while");
-            System.out.println(rowIter.next().getName());
+        System.out.println("-------------------------------PLAYER NUMBER: " + previousShape);
+//
+//        System.out.println("inOne... size: " + inOneLineHashSet.size());
+//        Iterator<CustomButton> rowIter = inOneLineHashSet.iterator();
+////        System.out.println("HashSet: hasNext: " + rowIter.hasNext());
+//        while (rowIter.hasNext()) {
+//            System.out.println("while");
+//            System.out.println(rowIter.next().getName());
 
         }
-        inALineToWin();
+//        inALineToWin();
 //        test(decButtons);
 //        test(inOneLineHashSet);
-    }
+//    }
 
 
-    private boolean isSecondBtnPositionDecreasing(List<CustomButton> decButtons, int i) {
-        boolean isBigger = false;
-        System.out.println("boolean i: " + i);
-        System.out.println("btn index 0 row = " + decButtons.get(0).getImInRow());
-        System.out.println("btn index 1 row = " + decButtons.get(1).getImInRow());
-        int imInRow = decButtons.get(i-1).getImInRow();
-        int imInCol = decButtons.get(i-1).getImInColumn();
-
-        if (searchNextRow(decButtons, imInRow) || searchNextColumn(decButtons, imInCol)){
-            System.out.println("Im BIGGER");
-            isBigger = true;
+    private void searchRowAndColTest (List<CustomButton> decButtons, int index){
+        for (CustomButton cb : decButtons) {
+            System.out.println(cb.getName());
         }
-//        int imInRow2;
-//        int imInCol2;
-//        for (int j = 0; j<decButtons.size(); j++) {
-//            System.out.println("loop j: " + j);
-//            imInRow2 = decButtons.get(j).getImInRow() + 1;
-//            System.out.println("btn in loop index " + j + " = " + imInRow2);
-//            if(imInRow == imInRow2) {
-//                System.out.println("if 1");
-//                imInCol2 = decButtons.get(j).getImInColumn() + 1;
-//                if(imInCol == imInCol2){
-//                    System.out.println("if 2");
-//
-//                    isBigger = true;
-//                }
-//            }
-//        }
-        return isBigger;
-    }
-
-    private boolean searchNextRow (List<CustomButton> decButtons, int currentRow) {
-        boolean itHas = false;
-        System.out.println("CurrentRow: " + currentRow);
-        int nexRow = 999;
+        int row = decButtons.get(index).getImInRow();
+        int column = decButtons.get(index).getImInColumn();
         for(int i = 0; i<decButtons.size(); i++){
-            nexRow  = decButtons.get(i).getImInRow()+1;
-            System.out.println("NextRow Loop");
-            if(currentRow == nexRow){
-                itHas = true;
+            if(decButtons.get(i).getImInRow() == row || decButtons.get(i).getImInColumn() == column){
+                System.out.println("adding button: " + decButtons.get(i).getName());
+                inOneLineHashSet.add(decButtons.get(index));
+                inOneLineHashSet.add(decButtons.get(i));
+                if(inOneLineHashSet.size()>=inLineToWin){
+                    setWinner();
+                    inOneLineHashSet.clear();
+                } else if(index+1 < decButtons.size()){
+
+                    searchRowAndColTest(decButtons, index +1);
+                }
+
             }
         }
-
-        System.out.println("NextRow: "+ nexRow);
-
-        System.out.println("row has = " + itHas);
-        return itHas;
-    }
-
-    private boolean searchNextColumn (List<CustomButton> decButtons, int currentColumn) {
-        boolean itHas = false;
-
-        for(int i = 0; i<decButtons.size(); i++){
-            System.out.println("NextColumn Loop");
-            if(currentColumn == decButtons.get(i).getImInColumn()+1){
-                itHas = true;
-            }
-        }
-        System.out.println("column has = " + itHas);
-
-        return itHas;
+        inOneLineHashSet.clear();
     }
 
 

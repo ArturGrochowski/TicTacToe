@@ -57,14 +57,12 @@ public class CustomButton extends android.support.v7.widget.AppCompatImageButton
         if(obj instanceof CustomButton){
             cb = (CustomButton) obj;
         }
-        System.out.println("In equals");
         if(this.getId() == cb.getId()){
             return true;
         } else {
             return false;
         }
     }
-
 
     @Override
     public int compareTo(CustomButton o) {
