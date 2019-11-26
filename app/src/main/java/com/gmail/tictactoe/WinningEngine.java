@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.TreeSet;
 
 public class WinningEngine {
     private int rows;
@@ -165,37 +164,95 @@ public class WinningEngine {
     }
 
     private void checkDecreasInLine(){
-        ArrayList<CustomButton> decButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(2));
+        List<CustomButton> decButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(2));
+//        Collections.sort(decButtons);
+        System.out.println("decButton size: "+decButtons.size());
 
         for(int i = 1; i<decButtons.size(); i++){
-            if(isSecondBtnPositionInRowBigger(decButtons, i)){
-//                System.out.println("adding decButtons");
-//                System.out.println("loop: " + i);
+            if(isSecondBtnPositionDecreasing(decButtons, i)){
+                System.out.println("adding decButtons");
+                System.out.println("loop: " + i);
                 inOneLineHashSet.add(decButtons.get(i-1));
                 inOneLineHashSet.add(decButtons.get(i));
             }
         }
-        Collections.sort(decButtons);
+        System.out.println("-------------PLAYER NUMBER: " + previousShape);
+
+        System.out.println("inOne... size: " + inOneLineHashSet.size());
+        Iterator<CustomButton> rowIter = inOneLineHashSet.iterator();
+//        System.out.println("HashSet: hasNext: " + rowIter.hasNext());
+        while (rowIter.hasNext()) {
+            System.out.println("while");
+            System.out.println(rowIter.next().getName());
+
+        }
         inALineToWin();
-        test(decButtons);
+//        test(decButtons);
+//        test(inOneLineHashSet);
     }
 
 
-    private boolean isSecondBtnPositionInRowBigger(ArrayList<CustomButton> decButtons, int i) {
+    private boolean isSecondBtnPositionDecreasing(List<CustomButton> decButtons, int i) {
         boolean isBigger = false;
         System.out.println("boolean i: " + i);
-        for (int j = 0; j<decButtons.size(); j++) {
-            System.out.println("loop j: " + j);
-            if(decButtons.get(i-1).getImInRow() == decButtons.get(j).getImInRow() + 1) {
-                System.out.println("if 1");
-                if(decButtons.get(i-1).getImInColumn() == decButtons.get(j).getImInColumn() + 1){
-                    System.out.println("if 2");
+        System.out.println("btn index 0 row = " + decButtons.get(0).getImInRow());
+        System.out.println("btn index 1 row = " + decButtons.get(1).getImInRow());
+        int imInRow = decButtons.get(i-1).getImInRow();
+        int imInCol = decButtons.get(i-1).getImInColumn();
 
-                    isBigger = true;
-                }
+        if (searchNextRow(decButtons, imInRow) || searchNextColumn(decButtons, imInCol)){
+            System.out.println("Im BIGGER");
+            isBigger = true;
+        }
+//        int imInRow2;
+//        int imInCol2;
+//        for (int j = 0; j<decButtons.size(); j++) {
+//            System.out.println("loop j: " + j);
+//            imInRow2 = decButtons.get(j).getImInRow() + 1;
+//            System.out.println("btn in loop index " + j + " = " + imInRow2);
+//            if(imInRow == imInRow2) {
+//                System.out.println("if 1");
+//                imInCol2 = decButtons.get(j).getImInColumn() + 1;
+//                if(imInCol == imInCol2){
+//                    System.out.println("if 2");
+//
+//                    isBigger = true;
+//                }
+//            }
+//        }
+        return isBigger;
+    }
+
+    private boolean searchNextRow (List<CustomButton> decButtons, int currentRow) {
+        boolean itHas = false;
+        System.out.println("CurrentRow: " + currentRow);
+        int nexRow = 999;
+        for(int i = 0; i<decButtons.size(); i++){
+            nexRow  = decButtons.get(i).getImInRow()+1;
+            System.out.println("NextRow Loop");
+            if(currentRow == nexRow){
+                itHas = true;
             }
         }
-        return isBigger;
+
+        System.out.println("NextRow: "+ nexRow);
+
+        System.out.println("row has = " + itHas);
+        return itHas;
+    }
+
+    private boolean searchNextColumn (List<CustomButton> decButtons, int currentColumn) {
+        boolean itHas = false;
+
+        for(int i = 0; i<decButtons.size(); i++){
+            System.out.println("NextColumn Loop");
+            if(currentColumn == decButtons.get(i).getImInColumn()+1){
+                itHas = true;
+            }
+        }
+        System.out.println("column has = " + itHas);
+
+        return itHas;
     }
 
 
@@ -206,22 +263,37 @@ public class WinningEngine {
 //                inOneLineHashSet.add(incButtons.get(i));
 //            }
 //        }
-        inALineToWin();
         test(incButtons);
+
+        inALineToWin();
     }
 
     private void test(List<CustomButton> rowButtons) {
-        Iterator<CustomButton> rowIter = rowButtons.iterator();
+//        Iterator<CustomButton> rowIter = rowButtons.iterator();
+//        System.out.println("PLAYER NUMBER: " + previousShape);
+////        System.out.println("rowButtons ArrayList:");
+//        arrayListLoop(rowIter);
+////        System.out.println("colButtons ArrayList:");
+//        System.out.println("===============================");
+    }
+    private void test(HashSet<CustomButton> rowButtons) {
         System.out.println("PLAYER NUMBER: " + previousShape);
-//        System.out.println("rowButtons ArrayList:");
-        arrayListLoop(rowIter);
-//        System.out.println("colButtons ArrayList:");
+        Iterator<CustomButton> rowIter = rowButtons.iterator();
+        System.out.println("HashSet: hasNext: " + rowIter.hasNext());
+        while (rowIter.hasNext()) {
+            System.out.println("while");
+            System.out.println(rowIter.next().getName());
+
+        }
         System.out.println("===============================");
     }
 
     private void arrayListLoop(Iterator<CustomButton> winButtons) {
+        System.out.println("loop: hasNext: " + winButtons.hasNext());
         if(winButtons.hasNext()) {
+            System.out.println("next");
             while (winButtons.hasNext()) {
+                System.out.println("while");
                 System.out.println(winButtons.next().getName());
 
             }
