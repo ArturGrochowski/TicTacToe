@@ -163,6 +163,7 @@ public class WinningEngine {
         test(colButtons);
     }
 
+
     private void checkDecreasInLine(){
         List<CustomButton> decButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(2));
         Collections.sort(decButtons);
