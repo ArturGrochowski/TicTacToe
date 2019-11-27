@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">TicTacToe</string>
     <string name="image_button_3x3">imageButton3x3</string>
-    <string name="image_button_5x5">imageButton5x5</string>
-    <string name="image_button_8x8">imageButton8x8</string>
+    <string name="image_button_6x6">imageButton6x6</string>
+    <string name="image_button_9x9">imageButton9x9</string>
     <string name="image_button_custom">imageButtonCustom</string>
     <string name="image_button_players_4">imageButtonPlayers4</string>
     <string name="image_button_players_3">imageButtonPlayers3</string>

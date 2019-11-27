@@ -54,10 +54,10 @@
                 android:layout_weight="1"
                 android:padding="5dp">
                 <RadioButton
-                    android:id="@+id/imageButton5x5"
+                    android:id="@+id/imageButton6x6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/button_5x5"
+                    android:background="@drawable/button_6x6"
                     android:button="@null"
                     android:contentDescription="@string/image_button_3x3"/>
             </LinearLayout>
@@ -91,10 +91,10 @@
                 android:padding="5dp">
 
                 <RadioButton
-                    android:id="@+id/imageButton8x8"
+                    android:id="@+id/imageButton9x9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/button_8x8"
+                    android:background="@drawable/button_9x9"
                     android:button="@null"
                     android:contentDescription="@string/image_button_3x3" />
             </LinearLayout>
@@ -247,17 +247,49 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4.5"
-        android:orientation="vertical"
-        android:padding="5dp">
-        <ImageButton
-            android:id="@+id/imageButtonStart"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:background="#00FFFFFF"
-            android:contentDescription="@string/image_button_start"
-            android:src="@drawable/button_start"
-            android:scaleType="centerInside"/>
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:background="#00FFFFFF"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+
+            <ImageButton
+                android:id="@+id/imageButtonStart"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="#00FFFFFF"
+                android:contentDescription="@string/image_button_start"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:background="#00FFFFFF"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+        </LinearLayout>
+
+
     </LinearLayout>
 
 
@@ -269,6 +301,5 @@
         android:orientation="horizontal">
 
     </LinearLayout>
-
 
 </LinearLayout>

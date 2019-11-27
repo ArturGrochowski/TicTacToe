@@ -145,7 +145,6 @@ public class WinningEngine {
             }
         }
         inALineToWin();
-        test(rowButtons);
     }
 
     private void checkColumnInLine(int columnIndex){
@@ -157,43 +156,31 @@ public class WinningEngine {
             }
         }
         inALineToWin();
-        test(colButtons);
     }
 
 
     private void checkDecreasInLine(){
         List<CustomButton> decButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(2));
         Collections.sort(decButtons);
-//        System.out.println("decButton size: "+decButtons.size());
-        for (CustomButton cb : decButtons) {
-            System.out.println(cb.getName());
-        }
 
         for(int i = 0; i<decButtons.size(); i++){
             inOneLineHashSet.clear();
             searchRowAndColDecreas(decButtons, i);
         }
-//        System.out.println("-------------------------------PLAYER NUMBER: " + previousShape);
 
     }
 
 
     private void searchRowAndColDecreas(List<CustomButton> decButtons, int index){
-//        System.out.println("NEW INDEX = " + index);
 
         int row = decButtons.get(index).getImInRow()+1;
         int column = decButtons.get(index).getImInColumn()+1;
         for(int i = 0; i<decButtons.size(); i++){
             if(decButtons.get(i).getImInRow() == row && decButtons.get(i).getImInColumn() == column){
-//                System.out.println("imInRow: " + decButtons.get(i).getImInRow() + " and imInColumn: " + decButtons.get(i).getImInColumn());
-//                System.out.println("HashSet.size: " + inOneLineHashSet.size() + ":");
-//                System.out.println("adding button: " + decButtons.get(i).getName());
-//                System.out.println("adding button: " + decButtons.get(index).getName());
                 inOneLineHashSet.add(decButtons.get(index));
                 inOneLineHashSet.add(decButtons.get(i));
                 row++;
                 column++;
-//                System.out.println("new row = " + row + " ,new column = " + column);
                 if(inOneLineHashSet.size()>=inLineToWin){
                     setWinner();
                     inOneLineHashSet.clear();
@@ -208,36 +195,24 @@ public class WinningEngine {
     private void checkIncreasInLine(){
         ArrayList<CustomButton> incButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(3));
         Collections.sort(incButtons);
-        System.out.println("incButton size: "+incButtons.size());
-        for (CustomButton cb : incButtons) {
-            System.out.println(cb.getName());
-        }
 
         for(int i = 0; i<incButtons.size(); i++){
             inOneLineHashSet.clear();
             searchRowAndColIncreas(incButtons, i);
         }
-        System.out.println("-------------------------------PLAYER NUMBER: " + previousShape);
-
     }
 
     private void searchRowAndColIncreas (List<CustomButton> incButtons, int index){
-        System.out.println("NEW INDEX = " + index);
 
         int row = incButtons.get(index).getImInRow()+1;
         int column = incButtons.get(index).getImInColumn()-1;
 
         for(int i = 0; i<incButtons.size(); i++){
             if(incButtons.get(i).getImInRow() == row && incButtons.get(i).getImInColumn() == column){
-                System.out.println("imInRow: " + incButtons.get(i).getImInRow() + " and imInColumn: " + incButtons.get(i).getImInColumn());
-                System.out.println("HashSet.size: " + inOneLineHashSet.size() + ":");
-                System.out.println("adding button: " + incButtons.get(i).getName());
-                System.out.println("adding button: " + incButtons.get(index).getName());
                 inOneLineHashSet.add(incButtons.get(index));
                 inOneLineHashSet.add(incButtons.get(i));
                 row++;
                 column--;
-                System.out.println("new row = " + row + " ,new column = " + column);
                 if(inOneLineHashSet.size()>=inLineToWin){
                     setWinner();
                     inOneLineHashSet.clear();
@@ -247,20 +222,10 @@ public class WinningEngine {
         }
     }
 
-    private void test(List<CustomButton> rowButtons) {
-//        Iterator<CustomButton> rowIter = rowButtons.iterator();
-//        System.out.println("PLAYER NUMBER: " + previousShape);
-////        System.out.println("rowButtons ArrayList:");
-//        arrayListLoop(rowIter);
-////        System.out.println("colButtons ArrayList:");
-//        System.out.println("===============================");
-    }
 
 
     private void inALineToWin() {
-//        System.out.println("inOneLineArrayList size: " + inOneLineArrayList.size());
         if(inOneLineHashSet.size()>= inLineToWin){
-//            System.out.println("We have the winner!!!");
             setWinner();
         }
         inOneLineHashSet.clear();

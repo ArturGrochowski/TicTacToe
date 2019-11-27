@@ -15,7 +15,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:weightSum="3"
+        android:weightSum="7"
         android:layout_marginTop="5dp">
 
         <ImageButton
@@ -24,8 +24,27 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/button_undo"
-            android:scaleType="fitStart"
+            android:scaleType="fitCenter"
             android:background="@null">
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/imageButton1st"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null">
+
+        </ImageButton>
+
+
+        <ImageButton
+            android:id="@+id/imageButtonFistPlace"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null">
+
         </ImageButton>
 
         <ImageButton
@@ -39,12 +58,30 @@
         </ImageButton>
 
         <ImageButton
+            android:id="@+id/imageButton2nd"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/imageButtonSecondPlace"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null">
+
+        </ImageButton>
+
+        <ImageButton
             android:id="@+id/imageButtonExit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/button_exit"
-            android:scaleType="fitEnd"
+            android:scaleType="fitCenter"
             android:background="@null">
         </ImageButton>
 

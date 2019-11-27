@@ -6,13 +6,11 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class Popup extends Activity {
 
-//    public static int ROW_X = 3;
-//    public static int ROW_Y = 3;
-//    public static int IN_ROW = 3;
 
     private EditText editTextInRow;
     private EditText editTextRowX;
@@ -25,11 +23,22 @@ public class Popup extends Activity {
 
         setContentView(R.layout.popupwindow);
         setWindowSize();
-        setEditTextViev();
+        setEditTextView();
         setupOkButton();
+        setBackgroundMode();
     }
 
-    private void setEditTextViev() {
+    private void setWindowSize() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int screenWidth = displayMetrics.widthPixels;
+        int screenHeight = displayMetrics.heightPixels;
+
+        getWindow().setLayout((int)(screenWidth*0.8),(int)(screenHeight*0.5));
+    }
+
+    private void setEditTextView() {
         editTextInRow = findViewById(R.id.textInARaw);
         editTextRowX = findViewById(R.id.textRawX);
         editTextRowY = findViewById(R.id.textRawY);
@@ -56,14 +65,14 @@ public class Popup extends Activity {
         });
     }
 
-    private void setWindowSize() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        int screenWidth = displayMetrics.widthPixels;
-        int screenHeight = displayMetrics.heightPixels;
-
-        getWindow().setLayout((int)(screenWidth*0.8),(int)(screenHeight*0.5));
+    private void setBackgroundMode() {
+        LinearLayout backgroundColor = findViewById(R.id.popupWindow);
+        if(MainActivity.darkMode){
+            backgroundColor.setBackgroundResource(R.color.colorBlack);
+        } else {
+            backgroundColor.setBackgroundResource(R.color.colorWhite);
+        }
     }
 
 }
