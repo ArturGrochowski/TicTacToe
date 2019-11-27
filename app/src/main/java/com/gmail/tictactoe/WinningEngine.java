@@ -129,12 +129,9 @@ public class WinningEngine {
             checkColumnInLine(i);
         }
 
-            checkDecreasInLine();
+        checkDecreasInLine();
 
-
-        for (int i = 0; i < rows; i++){
-            checkIncreasInLine(i);
-        }
+        checkIncreasInLine();
 
     }
 
@@ -167,51 +164,87 @@ public class WinningEngine {
     private void checkDecreasInLine(){
         List<CustomButton> decButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(2));
         Collections.sort(decButtons);
-        System.out.println("decButton size: "+decButtons.size());
+//        System.out.println("decButton size: "+decButtons.size());
+        for (CustomButton cb : decButtons) {
+            System.out.println(cb.getName());
+        }
 
         for(int i = 0; i<decButtons.size(); i++){
-            searchRowAndColTest(decButtons, i);
+            inOneLineHashSet.clear();
+            searchRowAndColDecreas(decButtons, i);
+        }
+//        System.out.println("-------------------------------PLAYER NUMBER: " + previousShape);
+
+    }
+
+
+    private void searchRowAndColDecreas(List<CustomButton> decButtons, int index){
+//        System.out.println("NEW INDEX = " + index);
+
+        int row = decButtons.get(index).getImInRow()+1;
+        int column = decButtons.get(index).getImInColumn()+1;
+        for(int i = 0; i<decButtons.size(); i++){
+            if(decButtons.get(i).getImInRow() == row && decButtons.get(i).getImInColumn() == column){
+//                System.out.println("imInRow: " + decButtons.get(i).getImInRow() + " and imInColumn: " + decButtons.get(i).getImInColumn());
+//                System.out.println("HashSet.size: " + inOneLineHashSet.size() + ":");
+//                System.out.println("adding button: " + decButtons.get(i).getName());
+//                System.out.println("adding button: " + decButtons.get(index).getName());
+                inOneLineHashSet.add(decButtons.get(index));
+                inOneLineHashSet.add(decButtons.get(i));
+                row++;
+                column++;
+//                System.out.println("new row = " + row + " ,new column = " + column);
+                if(inOneLineHashSet.size()>=inLineToWin){
+                    setWinner();
+                    inOneLineHashSet.clear();
+                }
+
+            }
+        }
+    }
+
+
+
+    private void checkIncreasInLine(){
+        ArrayList<CustomButton> incButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(3));
+        Collections.sort(incButtons);
+        System.out.println("incButton size: "+incButtons.size());
+        for (CustomButton cb : incButtons) {
+            System.out.println(cb.getName());
+        }
+
+        for(int i = 0; i<incButtons.size(); i++){
+            inOneLineHashSet.clear();
+            searchRowAndColIncreas(incButtons, i);
         }
         System.out.println("-------------------------------PLAYER NUMBER: " + previousShape);
 
     }
 
+    private void searchRowAndColIncreas (List<CustomButton> incButtons, int index){
+        System.out.println("NEW INDEX = " + index);
 
-    private void searchRowAndColTest (List<CustomButton> decButtons, int index){
-        for (CustomButton cb : decButtons) {
-            System.out.println(cb.getName());
-        }
-        int row = decButtons.get(index).getImInRow();
-        int column = decButtons.get(index).getImInColumn();
-        for(int i = 0; i<decButtons.size(); i++){
-            if(decButtons.get(i).getImInRow() == row || decButtons.get(i).getImInColumn() == column){
-                System.out.println("adding button: " + decButtons.get(i).getName());
-                inOneLineHashSet.add(decButtons.get(index));
-                inOneLineHashSet.add(decButtons.get(i));
+        int row = incButtons.get(index).getImInRow()+1;
+        int column = incButtons.get(index).getImInColumn()-1;
+
+        for(int i = 0; i<incButtons.size(); i++){
+            if(incButtons.get(i).getImInRow() == row && incButtons.get(i).getImInColumn() == column){
+                System.out.println("imInRow: " + incButtons.get(i).getImInRow() + " and imInColumn: " + incButtons.get(i).getImInColumn());
+                System.out.println("HashSet.size: " + inOneLineHashSet.size() + ":");
+                System.out.println("adding button: " + incButtons.get(i).getName());
+                System.out.println("adding button: " + incButtons.get(index).getName());
+                inOneLineHashSet.add(incButtons.get(index));
+                inOneLineHashSet.add(incButtons.get(i));
+                row++;
+                column--;
+                System.out.println("new row = " + row + " ,new column = " + column);
                 if(inOneLineHashSet.size()>=inLineToWin){
                     setWinner();
                     inOneLineHashSet.clear();
-                } else if(index+1 < decButtons.size()){
-
-                    searchRowAndColTest(decButtons, index +1);
                 }
 
             }
         }
-        inOneLineHashSet.clear();
-    }
-
-
-    private void checkIncreasInLine(int increasIndex){
-        ArrayList<CustomButton> incButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(3));
-//        for(int i = 1; i<incButtons.size(); i++){
-//            if(incButtons.get(i-1).getImInRow() == incButtons.get(increasIndex).getImInRow()+1 || incButtons.get(i-1).getImInColumn() == incButtons.get(increasIndex).getImInColumn()-1){
-//                inOneLineHashSet.add(incButtons.get(i));
-//            }
-//        }
-        test(incButtons);
-
-        inALineToWin();
     }
 
     private void test(List<CustomButton> rowButtons) {
