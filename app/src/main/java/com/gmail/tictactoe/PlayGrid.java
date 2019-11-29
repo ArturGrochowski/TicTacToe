@@ -13,8 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import java.util.Arrays;
-
 
 public class PlayGrid extends AppCompatActivity implements View.OnClickListener {
 
@@ -260,10 +258,10 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
             setButtonImage(tmpButtonID, previousShape);
             tmpButtonID.setClickable(true);
             tmpButtonID.setImageDrawable(null);
-            int row = tmpButtonID.getImInRow();
-            int col = tmpButtonID.getImInColumn();
-            buttonsArray2D[row][col] = emptyButton;
-            WinningEngine.undo(buttonBackgroundColor);
+            tmpButtonID.setMyShape(0);
+//            int row = tmpButtonID.getImInRow();
+//            int col = tmpButtonID.getImInColumn();
+//            winningEngine.undo(buttonBackgroundColor, row, col);
         }
 
     }

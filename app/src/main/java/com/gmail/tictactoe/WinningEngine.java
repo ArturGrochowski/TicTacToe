@@ -260,8 +260,17 @@ public class WinningEngine {
     }
 
 
-    static void undo(int buttonBackgroundColor) {
-
+    public void undo(int backgroundColor, int row, int buttonBackgroundColor) {
+        System.out.println("Undo Array:");
+        for (int i = 0; i < buttonsArray2D.length; i++){
+            for (int j = 0; j < buttonsArray2D.length; j++){
+                System.out.println(buttonsArray2D[i][j].getName());
+                System.out.println(buttonsArray2D[i][j].getId());
+                System.out.println(buttonsArray2D[i][j].getImInRow());
+                System.out.println(buttonsArray2D[i][j].getImInColumn());
+                System.out.println(buttonsArray2D[i][j].getMyShape());
+            }
+        }
     }
 
 }
