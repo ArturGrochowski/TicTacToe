@@ -259,9 +259,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
             tmpButtonID.setClickable(true);
             tmpButtonID.setImageDrawable(null);
             tmpButtonID.setMyShape(0);
-//            int row = tmpButtonID.getImInRow();
-//            int col = tmpButtonID.getImInColumn();
-//            winningEngine.undo(buttonBackgroundColor, row, col);
         }
 
     }
