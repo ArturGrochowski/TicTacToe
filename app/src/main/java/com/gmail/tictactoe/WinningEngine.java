@@ -121,88 +121,112 @@ public class WinningEngine {
 
     private void checkNumberOfButtonsInTheLine() {
 
-        for (int i = 0; i < rows; i++){
-            checkRowInLine(i);
-        }
+        checkRowInLine();
 
-        for (int i = 0; i < columns; i++){
-            checkColumnInLine(i);
-        }
+        checkColumnInLine();
 
-        checkDecreasInLine();
 
-        checkIncreasInLine();
+        checkDecreaseInLine();
+
+        checkIncreaseInLine();
 
     }
 
-    private void checkRowInLine(int index) {
-
+    private void checkRowInLine() {
         ArrayList<CustomButton> rowButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(0));
+        Collections.sort(rowButtons);
 
         for(int i = 0; i<rowButtons.size(); i++){
-            if(rowButtons.get(i).getImInRow() == index){
-                inOneLineHashSet.add(rowButtons.get(i));
-            }
+            inOneLineHashSet.clear();
+            searchRowIncrease(rowButtons, i);
         }
-        inALineToWin();
+        inOneLineToWin();
     }
 
-    private void checkColumnInLine(int columnIndex){
+
+    private void searchRowIncrease(List<CustomButton> incButtons, int index){
+
+        int row = incButtons.get(index).getImInRow();
+        int column = incButtons.get(index).getImInColumn()+1;
+
+        for(int i = 0; i<incButtons.size(); i++){
+            if(incButtons.get(i).getImInRow() == row && incButtons.get(i).getImInColumn() == column){
+                inOneLineHashSet.add(incButtons.get(index));
+                inOneLineHashSet.add(incButtons.get(i));
+                column++;
+                inOneLineToWin();
+            }
+        }
+    }
+
+
+    private void checkColumnInLine(){
         List<CustomButton> colButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(1));
+        Collections.sort(colButtons);
 
         for(int i = 0; i<colButtons.size(); i++){
-            if(colButtons.get(i).getImInColumn() == columnIndex){
-                inOneLineHashSet.add(colButtons.get(i));
+            inOneLineHashSet.clear();
+            searchColIncrease(colButtons, i);
+        }
+        inOneLineToWin();
+    }
+
+    private void searchColIncrease(List<CustomButton> incButtons, int index){
+
+        int row = incButtons.get(index).getImInRow()+1;
+        int column = incButtons.get(index).getImInColumn();
+
+        for(int i = 0; i<incButtons.size(); i++){
+            if(incButtons.get(i).getImInRow() == row && incButtons.get(i).getImInColumn() == column){
+                inOneLineHashSet.add(incButtons.get(index));
+                inOneLineHashSet.add(incButtons.get(i));
+                row++;
+                inOneLineToWin();
             }
         }
-        inALineToWin();
     }
 
 
-    private void checkDecreasInLine(){
+    private void checkDecreaseInLine(){
         List<CustomButton> decButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(2));
         Collections.sort(decButtons);
 
         for(int i = 0; i<decButtons.size(); i++){
             inOneLineHashSet.clear();
-            searchRowAndColDecreas(decButtons, i);
+            searchRowAndColDecrease(decButtons, i);
         }
 
     }
 
 
-    private void searchRowAndColDecreas(List<CustomButton> decButtons, int index){
+    private void searchRowAndColDecrease(List<CustomButton> decButtons, int index){
 
-        int row = decButtons.get(index).getImInRow()+1;
-        int column = decButtons.get(index).getImInColumn()+1;
+        int rowPlus1 = decButtons.get(index).getImInRow()+1;
+        int columnPlus1 = decButtons.get(index).getImInColumn()+1;
         for(int i = 0; i<decButtons.size(); i++){
-            if(decButtons.get(i).getImInRow() == row && decButtons.get(i).getImInColumn() == column){
+            if(decButtons.get(i).getImInRow() == rowPlus1 && decButtons.get(i).getImInColumn() == columnPlus1){
                 inOneLineHashSet.add(decButtons.get(index));
                 inOneLineHashSet.add(decButtons.get(i));
-                row++;
-                column++;
-                if(inOneLineHashSet.size()>=inLineToWin){
-                    setWinner();
-                    inOneLineHashSet.clear();
-                }
-
+                rowPlus1++;
+                columnPlus1++;
+                inOneLineToWin();
             }
         }
     }
 
 
 
-    private void checkIncreasInLine(){
+    private void checkIncreaseInLine(){
         ArrayList<CustomButton> incButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(3));
         Collections.sort(incButtons);
 
         for(int i = 0; i<incButtons.size(); i++){
             inOneLineHashSet.clear();
-            searchRowAndColIncreas(incButtons, i);
+            searchRowAndColIncrease(incButtons, i);
         }
     }
 
-    private void searchRowAndColIncreas (List<CustomButton> incButtons, int index){
+    private void searchRowAndColIncrease(List<CustomButton> incButtons, int index){
 
         int row = incButtons.get(index).getImInRow()+1;
         int column = incButtons.get(index).getImInColumn()-1;
@@ -213,31 +237,31 @@ public class WinningEngine {
                 inOneLineHashSet.add(incButtons.get(i));
                 row++;
                 column--;
-                if(inOneLineHashSet.size()>=inLineToWin){
-                    setWinner();
-                    inOneLineHashSet.clear();
-                }
-
+                inOneLineToWin();
             }
         }
     }
 
 
-
-    private void inALineToWin() {
+    private void inOneLineToWin() {
         if(inOneLineHashSet.size()>= inLineToWin){
             setWinner();
+            inOneLineHashSet.clear();
         }
-        inOneLineHashSet.clear();
     }
 
     private void setWinner() {
         Iterator<CustomButton> winButtons = inOneLineHashSet.iterator();
 
         while(winButtons.hasNext()){
-            winButtons.next().setBackgroundResource(R.color.colorGray);
+            winButtons.next().setBackgroundResource(R.drawable.gradient_background);
 
         }
+    }
+
+
+    static void undo(int buttonBackgroundColor) {
+
     }
 
 }

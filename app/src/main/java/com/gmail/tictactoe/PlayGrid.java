@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.util.Arrays;
 
 
 public class PlayGrid extends AppCompatActivity implements View.OnClickListener {
@@ -21,6 +22,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private ImageButton imgButtonUndo;
     private ImageButton imgButtonExit;
     private CustomButton tmpButtonID;
+    private CustomButton emptyButton;
     private CustomButton[][] buttonsArray2D;
     private int rows;
     private int columns;
@@ -162,6 +164,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     private CustomButton createAndSetupButton(TableRow.LayoutParams tableRowParams, int row, int col) {
         CustomButton button = new CustomButton(this);
+        emptyButton = new CustomButton(this);
         button.setLayoutParams(tableRowParams);
         button.setPadding(0,0,0,0 );
         String nameID = convertRowColumnToName(row, col);
@@ -257,6 +260,10 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
             setButtonImage(tmpButtonID, previousShape);
             tmpButtonID.setClickable(true);
             tmpButtonID.setImageDrawable(null);
+            int row = tmpButtonID.getImInRow();
+            int col = tmpButtonID.getImInColumn();
+            buttonsArray2D[row][col] = emptyButton;
+            WinningEngine.undo(buttonBackgroundColor);
         }
 
     }
