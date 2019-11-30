@@ -370,7 +370,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         if(winningEngine.getListOfWinners().size() == numberOfPlayers-1){
             nextShapeButton.setClickable(true);
             lastPlayer = true;
-        } else if (winningEngine.getListOfWinners().size() == numberOfPlayers){
+        }
+        if (winningEngine.getListOfWinners().size() >= numberOfPlayers){
             finishTheGame();
         }
     }

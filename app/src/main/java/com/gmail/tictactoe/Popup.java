@@ -6,6 +6,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -70,8 +71,12 @@ public class Popup extends Activity {
         LinearLayout backgroundColor = findViewById(R.id.popupWindow);
         if(MainActivity.darkMode){
             backgroundColor.setBackgroundResource(R.color.colorBlack);
+            imageButtonOK.setBackgroundResource(R.drawable.button_ok_dark);
         } else {
             backgroundColor.setBackgroundResource(R.color.colorWhite);
+            imageButtonOK.setBackgroundResource(R.drawable.ok_button);
+            imageButtonOK.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
         }
     }
 

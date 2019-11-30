@@ -14,4 +14,8 @@
     <string name="image_viev_players">imgViewPlayers</string>
     <string name="TicTacToe">TicTacToe</string>
     <string name="dark">Dark</string>
+    <string name="rowHint">1-99</string>
+    <string name="inLine">1-99</string>
+    <string name="popUpoX">x_in_popup_window</string>
+    <string name="okButton">ok_button</string>
 </resources>

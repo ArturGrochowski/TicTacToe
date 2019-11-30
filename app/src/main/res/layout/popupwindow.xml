@@ -7,14 +7,11 @@
     android:weightSum="5"
     android:id="@+id/popupWindow">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -40,18 +37,13 @@
                 android:textStyle="bold">
 
             </EditText>
-        </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -74,7 +66,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:padding="15dp"
-                android:src="@drawable/x_white">
+                android:src="@drawable/x_white"
+                android:contentDescription="@string/popUpoX">
 
             </ImageView>
 
@@ -92,23 +85,20 @@
 
             </EditText>
 
-
         </LinearLayout>
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:gravity="center"
         android:layout_weight="2">
 
         <ImageButton
             android:id="@+id/imageButtonOK"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerInside"
-            android:src="@drawable/ok_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/okButton"
+            android:scaleType="fitCenter"
             android:padding="15dp"
             android:background="@null">
 
