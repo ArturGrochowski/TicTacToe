@@ -332,20 +332,33 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         v.setClickable(false);
         tmpButtonID = findViewById(v.getId());
         lockButtonSizes();
-        skipWinners();
-        setNextShapeButton(currentPlayer);
         setButtonImage(tmpButtonID, previousShape);
         tmpButtonID.setMyShape(previousShape);
         winningEngine.start(previousShape);
+        skipWinners();
+        CheckIsTheGameOver();
+        setNextShapeButton(currentPlayer);
         nextPlayer(currentShape);
         nextShape(currentPlayer);
         imgButtonUndo.setClickable(true);
     }
 
+
     private void skipWinners() {
-        if(winningEngine.getListOfWinners().contains(currentPlayer)){
+        if(winningEngine.getListOfWinners().contains(currentPlayer) && winningEngine.getListOfWinners().size() < numberOfPlayers){
             nextPlayer(currentShape);
             nextShape(currentPlayer);
+            skipWinners();
+        }
+    }
+
+    private void CheckIsTheGameOver() {
+        if(winningEngine.getListOfWinners().size() == numberOfPlayers){
+            for(int i = 0; i<buttonsArray2D.length; i++){
+                for(int j = 0; j<buttonsArray2D.length; j++){
+                    buttonsArray2D[i][j].setClickable(false);
+                }
+            }
         }
     }
 }
