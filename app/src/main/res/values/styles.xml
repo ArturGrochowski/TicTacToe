@@ -13,15 +13,4 @@
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
-    <style name="DarkTheme">
-        <item name="colorPrimary">@color/colorBlack</item>
-        <item name="colorPrimaryDark">@color/colorDarkGray</item>
-        <item name="colorAccent">@color/colorGray</item>
-    </style>
-
-
-    <style name="AppThemeDark" parent="Theme.AppCompat.Light.DarkActionBar">
-    </style>
-
-
 </resources>

@@ -21,6 +21,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private ImageButton imgButtonExit;
     private CustomButton tmpButtonID;
     private CustomButton[][] buttonsArray2D;
+    private boolean lastPlayer = false;
     private int rows;
     private int columns;
     private int marginSize;
@@ -46,7 +47,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         setupUndoButton();
         setupExitButton();
         setBackgroundMode();
-        setupCurrentShapeButton();
+        setupNextShapeButton();
         tableGridCreator();
         nextPlayer(currentShape);
         nextShape(currentPlayer);
@@ -92,8 +93,15 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         });
     }
 
-    private void setupCurrentShapeButton() {
+    private void setupNextShapeButton() {
         nextShapeButton = findViewById(R.id.imageButtonCurrentShape);
+        nextShapeButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                recreate();
+            }
+        });
+        nextShapeButton.setClickable(false);
     }
 
 
@@ -108,11 +116,13 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         TableLayout playFiledBackground = findViewById(R.id.playFieldLayout);
         if(MainActivity.darkMode){
             backgroundColor.setBackgroundResource(R.color.colorBlack);
-            playFiledBackground.setBackgroundResource(R.drawable.background_white);
+            playFiledBackground.setBackgroundResource(R.color.colorWhite);
+            playFiledBackground.setPadding(-10, -10,-10,-10);
             buttonBackgroundColor = android.R.color.black;
         } else {
             backgroundColor.setBackgroundResource(R.color.colorWhite);
-            playFiledBackground.setBackgroundResource(R.drawable.background);
+            playFiledBackground.setBackgroundResource(R.color.colorBlack);
+            playFiledBackground.setPadding(-10, -10,-10,-10);
             buttonBackgroundColor = android.R.color.white;
         }
     }
@@ -262,28 +272,32 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
     public void setNextShapeButton(int player){
-        switch (player){
-             case 1:
-                 nextShapeButton.setImageResource(R.drawable.ring);
-                 break;
-             case 2:
-                 nextShapeButton.setImageResource(R.drawable.x);
-                 break;
-             case 3:
-                 nextShapeButton.setImageResource(R.drawable.trojkat);
-                 break;
+        if(lastPlayer){
+            nextShapeButton.setImageResource(R.drawable.restart_button);
+        } else {
+            switch (player) {
+                case 1:
+                    nextShapeButton.setImageResource(R.drawable.ring);
+                    break;
+                case 2:
+                    nextShapeButton.setImageResource(R.drawable.x);
+                    break;
+                case 3:
+                    nextShapeButton.setImageResource(R.drawable.trojkat);
+                    break;
 
-             case 4:
-                nextShapeButton.setImageResource(R.drawable.kwadrat);
-                break;
+                case 4:
+                    nextShapeButton.setImageResource(R.drawable.kwadrat);
+                    break;
 
-             case 5:
-                nextShapeButton.setImageResource(R.drawable.star);
-                break;
+                case 5:
+                    nextShapeButton.setImageResource(R.drawable.star);
+                    break;
 
-             case 6:
-                nextShapeButton.setImageResource(R.drawable.trapez);
-                break;
+                case 6:
+                    nextShapeButton.setImageResource(R.drawable.trapez);
+                    break;
+            }
         }
 
     }
@@ -336,7 +350,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         tmpButtonID.setMyShape(previousShape);
         winningEngine.start(previousShape);
         skipWinners();
-        CheckIsTheGameOver();
+        checkIsTheGameOver();
         setNextShapeButton(currentPlayer);
         nextPlayer(currentShape);
         nextShape(currentPlayer);
@@ -352,12 +366,20 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    private void CheckIsTheGameOver() {
-        if(winningEngine.getListOfWinners().size() == numberOfPlayers){
-            for(int i = 0; i<buttonsArray2D.length; i++){
-                for(int j = 0; j<buttonsArray2D.length; j++){
-                    buttonsArray2D[i][j].setClickable(false);
-                }
+    private void checkIsTheGameOver() {
+        if(winningEngine.getListOfWinners().size() == numberOfPlayers-1){
+            nextShapeButton.setClickable(true);
+            lastPlayer = true;
+        } else if (winningEngine.getListOfWinners().size() == numberOfPlayers){
+            finishTheGame();
+        }
+    }
+
+    private void finishTheGame() {
+        for (int i = 0; i < buttonsArray2D.length; i++) {
+            for (int j = 0; j < buttonsArray2D.length; j++) {
+                buttonsArray2D[i][j].setClickable(false);
+
             }
         }
     }
