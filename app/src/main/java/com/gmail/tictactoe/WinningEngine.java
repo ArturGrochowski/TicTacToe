@@ -14,6 +14,7 @@ public class WinningEngine {
     private int inLineToWin;
     private int previousShape;
     private int numberOfPlayers;
+    private List<Integer> listOfWinners;
     private CustomButton[][] buttonsArray2D;
     private ArrayList<CustomButton> usedButtons;
     private HashSet<CustomButton> inOneLineHashSet;
@@ -28,6 +29,7 @@ public class WinningEngine {
         this.numberOfPlayers = numberOfPlayers;
         this.buttonsArray2D = buttonsArray2D;
         inOneLineHashSet  = new HashSet<>();
+        listOfWinners = new ArrayList<>();
     }
 
     public void start(int previousShape){
@@ -120,14 +122,9 @@ public class WinningEngine {
 
 
     private void checkNumberOfButtonsInTheLine() {
-
         checkRowInLine();
-
         checkColumnInLine();
-
-
         checkDecreaseInLine();
-
         checkIncreaseInLine();
 
     }
@@ -250,12 +247,17 @@ public class WinningEngine {
         }
     }
 
-    private void setWinner() {
-        Iterator<CustomButton> winButtons = inOneLineHashSet.iterator();
 
+    private void setWinner() {
+        listOfWinners.add(previousShape);
+        Iterator<CustomButton> winButtons = inOneLineHashSet.iterator();
         while(winButtons.hasNext()){
             winButtons.next().setBackgroundResource(R.drawable.gradient_background);
 
         }
+    }
+
+    public List<Integer> getListOfWinners() {
+        return listOfWinners;
     }
 }

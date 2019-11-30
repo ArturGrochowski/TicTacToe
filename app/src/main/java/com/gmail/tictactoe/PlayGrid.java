@@ -16,11 +16,10 @@ import android.widget.TableRow;
 
 public class PlayGrid extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageButton currentShapeButton;
+    private ImageButton nextShapeButton;
     private ImageButton imgButtonUndo;
     private ImageButton imgButtonExit;
     private CustomButton tmpButtonID;
-    private CustomButton emptyButton;
     private CustomButton[][] buttonsArray2D;
     private int rows;
     private int columns;
@@ -49,8 +48,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         setBackgroundMode();
         setupCurrentShapeButton();
         tableGridCreator();
-        currentPlayer(currentShape);
-        previousShape(currentPlayer);
+        nextPlayer(currentShape);
+        nextShape(currentPlayer);
         createWinningEngine();
     }
 
@@ -94,7 +93,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void setupCurrentShapeButton() {
-        currentShapeButton = findViewById(R.id.imageButtonCurrentShape);
+        nextShapeButton = findViewById(R.id.imageButtonCurrentShape);
     }
 
 
@@ -162,7 +161,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     private CustomButton createAndSetupButton(TableRow.LayoutParams tableRowParams, int row, int col) {
         CustomButton button = new CustomButton(this);
-        emptyButton = new CustomButton(this);
         button.setLayoutParams(tableRowParams);
         button.setPadding(0,0,0,0 );
         String nameID = convertRowColumnToName(row, col);
@@ -206,7 +204,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-    public void currentPlayer(int currentNumber){
+    public void nextPlayer(int currentNumber){
         if(currentPlayer<numberOfPlayers){
             currentPlayer = currentNumber +1;
         }else {
@@ -222,7 +220,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    public void previousShape(){
+    public void nextShape(){
         if(previousShape >1){
             previousShape--;
         }else {
@@ -235,7 +233,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    public void previousShape(int player){
+    public void nextShape(int player){
         if(currentShape == 1 && previousShape == 2 && currentPlayer != 2){
             previousShape = 1;
         }else {
@@ -253,8 +251,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         imgButtonUndo.setClickable(false);
         if(tmpButtonID!=null) {
             previousPlayer();
-            previousShape();
-            setCurrentShapeButton(previousShape);
+            nextShape();
+            setNextShapeButton(previousShape);
             setButtonImage(tmpButtonID, previousShape);
             tmpButtonID.setClickable(true);
             tmpButtonID.setImageDrawable(null);
@@ -263,28 +261,28 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     }
 
-    public void setCurrentShapeButton(int player){
+    public void setNextShapeButton(int player){
         switch (player){
              case 1:
-                 currentShapeButton.setImageResource(R.drawable.ring);
+                 nextShapeButton.setImageResource(R.drawable.ring);
                  break;
              case 2:
-                 currentShapeButton.setImageResource(R.drawable.x);
+                 nextShapeButton.setImageResource(R.drawable.x);
                  break;
              case 3:
-                 currentShapeButton.setImageResource(R.drawable.trojkat);
+                 nextShapeButton.setImageResource(R.drawable.trojkat);
                  break;
 
              case 4:
-                currentShapeButton.setImageResource(R.drawable.kwadrat);
+                nextShapeButton.setImageResource(R.drawable.kwadrat);
                 break;
 
              case 5:
-                currentShapeButton.setImageResource(R.drawable.star);
+                nextShapeButton.setImageResource(R.drawable.star);
                 break;
 
              case 6:
-                currentShapeButton.setImageResource(R.drawable.trapez);
+                nextShapeButton.setImageResource(R.drawable.trapez);
                 break;
         }
 
@@ -334,14 +332,21 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         v.setClickable(false);
         tmpButtonID = findViewById(v.getId());
         lockButtonSizes();
-        setCurrentShapeButton(currentPlayer);
+        skipWinners();
+        setNextShapeButton(currentPlayer);
         setButtonImage(tmpButtonID, previousShape);
         tmpButtonID.setMyShape(previousShape);
         winningEngine.start(previousShape);
-        currentPlayer(currentShape);
-        previousShape(currentPlayer);
+        nextPlayer(currentShape);
+        nextShape(currentPlayer);
         imgButtonUndo.setClickable(true);
     }
 
+    private void skipWinners() {
+        if(winningEngine.getListOfWinners().contains(currentPlayer)){
+            nextPlayer(currentShape);
+            nextShape(currentPlayer);
+        }
+    }
 }
 
