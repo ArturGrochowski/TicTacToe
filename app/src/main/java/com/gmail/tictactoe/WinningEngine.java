@@ -258,9 +258,6 @@ public class WinningEngine {
     }
 
     public HashSet<Integer> getListOfWinners() {
-        for (Integer l : listOfWinners){
-            System.out.println(l);
-        }
         return listOfWinners;
     }
 }
