@@ -14,7 +14,7 @@ public class WinningEngine {
     private int inLineToWin;
     private int previousShape;
     private int numberOfPlayers;
-    private List<Integer> listOfWinners;
+    private HashSet<Integer> listOfWinners;
     private CustomButton[][] buttonsArray2D;
     private ArrayList<CustomButton> usedButtons;
     private HashSet<CustomButton> inOneLineHashSet;
@@ -29,7 +29,7 @@ public class WinningEngine {
         this.numberOfPlayers = numberOfPlayers;
         this.buttonsArray2D = buttonsArray2D;
         inOneLineHashSet  = new HashSet<>();
-        listOfWinners = new ArrayList<>();
+        listOfWinners = new HashSet<>();
     }
 
     public void start(int previousShape){
@@ -257,7 +257,10 @@ public class WinningEngine {
         }
     }
 
-    public List<Integer> getListOfWinners() {
+    public HashSet<Integer> getListOfWinners() {
+        for (Integer l : listOfWinners){
+            System.out.println(l);
+        }
         return listOfWinners;
     }
 }
