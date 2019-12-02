@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 public class WinningEngine {
@@ -18,6 +17,7 @@ public class WinningEngine {
     private CustomButton[][] buttonsArray2D;
     private ArrayList<CustomButton> usedButtons;
     private HashSet<CustomButton> inOneLineHashSet;
+    private HashSet<CustomButton> exportInOneLineHashSet;
     private HashMap<Integer, HashMap<Integer, HashSet<CustomButton>>> hashMapOfPlayersMoves;
 
 
@@ -29,7 +29,12 @@ public class WinningEngine {
         this.numberOfPlayers = numberOfPlayers;
         this.buttonsArray2D = buttonsArray2D;
         inOneLineHashSet  = new HashSet<>();
+        exportInOneLineHashSet  = new HashSet<>();
         listOfWinners = new HashSet<>();
+    }
+
+    public HashSet<CustomButton> getExportInOneLineHashSet() {
+        return exportInOneLineHashSet;
     }
 
     public void start(int previousShape){
@@ -137,7 +142,6 @@ public class WinningEngine {
             inOneLineHashSet.clear();
             searchRowIncrease(rowButtons, i);
         }
-        inOneLineToWin();
     }
 
 
@@ -165,7 +169,6 @@ public class WinningEngine {
             inOneLineHashSet.clear();
             searchColIncrease(colButtons, i);
         }
-        inOneLineToWin();
     }
 
     private void searchColIncrease(List<CustomButton> incButtons, int index){
@@ -243,16 +246,16 @@ public class WinningEngine {
     private void inOneLineToWin() {
         if(inOneLineHashSet.size()>= inLineToWin){
             setWinner();
-            inOneLineHashSet.clear();
         }
     }
 
 
     private void setWinner() {
+        exportInOneLineHashSet.clear();
+        exportInOneLineHashSet.addAll(inOneLineHashSet);
         listOfWinners.add(previousShape);
-        Iterator<CustomButton> winButtons = inOneLineHashSet.iterator();
-        while(winButtons.hasNext()){
-            winButtons.next().setBackgroundResource(R.drawable.gradient_background);
+        for (CustomButton buttons : inOneLineHashSet) {
+            buttons.setBackgroundResource(R.drawable.gradient_background);
 
         }
     }

@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.util.HashSet;
+
 
 public class PlayGrid extends AppCompatActivity implements View.OnClickListener {
 
@@ -267,8 +269,15 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
             tmpButtonID.setClickable(true);
             tmpButtonID.setImageDrawable(null);
             tmpButtonID.setMyShape(0);
+            setDefaultBackgroundForButtons();
         }
 
+    }
+
+    private void setDefaultBackgroundForButtons() {
+        for (CustomButton cb : winningEngine.getExportInOneLineHashSet()) {
+            cb.setBackgroundResource(buttonBackgroundColor);
+        }
     }
 
     public void setNextShapeButton(int player){
