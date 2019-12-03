@@ -13,8 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import java.util.HashSet;
-
 
 public class PlayGrid extends AppCompatActivity implements View.OnClickListener {
 
@@ -270,14 +268,32 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
             tmpButtonID.setImageDrawable(null);
             tmpButtonID.setMyShape(0);
             setDefaultBackgroundForButtons();
+            skipWinnersBackwards();
         }
 
     }
 
-    private void setDefaultBackgroundForButtons() {
-        for (CustomButton cb : winningEngine.getExportInOneLineHashSet()) {
-            cb.setBackgroundResource(buttonBackgroundColor);
+    private void skipWinnersBackwards() {
+        if(winningEngine.getListOfWinners().contains(currentPlayer)){
+            previousPlayer();
+            nextShape();
+            skipWinnersBackwards();
         }
+    }
+
+    private void setDefaultBackgroundForButtons() {
+        previousPlayer();
+        int player;
+        if(winningEngine.getExportInOneLineHashSet().iterator().hasNext()) {
+            player = winningEngine.getExportInOneLineHashSet().iterator().next().getMyShape();
+            if (player == currentPlayer) {
+                for (CustomButton cb : winningEngine.getExportInOneLineHashSet()) {
+                    cb.setBackgroundResource(buttonBackgroundColor);
+                }
+            }
+        }
+        nextPlayer(currentPlayer);
+        skipWinners();
     }
 
     public void setNextShapeButton(int player){
@@ -358,12 +374,12 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         setButtonImage(tmpButtonID, previousShape);
         tmpButtonID.setMyShape(previousShape);
         winningEngine.start(previousShape);
+//        imgButtonUndo.setClickable(!winningEngine.getFlagDoesSomebodyWin());
         skipWinners();
         checkIsTheGameOver();
         setNextShapeButton(currentPlayer);
         nextPlayer(currentShape);
         nextShape(currentPlayer);
-        imgButtonUndo.setClickable(true);
     }
 
 
@@ -386,6 +402,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void finishTheGame() {
+        imgButtonUndo.setClickable(false);
         for (int i = 0; i < buttonsArray2D.length; i++) {
             for (int j = 0; j < buttonsArray2D.length; j++) {
                 buttonsArray2D[i][j].setClickable(false);

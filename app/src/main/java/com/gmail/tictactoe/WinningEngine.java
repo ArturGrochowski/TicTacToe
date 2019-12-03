@@ -13,6 +13,7 @@ public class WinningEngine {
     private int inLineToWin;
     private int previousShape;
     private int numberOfPlayers;
+    private boolean doesSomebodyWinFlag;
     private HashSet<Integer> listOfWinners;
     private CustomButton[][] buttonsArray2D;
     private ArrayList<CustomButton> usedButtons;
@@ -39,6 +40,7 @@ public class WinningEngine {
 
     public void start(int previousShape){
         this.previousShape = previousShape;
+        doesSomebodyWinFlag = false;
         assignHashMapAndLists();
         checkForWin(previousShape);
     }
@@ -254,13 +256,19 @@ public class WinningEngine {
         exportInOneLineHashSet.clear();
         exportInOneLineHashSet.addAll(inOneLineHashSet);
         listOfWinners.add(previousShape);
+        doesSomebodyWinFlag = true;
         for (CustomButton buttons : inOneLineHashSet) {
             buttons.setBackgroundResource(R.drawable.gradient_background);
 
         }
     }
 
-    public HashSet<Integer> getListOfWinners() {
+    boolean getFlagDoesSomebodyWin(){
+        System.out.println("flag: " + doesSomebodyWinFlag);
+        return doesSomebodyWinFlag;
+    }
+
+    HashSet<Integer> getListOfWinners() {
         return listOfWinners;
     }
 }
