@@ -34,7 +34,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private TableLayout tablePlayField;
     private TableRow.LayoutParams tableRowParams;
     private WinningEngine winningEngine;
-//
+
 
 
     @Override
@@ -267,34 +267,9 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
             tmpButtonID.setClickable(true);
             tmpButtonID.setImageDrawable(null);
             tmpButtonID.setMyShape(0);
-            setDefaultBackgroundForButtons();
-            skipWinnersBackwards();
-        }
-
-    }
-
-    private void skipWinnersBackwards() {
-        if(winningEngine.getListOfWinners().contains(currentPlayer)){
-            previousPlayer();
-            nextShape();
-            skipWinnersBackwards();
         }
     }
 
-    private void setDefaultBackgroundForButtons() {
-        previousPlayer();
-        int player;
-        if(winningEngine.getExportInOneLineHashSet().iterator().hasNext()) {
-            player = winningEngine.getExportInOneLineHashSet().iterator().next().getMyShape();
-            if (player == currentPlayer) {
-                for (CustomButton cb : winningEngine.getExportInOneLineHashSet()) {
-                    cb.setBackgroundResource(buttonBackgroundColor);
-                }
-            }
-        }
-        nextPlayer(currentPlayer);
-        skipWinners();
-    }
 
     public void setNextShapeButton(int player){
         if(lastPlayer){
@@ -374,7 +349,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         setButtonImage(tmpButtonID, previousShape);
         tmpButtonID.setMyShape(previousShape);
         winningEngine.start(previousShape);
-//        imgButtonUndo.setClickable(!winningEngine.getFlagDoesSomebodyWin());
+        imgButtonUndo.setClickable(!winningEngine.getFlagDoesSomebodyWin());
         skipWinners();
         checkIsTheGameOver();
         setNextShapeButton(currentPlayer);
@@ -402,10 +377,9 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void finishTheGame() {
-        imgButtonUndo.setClickable(false);
-        for (int i = 0; i < buttonsArray2D.length; i++) {
-            for (int j = 0; j < buttonsArray2D.length; j++) {
-                buttonsArray2D[i][j].setClickable(false);
+        for (CustomButton[] customButtons : buttonsArray2D) {
+            for (int i = 0; i < buttonsArray2D.length; i++) {
+                customButtons[i].setClickable(false);
 
             }
         }

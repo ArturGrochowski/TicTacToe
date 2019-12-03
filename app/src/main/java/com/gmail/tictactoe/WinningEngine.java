@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-public class WinningEngine {
+class WinningEngine {
     private int rows;
     private int columns;
     private int inLineToWin;
@@ -18,11 +18,10 @@ public class WinningEngine {
     private CustomButton[][] buttonsArray2D;
     private ArrayList<CustomButton> usedButtons;
     private HashSet<CustomButton> inOneLineHashSet;
-    private HashSet<CustomButton> exportInOneLineHashSet;
     private HashMap<Integer, HashMap<Integer, HashSet<CustomButton>>> hashMapOfPlayersMoves;
 
 
-    public WinningEngine(CustomButton[][] buttonsArray2D, int numberOfPlayers, int previousShape, int inLineToWin, int rows, int columns) {
+    WinningEngine(CustomButton[][] buttonsArray2D, int numberOfPlayers, int previousShape, int inLineToWin, int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
         this.inLineToWin = inLineToWin;
@@ -30,15 +29,11 @@ public class WinningEngine {
         this.numberOfPlayers = numberOfPlayers;
         this.buttonsArray2D = buttonsArray2D;
         inOneLineHashSet  = new HashSet<>();
-        exportInOneLineHashSet  = new HashSet<>();
         listOfWinners = new HashSet<>();
     }
 
-    public HashSet<CustomButton> getExportInOneLineHashSet() {
-        return exportInOneLineHashSet;
-    }
 
-    public void start(int previousShape){
+    void start(int previousShape){
         this.previousShape = previousShape;
         doesSomebodyWinFlag = false;
         assignHashMapAndLists();
@@ -253,8 +248,6 @@ public class WinningEngine {
 
 
     private void setWinner() {
-        exportInOneLineHashSet.clear();
-        exportInOneLineHashSet.addAll(inOneLineHashSet);
         listOfWinners.add(previousShape);
         doesSomebodyWinFlag = true;
         for (CustomButton buttons : inOneLineHashSet) {
@@ -264,7 +257,6 @@ public class WinningEngine {
     }
 
     boolean getFlagDoesSomebodyWin(){
-        System.out.println("flag: " + doesSomebodyWinFlag);
         return doesSomebodyWinFlag;
     }
 
