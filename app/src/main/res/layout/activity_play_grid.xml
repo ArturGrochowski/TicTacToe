@@ -28,24 +28,28 @@
             android:background="@null">
         </ImageButton>
 
-        <ImageButton
-            android:id="@+id/imageButton1st"
+        <ImageView
+            android:id="@+id/imageOrder1st"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
             android:background="@null">
 
-        </ImageButton>
+        </ImageView>
 
 
-        <ImageButton
-            android:id="@+id/imageButtonFistPlace"
+        <ImageView
+            android:id="@+id/imageFistPlacePlayer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:paddingBottom="20dp"
+            android:paddingRight="20dp"
             android:background="@null">
 
-        </ImageButton>
+        </ImageView>
 
         <ImageButton
             android:id="@+id/imageButtonCurrentShape"
@@ -57,23 +61,27 @@
             android:background="@null">
         </ImageButton>
 
-        <ImageButton
-            android:id="@+id/imageButton2nd"
+        <ImageView
+            android:id="@+id/imageOrder2nd"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
             android:background="@null">
 
-        </ImageButton>
+        </ImageView>
 
-        <ImageButton
-            android:id="@+id/imageButtonSecondPlace"
+        <ImageView
+            android:id="@+id/imageSecondPlacePlayer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:paddingBottom="20dp"
+            android:paddingRight="20dp"
             android:background="@null">
 
-        </ImageButton>
+        </ImageView>
 
         <ImageButton
             android:id="@+id/imageButtonExit"
