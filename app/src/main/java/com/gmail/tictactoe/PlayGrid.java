@@ -55,8 +55,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         setupImageViewsOrdersAnd1st2ndPlace();
         setBackgroundMode();
         tableGridCreator();
-        nextPlayer(currentShape);
-        nextShape(currentPlayer);
+        nextPlayer();
+        nextShape();
         createWinningEngine();
     }
 
@@ -240,9 +240,9 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-    public void nextPlayer(int currentNumber){
+    private void nextPlayer(){
         if(currentPlayer<numberOfPlayers){
-            currentPlayer = currentNumber +1;
+            currentPlayer++;
         }else {
             currentPlayer = 1;
         }
@@ -258,7 +258,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-    public void nextShape(){
+    public void previousShape(){
         if(previousShape >1){
             previousShape--;
         }else {
@@ -272,7 +272,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-    public void nextShape(int player){
+    public void nextShape(){
         if(currentShape == 1 && previousShape == 2 && currentPlayer != 2){
             previousShape = 1;
         }else {
@@ -282,7 +282,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
                 previousShape--;
             }
             previousShape = currentShape;
-            currentShape = player;
+            currentShape = currentPlayer;
         }
     }
 
@@ -291,12 +291,22 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         imgButtonUndo.setClickable(false);
         if(tmpButtonID!=null) {
             previousPlayer();
-            nextShape();
+            previousShape();
+            skipWinnersBackwards();
             setNextShapeButton(previousShape);
             setButtonImage(tmpButtonID, previousShape);
             tmpButtonID.setClickable(true);
             tmpButtonID.setImageDrawable(null);
             tmpButtonID.setMyShape(0);
+        }
+    }
+
+
+    private void skipWinnersBackwards() {
+        if(winningEngine.getListOfWinners().contains(previousShape)){
+            previousPlayer();
+            previousShape();
+            skipWinnersBackwards();
         }
     }
 
@@ -347,7 +357,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         }
 
         return resDrawableNumber;
-
     }
 
 
@@ -370,19 +379,19 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         tmpButtonID.setMyShape(previousShape);
         winningEngine.start(previousShape);
         imgButtonUndo.setClickable(!winningEngine.getFlagDoesSomebodyWin());
+        setAwards();
         skipWinners();
         checkIsTheGameOver();
-        setAwards();
         setNextShapeButton(currentPlayer);
-        nextPlayer(currentShape);
-        nextShape(currentPlayer);
+        nextPlayer();
+        nextShape();
     }
 
 
     private void skipWinners() {
         if(winningEngine.getListOfWinners().contains(currentPlayer) && winningEngine.getListOfWinners().size() < numberOfPlayers){
-            nextPlayer(currentShape);
-            nextShape(currentPlayer);
+            nextPlayer();
+            nextShape();
             skipWinners();
         }
     }
