@@ -53,6 +53,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         setupExitButton();
         setupNextShapeButton();
         setupImageViewsOrdersAnd1st2ndPlace();
+        setMarginsSize();
         setBackgroundMode();
         tableGridCreator();
         nextPlayer();
@@ -129,13 +130,13 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         TableLayout playFiledBackground = findViewById(R.id.playFieldLayout);
         if(MainActivity.darkMode){
             backgroundColor.setBackgroundResource(R.color.colorBlack);
-            playFiledBackground.setBackgroundResource(R.color.colorWhite);
-            playFiledBackground.setPadding(-10, -10,-10,-10);
+            playFiledBackground.setBackgroundResource(R.color.colorLightGray);
+            playFiledBackground.setPadding(-marginSize, -marginSize,-marginSize,-marginSize);
             buttonBackgroundColor = android.R.color.black;
         } else {
             backgroundColor.setBackgroundResource(R.color.colorWhite);
             playFiledBackground.setBackgroundResource(R.color.colorBlack);
-            playFiledBackground.setPadding(-10, -10,-10,-10);
+            playFiledBackground.setPadding(-marginSize, -marginSize,-marginSize,-marginSize);
             buttonBackgroundColor = android.R.color.white;
         }
     }
@@ -152,7 +153,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
                 TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.MATCH_PARENT,
                 1.0f );
-        setMarginsSize();
         tableRowParams.setMargins(marginSize, marginSize, marginSize, marginSize);
     }
 
