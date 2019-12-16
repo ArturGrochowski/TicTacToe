@@ -30,9 +30,9 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private int rows;
     private int columns;
     private int marginSize;
-    private int currentPlayer = 1;
+    private int nextPlayer = 1;
+    private int nextShape = 1;
     private int currentShape = 1;
-    private int previousShape = 1;
     private int buttonBackgroundColor;
     private int numberOfMoves = 0;
     private int inLineToWin = MainActivity.IN_A_LINE_TO_WIN;
@@ -64,7 +64,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
 
     private void createWinningEngine() {
-        winningEngine = new WinningEngine(buttonsArray2D, numberOfPlayers, previousShape, inLineToWin, rows, columns);
+        winningEngine = new WinningEngine(buttonsArray2D, numberOfPlayers, currentShape, inLineToWin, rows, columns);
     }
 
 
@@ -242,48 +242,48 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
 
     private void nextPlayer(){
-        if(currentPlayer<numberOfPlayers){
-            currentPlayer++;
+        if(nextPlayer <numberOfPlayers){
+            nextPlayer++;
         }else {
-            currentPlayer = 1;
+            nextPlayer = 1;
         }
     }
 
 
     public void previousPlayer(){
-        if(currentPlayer>1){
-            currentPlayer--;
+        if(nextPlayer >1){
+            nextPlayer--;
         }else {
-            currentPlayer = numberOfPlayers;
+            nextPlayer = numberOfPlayers;
         }
     }
 
 
     public void previousShape(){
-        if(previousShape >1){
-            previousShape--;
-        }else {
-            previousShape = numberOfPlayers;
-        }
         if(currentShape >1){
             currentShape--;
         }else {
             currentShape = numberOfPlayers;
         }
+        if(nextShape >1){
+            nextShape--;
+        }else {
+            nextShape = numberOfPlayers;
+        }
     }
 
 
     public void nextShape(){
-        if(currentShape == 1 && previousShape == 2 && currentPlayer != 2){
-            previousShape = 1;
+        if(nextShape == 1 && currentShape == 2 && nextPlayer != 2){
+            currentShape = 1;
         }else {
 
-            if(currentShape == previousShape && currentShape !=1){
+            if(nextShape == currentShape && nextShape !=1){
+                nextShape--;
                 currentShape--;
-                previousShape--;
             }
-            previousShape = currentShape;
-            currentShape = currentPlayer;
+            currentShape = nextShape;
+            nextShape = nextPlayer;
         }
     }
 
@@ -295,8 +295,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
             previousPlayer();
             previousShape();
             skipWinnersBackwards();
-            setNextShapeButton(previousShape);
-            setButtonImage(tmpButtonID, previousShape);
+            setNextShapeButton(currentShape);
+            setButtonImage(tmpButtonID, currentShape);
             tmpButtonID.setClickable(true);
             tmpButtonID.setImageDrawable(null);
             tmpButtonID.setMyShape(0);
@@ -309,7 +309,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
 
     private void skipWinnersBackwards() {
-        if(winningEngine.getListOfWinners().contains(previousShape)){
+        if(winningEngine.getListOfWinners().contains(currentShape)){
             previousPlayer();
             previousShape();
             skipWinnersBackwards();
@@ -382,14 +382,14 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         v.setClickable(false);
         tmpButtonID = findViewById(v.getId());
         lockButtonSizes();
-        setButtonImage(tmpButtonID, previousShape);
-        tmpButtonID.setMyShape(previousShape);
-        winningEngine.start(previousShape);
+        setButtonImage(tmpButtonID, currentShape);
+        tmpButtonID.setMyShape(currentShape);
+        winningEngine.start(currentShape);
         imgButtonUndo.setClickable(!winningEngine.getFlagDoesSomebodyWin());
         setAwards();
         skipWinners();
         checkIsTheGameOver();
-        setNextShapeButton(currentPlayer);
+        setNextShapeButton(nextPlayer);
         nextPlayer();
         nextShape();
     }
@@ -397,7 +397,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
 
     private void skipWinners() {
-        if(winningEngine.getListOfWinners().contains(currentPlayer) && winningEngine.getListOfWinners().size() < numberOfPlayers){
+        if(winningEngine.getListOfWinners().contains(nextPlayer) && winningEngine.getListOfWinners().size() < numberOfPlayers){
             nextPlayer();
             nextShape();
             skipWinners();
@@ -407,11 +407,10 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     private void checkIsTheGameOver() {
         if(winningEngine.getListOfWinners().size() == numberOfPlayers-1 || numberOfMoves == rows * columns){
-
-            System.out.println(rows*columns);
             nextShapeButton.setClickable(true);
             lastPlayer = true;
         }
+
         if (winningEngine.getListOfWinners().size() >= numberOfPlayers){
             finishTheGame();
         }
@@ -431,10 +430,10 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private void setAwards() {
         if(winningEngine.getListOfWinners().size() == 1 && winningEngine.getFlagDoesSomebodyWin()){
             order1stPlace.setImageResource(R.drawable.first_place);
-            firstPlaceFor.setImageResource(imageChooserSwitch(previousShape));
+            firstPlaceFor.setImageResource(imageChooserSwitch(currentShape));
         } else if (winningEngine.getListOfWinners().size() == 2 && winningEngine.getFlagDoesSomebodyWin()){
             order2ndPlace.setImageResource(R.drawable.secondt_place);
-            secondPlaceFor.setImageResource(imageChooserSwitch(previousShape));
+            secondPlaceFor.setImageResource(imageChooserSwitch(currentShape));
         }
     }
 }
