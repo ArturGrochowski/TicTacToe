@@ -34,6 +34,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private int currentShape = 1;
     private int previousShape = 1;
     private int buttonBackgroundColor;
+    private int numberOfMoves = 0;
     private int inLineToWin = MainActivity.IN_A_LINE_TO_WIN;
     private int numberOfPlayers = MainActivity.NUMBER_OF_PLAYERS;
     private TableLayout tablePlayField;
@@ -290,6 +291,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private void undo() {
         imgButtonUndo.setClickable(false);
         if(tmpButtonID!=null) {
+            movesCounter(-1);
             previousPlayer();
             previousShape();
             skipWinnersBackwards();
@@ -299,6 +301,10 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
             tmpButtonID.setImageDrawable(null);
             tmpButtonID.setMyShape(0);
         }
+    }
+
+    private void movesCounter(int add){
+        numberOfMoves = numberOfMoves + add;
     }
 
 
@@ -372,6 +378,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
+        movesCounter(1);
         v.setClickable(false);
         tmpButtonID = findViewById(v.getId());
         lockButtonSizes();
@@ -388,6 +395,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
 
+
     private void skipWinners() {
         if(winningEngine.getListOfWinners().contains(currentPlayer) && winningEngine.getListOfWinners().size() < numberOfPlayers){
             nextPlayer();
@@ -398,7 +406,9 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
 
     private void checkIsTheGameOver() {
-        if(winningEngine.getListOfWinners().size() == numberOfPlayers-1){
+        if(winningEngine.getListOfWinners().size() == numberOfPlayers-1 || numberOfMoves == rows * columns){
+
+            System.out.println(rows*columns);
             nextShapeButton.setClickable(true);
             lastPlayer = true;
         }
