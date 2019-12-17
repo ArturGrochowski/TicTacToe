@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static int GRID_COLUMNS = 3;
     static int IN_A_LINE_TO_WIN = 3;
     static int NUMBER_OF_PLAYERS = 2;
-    static boolean darkMode;
+    static boolean DARK_MODE;
     private RadioGroup radioGroupPlayers;
 
 
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
         @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                darkMode = isChecked;
+                DARK_MODE = isChecked;
             setBackgroundMode();
         }
         });
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setBackgroundMode() {
         LinearLayout layout = findViewById(R.id.main_activity_layout);
 
-        if(darkMode){
+        if(DARK_MODE){
             layout.setBackgroundResource(R.color.colorBlack);
             setButtonsToDarkMode();
         } else {

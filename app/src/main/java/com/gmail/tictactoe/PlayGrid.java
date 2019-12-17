@@ -37,7 +37,6 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private int numberOfMoves = 0;
     private int inLineToWin = MainActivity.IN_A_LINE_TO_WIN;
     private int numberOfPlayers = MainActivity.NUMBER_OF_PLAYERS;
-    private TableLayout tablePlayField;
     private TableRow.LayoutParams tableRowParams;
     private WinningEngine winningEngine;
 
@@ -47,24 +46,18 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_grid);
-
         setRowsAndColumnsOrientation();
         createButtonsInArray2D();
         setupUndoButton();
         setupExitButton();
         setupNextShapeButton();
-        setupImageViewsOrdersAnd1st2ndPlace();
+        setupImageViews1stAnd2ndPlaceOrders();
         setMarginsSize();
         setBackgroundMode();
         tableGridCreator();
         nextPlayer();
         nextShape();
         createWinningEngine();
-    }
-
-
-    private void createWinningEngine() {
-        winningEngine = new WinningEngine(buttonsArray2D, numberOfPlayers, currentShape, inLineToWin, rows, columns);
     }
 
 
@@ -118,43 +111,11 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-    private void setupImageViewsOrdersAnd1st2ndPlace() {
+    private void setupImageViews1stAnd2ndPlaceOrders() {
         order1stPlace = findViewById(R.id.imageOrder1st);
         order2ndPlace = findViewById(R.id.imageOrder2nd);
         firstPlaceFor = findViewById(R.id.imageFistPlacePlayer);
         secondPlaceFor = findViewById(R.id.imageSecondPlacePlayer);
-    }
-
-
-    private void setBackgroundMode() {
-        LinearLayout backgroundColor = findViewById(R.id.playGridBackground);
-        TableLayout playFiledBackground = findViewById(R.id.playFieldLayout);
-        if(MainActivity.darkMode){
-            backgroundColor.setBackgroundResource(R.color.colorBlack);
-            playFiledBackground.setBackgroundResource(R.color.colorLightGray);
-            playFiledBackground.setPadding(-marginSize, -marginSize,-marginSize,-marginSize);
-            buttonBackgroundColor = android.R.color.black;
-        } else {
-            backgroundColor.setBackgroundResource(R.color.colorWhite);
-            playFiledBackground.setBackgroundResource(R.color.colorBlack);
-            playFiledBackground.setPadding(-marginSize, -marginSize,-marginSize,-marginSize);
-            buttonBackgroundColor = android.R.color.white;
-        }
-    }
-
-
-    private void tableGridCreator(){
-        setupTableRowParams();
-        createRowsColumnsAndButtons();
-    }
-
-
-    private void setupTableRowParams() {
-        tableRowParams = new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT,
-                TableRow.LayoutParams.MATCH_PARENT,
-                1.0f );
-        tableRowParams.setMargins(marginSize, marginSize, marginSize, marginSize);
     }
 
 
@@ -168,28 +129,67 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
 
+    private void setBackgroundMode() {
+        LinearLayout backgroundColor = findViewById(R.id.playGridBackground);
+        TableLayout playFiledBackground = findViewById(R.id.playFieldLayout);
+        if(MainActivity.DARK_MODE){
+            setDarkMode(backgroundColor, playFiledBackground);
+        } else {
+            setLightMode(backgroundColor, playFiledBackground);
+        }
+    }
+
+
+    private void setDarkMode(LinearLayout backgroundColor, TableLayout playFiledBackground) {
+        backgroundColor.setBackgroundResource(R.color.colorBlack);
+        playFiledBackground.setBackgroundResource(R.color.colorLightGray);
+        playFiledBackground.setPadding(-marginSize, -marginSize,-marginSize,-marginSize);
+        buttonBackgroundColor = android.R.color.black;
+    }
+
+
+    private void setLightMode(LinearLayout backgroundColor, TableLayout playFiledBackground) {
+        backgroundColor.setBackgroundResource(R.color.colorWhite);
+        playFiledBackground.setBackgroundResource(R.color.colorBlack);
+        playFiledBackground.setPadding(-marginSize, -marginSize,-marginSize,-marginSize);
+        buttonBackgroundColor = android.R.color.white;
+    }
+
+
+    private void tableGridCreator(){
+        setupTableRowParams();
+        createRowsColumnsAndButtons();
+    }
+
+
+    private void setupTableRowParams() {
+        tableRowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1.0f );
+        tableRowParams.setMargins(marginSize, marginSize, marginSize, marginSize);
+    }
+
+
     private void createRowsColumnsAndButtons() {
-        tablePlayField = findViewById(R.id.playFieldLayout);
+        TableLayout tablePlayField = findViewById(R.id.playFieldLayout);
         for(int row = 0; row < rows; row++){
             TableRow tableRow = createAndSetupTableRow(tablePlayField);
-            for(int col = 0; col < columns; col++){
-                CustomButton button = createAndSetupButton(tableRowParams, row, col);
-                tableRow.addView(button);
-                addButtonToArray2D(row, col, button);
-            }
+            createColumnsAndButtons(row, tableRow);
         }
-
     }
 
 
     private TableRow createAndSetupTableRow(TableLayout tablePlayField) {
         TableRow tableRow = new TableRow(this);
         tablePlayField.addView(tableRow);
-        tableRow.setLayoutParams(new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT,
-                TableLayout.LayoutParams.MATCH_PARENT,
-                1.0f ));
+        tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1.0f ));
         return tableRow;
+    }
+
+    private void createColumnsAndButtons(int row, TableRow tableRow){
+        for(int col = 0; col < columns; col++){
+            CustomButton button = createAndSetupButton(tableRowParams, row, col);
+            tableRow.addView(button);
+            addButtonToArray2D(row, col, button);
+        }
     }
 
 
@@ -197,7 +197,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         CustomButton button = new CustomButton(this);
         button.setLayoutParams(tableRowParams);
         button.setPadding(0,0,0,0 );
-        String nameID = convertRowColumnToName(row, col);
+        String nameID = convertRowAndColumnToName(row, col);
         int buttonID = Integer.parseInt("9" + nameID);
         button.setId(buttonID);
         button.setBackgroundResource(buttonBackgroundColor);
@@ -209,7 +209,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-    private String convertRowColumnToName(int row, int column) {
+    private String convertRowAndColumnToName(int row, int column) {
         String tmpRow = "00" + row;
         tmpRow = tmpRow.substring(tmpRow.length()-3);
         String tmpColumn = "00" + column;
@@ -221,6 +221,59 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     private void addButtonToArray2D(int row, int col, CustomButton button) {
         buttonsArray2D[row][col] = button;
+    }
+
+
+    private void nextPlayer(){
+        if(nextPlayer <numberOfPlayers){
+            nextPlayer++;
+        }else {
+            nextPlayer = 1;
+        }
+    }
+
+
+    public void nextShape(){
+        if(nextShape == 1 && currentShape == 2 && nextPlayer != 2){
+            currentShape = 1;
+        }else {
+
+            if(nextShape == currentShape && nextShape !=1){
+                nextShape--;
+                currentShape--;
+            }
+            currentShape = nextShape;
+            nextShape = nextPlayer;
+        }
+    }
+
+
+    private void createWinningEngine() {
+        winningEngine = new WinningEngine(buttonsArray2D, numberOfPlayers, currentShape, inLineToWin, rows, columns);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        movesCounter(1);
+        v.setClickable(false);
+        tmpButtonID = findViewById(v.getId());
+        lockButtonSizes();
+        setButtonImage(tmpButtonID, currentShape);
+        tmpButtonID.setMyShape(currentShape);
+        winningEngine.start(currentShape);
+        imgButtonUndo.setClickable(!winningEngine.getFlagDoesSomebodyWin());
+        setAwards();
+        skipWinners();
+        checkIsTheGameOver();
+        setNextShapeButton(nextPlayer);
+        nextPlayer();
+        nextShape();
+    }
+
+
+    private void movesCounter(int add){
+        numberOfMoves = numberOfMoves + add;
     }
 
 
@@ -241,103 +294,23 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-    private void nextPlayer(){
-        if(nextPlayer <numberOfPlayers){
-            nextPlayer++;
-        }else {
-            nextPlayer = 1;
-        }
-    }
-
-
-    public void previousPlayer(){
-        if(nextPlayer >1){
-            nextPlayer--;
-        }else {
-            nextPlayer = numberOfPlayers;
-        }
-    }
-
-
-    public void previousShape(){
-        if(currentShape >1){
-            currentShape--;
-        }else {
-            currentShape = numberOfPlayers;
-        }
-        if(nextShape >1){
-            nextShape--;
-        }else {
-            nextShape = numberOfPlayers;
-        }
-    }
-
-
-    public void nextShape(){
-        if(nextShape == 1 && currentShape == 2 && nextPlayer != 2){
-            currentShape = 1;
-        }else {
-
-            if(nextShape == currentShape && nextShape !=1){
-                nextShape--;
-                currentShape--;
-            }
-            currentShape = nextShape;
-            nextShape = nextPlayer;
-        }
-    }
-
-
-    private void undo() {
-        imgButtonUndo.setClickable(false);
-        if(tmpButtonID!=null) {
-            movesCounter(-1);
-            previousPlayer();
-            previousShape();
-            skipWinnersBackwards();
-            setNextShapeButton(currentShape);
-            setButtonImage(tmpButtonID, currentShape);
-            tmpButtonID.setClickable(true);
-            tmpButtonID.setImageDrawable(null);
-            tmpButtonID.setMyShape(0);
-        }
-    }
-
-    private void movesCounter(int add){
-        numberOfMoves = numberOfMoves + add;
-    }
-
-
-    private void skipWinnersBackwards() {
-        if(winningEngine.getListOfWinners().contains(currentShape)){
-            previousPlayer();
-            previousShape();
-            skipWinnersBackwards();
-        }
-    }
-
-
-    private void setNextShapeButton(int player){
-
-        if(lastPlayer){
-            nextShapeButton.setImageResource(R.drawable.restart_button);
-
-        } else {
-            nextShapeButton.setImageResource(imageChooserSwitch(player));
-        }
-    }
-
-
     public void setButtonImage(CustomButton button, int buttonShape){
-
         button.setImageDrawable(imageSizeForButton(imageChooserSwitch(buttonShape), button));
     }
 
 
+    public BitmapDrawable imageSizeForButton(int drawableRes, CustomButton button){
+        int newWidth = button.getWidth();
+        int newHeight = button.getHeight();
+        Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), drawableRes);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
+        Resources resources = getResources();
+        return new BitmapDrawable(resources, scaledBitmap);
+    }
+
+
     private int imageChooserSwitch(int caseNumber){
-
         int resDrawableNumber = 0;
-
         switch (caseNumber) {
             case 1:
                 resDrawableNumber = R.drawable.ring;
@@ -366,34 +339,15 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-    public BitmapDrawable imageSizeForButton(int drawableRes, CustomButton button){
-        int newWidth = button.getWidth();
-        int newHeight = button.getHeight();
-        Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), drawableRes);
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
-        Resources resources = getResources();
-        return new BitmapDrawable(resources, scaledBitmap);
+    private void setAwards() {
+        if(winningEngine.getListOfWinners().size() == 1 && winningEngine.getFlagDoesSomebodyWin()){
+            order1stPlace.setImageResource(R.drawable.first_place);
+            firstPlaceFor.setImageResource(imageChooserSwitch(currentShape));
+        } else if (winningEngine.getListOfWinners().size() == 2 && winningEngine.getFlagDoesSomebodyWin()){
+            order2ndPlace.setImageResource(R.drawable.secondt_place);
+            secondPlaceFor.setImageResource(imageChooserSwitch(currentShape));
+        }
     }
-
-
-    @Override
-    public void onClick(View v) {
-        movesCounter(1);
-        v.setClickable(false);
-        tmpButtonID = findViewById(v.getId());
-        lockButtonSizes();
-        setButtonImage(tmpButtonID, currentShape);
-        tmpButtonID.setMyShape(currentShape);
-        winningEngine.start(currentShape);
-        imgButtonUndo.setClickable(!winningEngine.getFlagDoesSomebodyWin());
-        setAwards();
-        skipWinners();
-        checkIsTheGameOver();
-        setNextShapeButton(nextPlayer);
-        nextPlayer();
-        nextShape();
-    }
-
 
 
     private void skipWinners() {
@@ -418,22 +372,69 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
 
     private void finishTheGame() {
-        for (CustomButton[] customButtons : buttonsArray2D) {
-            for (int i = 0; i < buttonsArray2D.length; i++) {
-                customButtons[i].setClickable(false);
-
+        for(CustomButton[] customButtonsRow : buttonsArray2D){
+            for(CustomButton customButtonsColumns : customButtonsRow) {
+                customButtonsColumns.setClickable(false);
             }
         }
     }
 
 
-    private void setAwards() {
-        if(winningEngine.getListOfWinners().size() == 1 && winningEngine.getFlagDoesSomebodyWin()){
-            order1stPlace.setImageResource(R.drawable.first_place);
-            firstPlaceFor.setImageResource(imageChooserSwitch(currentShape));
-        } else if (winningEngine.getListOfWinners().size() == 2 && winningEngine.getFlagDoesSomebodyWin()){
-            order2ndPlace.setImageResource(R.drawable.secondt_place);
-            secondPlaceFor.setImageResource(imageChooserSwitch(currentShape));
+    private void setNextShapeButton(int player){
+
+        if(lastPlayer){
+            nextShapeButton.setImageResource(R.drawable.restart_button);
+
+        } else {
+            nextShapeButton.setImageResource(imageChooserSwitch(player));
+        }
+    }
+
+
+    private void undo() {
+        imgButtonUndo.setClickable(false);
+        if(tmpButtonID!=null) {
+            movesCounter(-1);
+            previousPlayer();
+            previousShape();
+            skipWinnersBackwards();
+            setNextShapeButton(currentShape);
+            setButtonImage(tmpButtonID, currentShape);
+            tmpButtonID.setClickable(true);
+            tmpButtonID.setImageDrawable(null);
+            tmpButtonID.setMyShape(0);
+        }
+    }
+
+
+    public void previousPlayer(){
+        if(nextPlayer >1){
+            nextPlayer--;
+        }else {
+            nextPlayer = numberOfPlayers;
+        }
+    }
+
+
+    public void previousShape(){
+        if(currentShape >1){
+            currentShape--;
+        }else {
+            currentShape = numberOfPlayers;
+        }
+        if(nextShape >1){
+            nextShape--;
+        }else {
+            nextShape = numberOfPlayers;
+        }
+    }
+
+
+    private void skipWinnersBackwards() {
+        if(winningEngine.getListOfWinners().contains(currentShape)){
+            previousPlayer();
+            previousShape();
+            skipWinnersBackwards();
         }
     }
 }
