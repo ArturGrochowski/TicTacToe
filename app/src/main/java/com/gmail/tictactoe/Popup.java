@@ -69,7 +69,7 @@ public class Popup extends Activity {
 
     private void setBackgroundMode() {
         LinearLayout backgroundColor = findViewById(R.id.popupWindow);
-        if(MainActivity.darkMode){
+        if(MainActivity.DARK_MODE){
             backgroundColor.setBackgroundResource(R.color.colorBlack);
             imageButtonOK.setBackgroundResource(R.drawable.button_ok_dark);
         } else {
