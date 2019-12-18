@@ -14,7 +14,6 @@ public class CustomButton extends android.support.v7.widget.AppCompatImageButton
         super(context);
     }
 
-
     public String getName() {
         return name;
     }

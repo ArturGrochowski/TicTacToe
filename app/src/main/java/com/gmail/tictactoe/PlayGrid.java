@@ -35,6 +35,8 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private int currentShape = 1;
     private int buttonBackgroundColor;
     private int numberOfMoves = 0;
+    private int buttonWidth;
+    private int buttonHeight;
     private int inLineToWin = MainActivity.IN_A_LINE_TO_WIN;
     private int numberOfPlayers = MainActivity.NUMBER_OF_PLAYERS;
     private TableRow.LayoutParams tableRowParams;
@@ -236,7 +238,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     public void nextShape(){
         if(nextShape == 1 && currentShape == 2 && nextPlayer != 2){
             currentShape = 1;
-        }else {
+        } else {
 
             if(nextShape == currentShape && nextShape !=1){
                 nextShape--;
@@ -258,8 +260,9 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
         movesCounter(1);
         v.setClickable(false);
         tmpButtonID = findViewById(v.getId());
+        assignButtonHeightAndWidth(tmpButtonID);
         lockButtonSizes();
-        setButtonImage(tmpButtonID, currentShape);
+        setButtonImage(currentShape);
         tmpButtonID.setMyShape(currentShape);
         winningEngine.start(currentShape);
         imgButtonUndo.setClickable(!winningEngine.getFlagDoesSomebodyWin());
@@ -277,33 +280,43 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
 
+    private void assignButtonHeightAndWidth(CustomButton tmpButtonID) {
+        buttonHeight = tmpButtonID.getHeight();
+        buttonWidth = tmpButtonID.getWidth();
+    }
+
+
     private void lockButtonSizes() {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
                 CustomButton button = buttonsArray2D[row][col];
-
-                int width = button.getWidth();
-                button.setMinimumWidth(width);
-                button.setMaxWidth(width);
-
-                int height = button.getHeight();
-                button.setMinimumHeight(height);
-                button.setMaxHeight(height);
+                setButtonWidth(button);
+                setButtonHeight(button);
             }
         }
     }
 
 
-    public void setButtonImage(CustomButton button, int buttonShape){
-        button.setImageDrawable(imageSizeForButton(imageChooserSwitch(buttonShape), button));
+    private void setButtonWidth(CustomButton button) {
+        button.setMinimumWidth(buttonWidth);
+        button.setMaxWidth(buttonWidth);
     }
 
 
-    public BitmapDrawable imageSizeForButton(int drawableRes, CustomButton button){
-        int newWidth = button.getWidth();
-        int newHeight = button.getHeight();
+    private void setButtonHeight(CustomButton button) {
+        button.setMinimumHeight(buttonHeight);
+        button.setMaxHeight(buttonHeight);
+    }
+
+
+    public void setButtonImage(int shape){
+        tmpButtonID.setImageDrawable(imageSizeForButton(imageChooserSwitch(shape)));
+    }
+
+
+    public BitmapDrawable imageSizeForButton(int drawableRes){
         Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), drawableRes);
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, buttonWidth, buttonHeight, true);
         Resources resources = getResources();
         return new BitmapDrawable(resources, scaledBitmap);
     }
@@ -399,7 +412,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
             previousShape();
             skipWinnersBackwards();
             setNextShapeButton(currentShape);
-            setButtonImage(tmpButtonID, currentShape);
+            setButtonImage(currentShape);
             tmpButtonID.setClickable(true);
             tmpButtonID.setImageDrawable(null);
             tmpButtonID.setMyShape(0);
