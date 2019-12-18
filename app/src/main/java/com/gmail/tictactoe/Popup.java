@@ -13,9 +13,12 @@ import android.widget.Toast;
 public class Popup extends Activity {
 
 
-    private EditText editTextInRow;
-    private EditText editTextRowX;
-    private EditText editTextRowY;
+    private EditText editTextInOneLineToWin;
+    private EditText editTextRows;
+    private EditText editTextColumns;
+    private String inOneLineToWin;
+    private String rows;
+    private String columns;
     private ImageButton imageButtonOK;
 
 
@@ -40,9 +43,9 @@ public class Popup extends Activity {
     }
 
     private void setEditTextView() {
-        editTextInRow = findViewById(R.id.textInARaw);
-        editTextRowX = findViewById(R.id.textRawX);
-        editTextRowY = findViewById(R.id.textRawY);
+        editTextInOneLineToWin = findViewById(R.id.textInARaw);
+        editTextRows = findViewById(R.id.textRawX);
+        editTextColumns = findViewById(R.id.textRawY);
     }
 
     private void setupOkButton() {
@@ -50,20 +53,30 @@ public class Popup extends Activity {
         imageButtonOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inRow = editTextInRow.getText().toString();
-                String rowX = editTextRowX.getText().toString();
-                String rowY = editTextRowY.getText().toString();
-                if(inRow.isEmpty() || rowX.isEmpty() || rowY.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "All numbers required!",
-                            Toast.LENGTH_LONG).show();
-                }else {
-                    MainActivity.IN_A_LINE_TO_WIN = Integer.parseInt(inRow);
-                    MainActivity.GRID_ROWS = Integer.parseInt(rowX);
-                    MainActivity.GRID_COLUMNS = Integer.parseInt(rowY);
-                    finish();
-                }
+                assignInputTextsToStrings();
+                areAllTextAreasFilled();
             }
         });
+    }
+
+
+    private void assignInputTextsToStrings() {
+        inOneLineToWin = editTextInOneLineToWin.getText().toString();
+        rows = editTextRows.getText().toString();
+        columns = editTextColumns.getText().toString();
+    }
+
+
+    private void areAllTextAreasFilled() {
+        if(inOneLineToWin.isEmpty() || rows.isEmpty() || columns.isEmpty()){
+            Toast.makeText(getApplicationContext(), "All numbers required!",
+                    Toast.LENGTH_LONG).show();
+        }else {
+            MainActivity.IN_A_LINE_TO_WIN = Integer.parseInt(inOneLineToWin);
+            MainActivity.GRID_ROWS = Integer.parseInt(rows);
+            MainActivity.GRID_COLUMNS = Integer.parseInt(columns);
+            finish();
+        }
     }
 
 
