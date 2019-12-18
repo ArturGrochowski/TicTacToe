@@ -20,6 +20,7 @@ public class Popup extends Activity {
     private String rows;
     private String columns;
     private ImageButton imageButtonOK;
+    private LinearLayout backgroundColor;
 
 
     protected void onCreate(Bundle savedInstanceState){
@@ -32,6 +33,7 @@ public class Popup extends Activity {
         setBackgroundMode();
     }
 
+
     private void setWindowSize() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -42,36 +44,35 @@ public class Popup extends Activity {
         getWindow().setLayout((int)(screenWidth*0.8),(int)(screenHeight*0.5));
     }
 
+
     private void setEditTextView() {
         editTextInOneLineToWin = findViewById(R.id.textInARaw);
         editTextRows = findViewById(R.id.textRawX);
         editTextColumns = findViewById(R.id.textRawY);
     }
 
+
     private void setupOkButton() {
         imageButtonOK = findViewById(R.id.imageButtonOK);
         imageButtonOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assignInputTextsToStrings();
-                areAllTextAreasFilled();
+                assignInputTextToStrings();
+                closeThePopupWindow();
             }
         });
     }
 
 
-    private void assignInputTextsToStrings() {
+    private void assignInputTextToStrings() {
         inOneLineToWin = editTextInOneLineToWin.getText().toString();
         rows = editTextRows.getText().toString();
         columns = editTextColumns.getText().toString();
     }
 
 
-    private void areAllTextAreasFilled() {
-        if(inOneLineToWin.isEmpty() || rows.isEmpty() || columns.isEmpty()){
-            Toast.makeText(getApplicationContext(), "All numbers required!",
-                    Toast.LENGTH_LONG).show();
-        }else {
+    private void closeThePopupWindow() {
+        if(areAllTextAreasFilled()) {
             MainActivity.IN_A_LINE_TO_WIN = Integer.parseInt(inOneLineToWin);
             MainActivity.GRID_ROWS = Integer.parseInt(rows);
             MainActivity.GRID_COLUMNS = Integer.parseInt(columns);
@@ -80,17 +81,41 @@ public class Popup extends Activity {
     }
 
 
-    private void setBackgroundMode() {
-        LinearLayout backgroundColor = findViewById(R.id.popupWindow);
-        if(MainActivity.DARK_MODE){
-            backgroundColor.setBackgroundResource(R.color.colorBlack);
-            imageButtonOK.setBackgroundResource(R.drawable.button_ok_dark);
-        } else {
-            backgroundColor.setBackgroundResource(R.color.colorWhite);
-            imageButtonOK.setBackgroundResource(R.drawable.ok_button);
-            imageButtonOK.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-
+    private boolean areAllTextAreasFilled() {
+        boolean areFilled = true;
+        if(inOneLineToWin.isEmpty() || rows.isEmpty() || columns.isEmpty()){
+            informPlayerToFillAllTextAreas();
+            areFilled = false;
         }
+        return  areFilled;
+    }
+
+
+    private void informPlayerToFillAllTextAreas() {
+        Toast.makeText(getApplicationContext(), "All numbers required!", Toast.LENGTH_LONG).show();
+    }
+
+
+    private void setBackgroundMode() {
+        backgroundColor = findViewById(R.id.popupWindow);
+        if(MainActivity.DARK_MODE){
+            setDarkMode();
+        } else {
+            setLightMode();
+        }
+    }
+
+
+    private void setDarkMode() {
+        backgroundColor.setBackgroundResource(R.color.colorBlack);
+        imageButtonOK.setBackgroundResource(R.drawable.button_ok_dark);
+    }
+
+
+    private void setLightMode() {
+        backgroundColor.setBackgroundResource(R.color.colorWhite);
+        imageButtonOK.setBackgroundResource(R.drawable.ok_button);
+        imageButtonOK.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
     }
 
 }
