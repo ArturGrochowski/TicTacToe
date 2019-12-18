@@ -11,7 +11,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 
 
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static int IN_A_LINE_TO_WIN = 3;
     static int NUMBER_OF_PLAYERS = 2;
     static boolean DARK_MODE;
-    private RadioGroup radioGroupPlayers;
 
 
     @Override
@@ -41,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         setupButtons();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,12 +52,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 DARK_MODE = isChecked;
-            setBackgroundMode();
+                setBackgroundMode();
         }
         });
 
         return true;
     }
+
 
     private void setBackgroundMode() {
         LinearLayout layout = findViewById(R.id.main_activity_layout);
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             setButtonsToLightMode();
         }
     }
+
 
     private void setButtonsToDarkMode() {
         button3x3.setBackgroundResource(R.drawable.button_3x3_dark);
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonPlayers6.setBackgroundResource(R.drawable.button_players6_dark);
     }
 
+
     private void setButtonsToLightMode() {
         button3x3.setBackgroundResource(R.drawable.button_3x3);
         button6x6.setBackgroundResource(R.drawable.button_6x6);
@@ -98,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonPlayers6.setBackgroundResource(R.drawable.button_players6);
     }
 
+
     private void setupButtons() {
         button3x3 = findViewById(R.id.imageButton3x3);
         button6x6 = findViewById(R.id.imageButton6x6);
@@ -109,9 +112,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonPlayers4 = findViewById(R.id.imageButtonPlayers4);
         buttonPlayers5 = findViewById(R.id.imageButtonPlayers5);
         buttonPlayers6 = findViewById(R.id.imageButtonPlayers6);
-        radioGroupPlayers = findViewById(R.id.radioGroupPlayers);
-
-
         button3x3.setOnClickListener(this);
         button6x6.setOnClickListener(this);
         button9x9.setOnClickListener(this);
@@ -124,10 +124,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonPlayers6.setOnClickListener(this);
     }
 
+
     private void startTheGame() {
         Intent intentGame = new Intent(this, PlayGrid.class);
         startActivity(intentGame);
     }
+
 
     private void customSize(){
         Intent intentPopup = new Intent(this, Popup.class);
@@ -136,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.imageButton3x3:
                 GRID_ROWS = 3;
@@ -199,7 +200,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
         }
-
     }
-
 }
