@@ -13,12 +13,20 @@ class WinningEngine {
     private int inLineToWin;
     private int previousShape;
     private int numberOfPlayers;
+    private int tmpRowBtn2;
+    private int tmpRowBtnIncreased;
+    private int tmpColBtn2;
+    private int tmpColBtnIncreased;
+    private int tmpColBtnDecreased;
+    private int tmpRowBtn;
+    private int tmpColBtn;
     private boolean doesSomebodyWinFlag;
     private HashSet<Integer> listOfWinners;
     private CustomButton[][] buttonsArray2D;
     private ArrayList<CustomButton> usedButtons;
     private HashSet<CustomButton> inOneLineHashSet;
     private HashMap<Integer, HashMap<Integer, HashSet<CustomButton>>> hashMapOfPlayersMoves;
+
 
 
     WinningEngine(CustomButton[][] buttonsArray2D, int numberOfPlayers, int previousShape, int inLineToWin, int rows, int columns) {
@@ -85,27 +93,22 @@ class WinningEngine {
     private void searchForWinningButtons() {
         for(int i = 0; i < usedButtons.size()-1; i++){
             CustomButton tmpButton1 = usedButtons.get(i);
+            assignTmpButtons1(tmpButton1);
             addButtonToTheRightHashSet(tmpButton1);
         }
     }
 
 
+    private void assignTmpButtons1(CustomButton tmpButton1) {
+        tmpRowBtn = tmpButton1.getImInRow();
+        tmpColBtn = tmpButton1.getImInColumn();
+    }
+
+
     private void addButtonToTheRightHashSet(CustomButton tmpButton1) {
-
-        int tmpRowBtn = tmpButton1.getImInRow();
-        int tmpColBtn = tmpButton1.getImInColumn();
-
-
         for(int i = 0; i < usedButtons.size()-1; i++) {
             CustomButton tmpButton2 = usedButtons.get(i + 1);
-
-
-            int tmpRowBtn2 = tmpButton2.getImInRow();
-            int tmpRowBtnIncreased = tmpButton2.getImInRow() - 1;
-            int tmpColBtn2 = tmpButton2.getImInColumn();
-            int tmpColBtnIncreased = tmpButton2.getImInColumn() - 1;
-            int tmpColBtnDecreased = tmpButton2.getImInColumn() + 1;
-
+            assignTmpButtons2(tmpButton2);
 
             if (tmpRowBtn == tmpRowBtn2 && tmpColBtn == tmpColBtnIncreased) {
                 hashMapOfPlayersMoves.get(previousShape - 1).get(0).add(tmpButton1);
@@ -124,7 +127,19 @@ class WinningEngine {
                 hashMapOfPlayersMoves.get(previousShape - 1).get(3).add(tmpButton2);
             }
         }
+
         checkNumberOfButtonsInTheLine();
+    }
+
+
+    private void assignTmpButtons2(CustomButton tmpButton2) {
+
+        tmpRowBtn2 = tmpButton2.getImInRow();
+        tmpRowBtnIncreased = tmpButton2.getImInRow() - 1;
+        tmpColBtn2 = tmpButton2.getImInColumn();
+        tmpColBtnIncreased = tmpButton2.getImInColumn() - 1;
+        tmpColBtnDecreased = tmpButton2.getImInColumn() + 1;
+
     }
 
 
