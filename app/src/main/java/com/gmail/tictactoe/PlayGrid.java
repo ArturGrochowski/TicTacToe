@@ -20,7 +20,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     private ImageButton nextShapeButton;
     private ImageButton imgButtonUndo;
     private ImageButton imgButtonExit;
-    private CustomButton tmpButtonID;
+    private CustomButton tmpButton;
     private CustomButton[][] buttonsArray2D;
     private ImageView order1stPlace;
     private ImageView order2ndPlace;
@@ -259,11 +259,11 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         movesCounter(1);
         v.setClickable(false);
-        tmpButtonID = findViewById(v.getId());
-        assignButtonHeightAndWidth(tmpButtonID);
+        tmpButton = findViewById(v.getId());
+        assignTmpButtonHeightAndWidth();
         lockButtonSizes();
         setButtonImage(currentShape);
-        tmpButtonID.setMyShape(currentShape);
+        tmpButton.setMyShape(currentShape);
         winningEngine.start(currentShape);
         imgButtonUndo.setClickable(!winningEngine.getFlagDoesSomebodyWin());
         setAwards();
@@ -280,9 +280,9 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-    private void assignButtonHeightAndWidth(CustomButton tmpButtonID) {
-        buttonHeight = tmpButtonID.getHeight();
-        buttonWidth = tmpButtonID.getWidth();
+    private void assignTmpButtonHeightAndWidth() {
+        buttonHeight = tmpButton.getHeight();
+        buttonWidth = tmpButton.getWidth();
     }
 
 
@@ -310,7 +310,7 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
 
     public void setButtonImage(int shape){
-        tmpButtonID.setImageDrawable(imageSizeForButton(imageChooserSwitch(shape)));
+        tmpButton.setImageDrawable(imageSizeForButton(imageChooserSwitch(shape)));
     }
 
 
@@ -406,16 +406,16 @@ public class PlayGrid extends AppCompatActivity implements View.OnClickListener 
 
     private void undo() {
         imgButtonUndo.setClickable(false);
-        if(tmpButtonID!=null) {
+        if(tmpButton !=null) {
             movesCounter(-1);
             previousPlayer();
             previousShape();
             skipWinnersBackwards();
             setNextShapeButton(currentShape);
             setButtonImage(currentShape);
-            tmpButtonID.setClickable(true);
-            tmpButtonID.setImageDrawable(null);
-            tmpButtonID.setMyShape(0);
+            tmpButton.setClickable(true);
+            tmpButton.setImageDrawable(null);
+            tmpButton.setMyShape(0);
         }
     }
 

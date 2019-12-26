@@ -45,26 +45,29 @@ class WinningEngine {
         usedButtons = new ArrayList<>();
         hashMapOfPlayersMoves = new HashMap<>(numberOfPlayers);
         for(int i = 0; i<numberOfPlayers; i++){
-            hashMapOfPlayersMoves.put(i, assignHashSets() );
+            hashMapOfPlayersMoves.put(i, createAndAssignHashMapOfHashSets() );
         }
     }
 
-    private HashMap<Integer, HashSet<CustomButton>> assignHashSets() {
-        HashMap<Integer, HashSet<CustomButton>> hashMap= new HashMap<>();
 
+    private HashMap<Integer, HashSet<CustomButton>> createAndAssignHashMapOfHashSets() {
+        HashMap<Integer, HashSet<CustomButton>> hashMap= new HashMap<>();
+        createAssignAndPutHashSetsToHashMap(hashMap);
+        return hashMap;
+    }
+
+
+    private void createAssignAndPutHashSetsToHashMap(HashMap<Integer, HashSet<CustomButton>> hashMap) {
         HashSet<CustomButton> winInRowInner = new HashSet<>(3);
         HashSet<CustomButton> winInColumnInner = new HashSet<>(3);
         HashSet<CustomButton> winInDecreasingInner = new HashSet<>(3);
         HashSet<CustomButton> winInIncreasingInner = new HashSet<>(3);
-
         hashMap.put(0, winInRowInner);
         hashMap.put(1, winInColumnInner);
         hashMap.put(2, winInDecreasingInner);
         hashMap.put(3, winInIncreasingInner);
-
-
-        return hashMap;
     }
+
 
     private void checkForWin(int previousShape) {
         usedButtons.clear();
@@ -78,12 +81,14 @@ class WinningEngine {
         searchForWinningButtons();
     }
 
+
     private void searchForWinningButtons() {
         for(int i = 0; i < usedButtons.size()-1; i++){
             CustomButton tmpButton1 = usedButtons.get(i);
             addButtonToTheRightHashSet(tmpButton1);
         }
     }
+
 
     private void addButtonToTheRightHashSet(CustomButton tmpButton1) {
 
@@ -131,6 +136,7 @@ class WinningEngine {
 
     }
 
+
     private void checkRowInLine() {
         ArrayList<CustomButton> rowButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(0));
         Collections.sort(rowButtons);
@@ -167,6 +173,7 @@ class WinningEngine {
             searchColIncrease(colButtons, i);
         }
     }
+
 
     private void searchColIncrease(List<CustomButton> incButtons, int index){
 
@@ -212,7 +219,6 @@ class WinningEngine {
     }
 
 
-
     private void checkIncreaseInLine(){
         ArrayList<CustomButton> incButtons = new ArrayList<>(hashMapOfPlayersMoves.get(previousShape-1).get(3));
         Collections.sort(incButtons);
@@ -222,6 +228,7 @@ class WinningEngine {
             searchRowAndColIncrease(incButtons, i);
         }
     }
+
 
     private void searchRowAndColIncrease(List<CustomButton> incButtons, int index){
 
@@ -256,9 +263,11 @@ class WinningEngine {
         }
     }
 
+
     boolean getFlagDoesSomebodyWin(){
         return doesSomebodyWinFlag;
     }
+
 
     HashSet<Integer> getListOfWinners() {
         return listOfWinners;
