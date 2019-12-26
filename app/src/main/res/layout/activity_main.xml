@@ -36,8 +36,8 @@
                 android:padding="5dp">
                 <RadioButton
                     android:id="@+id/imageButton3x3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/button_3x3"
                     android:button="@null"
                     android:checked="true"
@@ -55,8 +55,8 @@
                 android:padding="5dp">
                 <RadioButton
                     android:id="@+id/imageButton6x6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/button_6x6"
                     android:button="@null"
                     android:contentDescription="@string/image_button_3x3"/>
@@ -92,8 +92,8 @@
 
                 <RadioButton
                     android:id="@+id/imageButton9x9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/button_9x9"
                     android:button="@null"
                     android:contentDescription="@string/image_button_3x3" />
@@ -110,8 +110,8 @@
                 android:padding="5dp">
                 <RadioButton
                     android:id="@+id/imageButtonCustom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/button_custom"
                     android:button="@null"
                     android:contentDescription="@string/image_button_3x3"/>
@@ -270,7 +270,7 @@
 
             <ImageButton
                 android:id="@+id/imageButtonStart"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:background="#00FFFFFF"
